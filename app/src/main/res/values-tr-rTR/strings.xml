@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history">Geçmiş</string>
+    <string name="clear_all">Hepsini Temizle</string>
+    <string name="detail">Detaylar</string>
+    <string name="privacy_policy">Gizlilik Politikası</string>
+    <string name="let_s_start">Kabul Et</string>
+    <string name="settings">Ayarlar</string>
+    <string name="speed_in">Hız Birimi:</string>
+    <string name="select_theme">Tema Seç</string>
+    <string name="notification_bar">Bildirim Çubuğu</string>
+    <string name="vibration">Titreşim</string>
+    <string name="keep_screen_on">Ekranı Açık Tut</string>
+    <string name="sound_effects">Ses Efektleri</string>
+    <string name="route_tracking_on_map">Haritada Rota Takibi</string>
+    <string name="permission_settings">İzin Ayarları</string>
+    <string name="speed_warning">Maksimum Hız Sınırı</string>
+    <string name="language">Dil</string>
+    <string name="rate_us">Bizi Değerlendirin</string>
+    <string name="shape_app">Uygulamayı Paylaş</string>
+    <string name="from">Nereden:</string>
+    <string name="destination">Nereye:</string>
+    <string name="duration">Süre</string>
+    <string name="distance">Mesafe</string>
+    <string name="avg_speed">Ort. Hız</string>
+    <string name="max_speed">Maks. Hız</string>
+    <string name="start">Başlat</string>
+    <string name="stop">Durdur</string>
+    <string name="pause">Duraklat</string>
+    <string name="reset">Sıfırla</string>
+    <string name="resume">Devam Et</string>
+    <string name="gauge">Analog</string>
+    <string name="digital">Dijital</string>
+    <string name="my_location">Harita</string>
+    <string name="warning_when_over">Aşım Uyarısı</string>
+    <string name="driving">Sürüş</string>
+    <string name="cycling">Bisiklet</string>
+    <string name="walking">Yürüyüş</string>
+    <string name="done">Tamamlandı</string>
+    <string name="splash_description">Hızınızı ve sürenizi sorunsuzca ölçün</string>
+    <string name="exit_details">Uygulamadan çıkmak istediğinize emin misiniz?</string>
+    <string name="exit_app">Uygulamadan Çık</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+
+</resources>

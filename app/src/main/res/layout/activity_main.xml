@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueColor"
+    tools:context=".activities.MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topConstraint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/titleTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10sp"
+            android:layout_marginTop="10sp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/analog_meter"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_17sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/settingsBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/settingsBtn"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_marginStart="18sp"
+            android:contentDescription="@string/todo"
+            android:padding="5sp"
+            android:src="@drawable/menu_icon"
+            app:layout_constraintBottom_toBottomOf="@id/titleTxt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/titleTxt" />
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3sp"
+            app:tabTextAppearance="@style/CustomTabTextStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleTxt"
+            app:tabGravity="fill"
+            app:tabMode="fixed" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topConstraint" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom1GL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <LinearLayout
+        android:id="@+id/resetBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27sp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/playBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/playBtn"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:id="@+id/resetIcon"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:contentDescription="@string/todo"
+            android:padding="10sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/grayColor" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/playBtn"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
+        android:contentDescription="@string/todo"
+        android:padding="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bottom1GL" />
+
+    <LinearLayout
+        android:id="@+id/pauseBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="27sp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/playBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/playBtn"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:id="@+id/pauseIcon"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:contentDescription="@string/todo"
+            android:padding="10sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/grayColor" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/main_card"
+        android:layout_width="350dp"
+        android:layout_height="265sp"
+        android:backgroundTint="@color/blueColor"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titletxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:elevation="2dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="RATE US"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/main_card"
+        app:layout_constraintStart_toStartOf="@+id/main_card"
+        app:layout_constraintTop_toTopOf="@+id/main_card" />
+
+
+    <ImageView
+        android:id="@+id/emojiIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23sp"
+        android:elevation="2dp"
+        app:layout_constraintEnd_toEndOf="@+id/main_card"
+        app:layout_constraintStart_toStartOf="@+id/main_card"
+        app:layout_constraintTop_toBottomOf="@+id/titletxt"
+        app:srcCompat="@drawable/rate_3" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22sp"
+        android:elevation="2sp"
+        android:progressBackgroundTint="@color/grayColor"
+        android:progressTint="#FFD600"
+        app:layout_constraintEnd_toEndOf="@id/main_card"
+        app:layout_constraintStart_toStartOf="@id/main_card"
+        app:layout_constraintTop_toBottomOf="@id/emojiIcon" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

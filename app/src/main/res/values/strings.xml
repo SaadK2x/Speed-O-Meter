@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name" translatable="false">GPS Speedometer</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="analog_meter" translatable="false">GPS Speedometer</string>
+    <string name="todo" translatable="false">TODO</string>
+    <string name="share_app_link" translatable="false">https://play.google.com/store/apps/details?id=gps.speedometer.digihud.odometer.speedometer</string>
+    <string name="history">History</string>
+    <string name="clear_all">Clear All</string>
+    <string name="detail">Details</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="let_s_start">Agree</string>
+    <string name="settings">Settings</string>
+    <string name="speed_in">Speed In:</string>
+    <string name="select_theme">Select Theme</string>
+    <string name="notification_bar">Notification bar</string>
+    <string name="vibration">Vibration</string>
+    <string name="keep_screen_on">Keep Screen On</string>
+    <string name="sound_effects">Sound effects</string>
+    <string name="route_tracking_on_map">Route Tracking on map</string>
+    <string name="permission_settings">Permission settings</string>
+    <string name="speed_warning">Max Speed Limit</string>
+    <string name="language">Language</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="shape_app">Share App</string>
+    <string name="from">From:</string>
+    <string name="destination">Destination:</string>
+    <string name="duration">Duration</string>
+    <string name="distance">Distance</string>
+    <string name="avg_speed">Avg.Speed</string>
+    <string name="max_speed">Max.Speed</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="pause">Pause</string>
+    <string name="reset">Reset</string>
+    <string name="resume">Resume</string>
+    <string name="gauge">Analog</string>
+    <string name="digital">Digital</string>
+    <string name="my_location">Map</string>
+    <string name="warning_when_over">Warning When Over</string>
+    <string name="driving">Driving</string>
+    <string name="cycling">Cycling</string>
+    <string name="walking">Walking</string>
+    <string name="done">Done</string>
+    <string name="splash_description">Measure your speed and duration seamless</string>
+    <string name="exit_details">Do you really want to exit from the app?</string>
+    <string name="exit_app">Exit App</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history">इतिहास</string>
+    <string name="clear_all">सभी साफ़ करें</string>
+    <string name="detail">विवरण</string>
+    <string name="privacy_policy">गोपनीयता नीति</string>
+    <string name="let_s_start">सहमत</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="speed_in">गति में:</string>
+    <string name="select_theme">थीम चुनें</string>
+    <string name="notification_bar">सूचना पट्टी</string>
+    <string name="vibration">कंपन</string>
+    <string name="keep_screen_on">स्क्रीन चालू रखें</string>
+    <string name="sound_effects">ध्वनि प्रभाव</string>
+    <string name="route_tracking_on_map">मानचित्र पर मार्ग ट्रैकिंग</string>
+    <string name="permission_settings">अनुमति सेटिंग्स</string>
+    <string name="speed_warning">अधिकतम गति सीमा</string>
+    <string name="language">भाषा</string>
+    <string name="rate_us">हमें रेट करें</string>
+    <string name="shape_app">ऐप साझा करें</string>
+    <string name="from">से:</string>
+    <string name="destination">गंतव्य:</string>
+    <string name="duration">अवधि</string>
+    <string name="distance">दूरी</string>
+    <string name="avg_speed">औसत गति</string>
+    <string name="max_speed">अधिकतम गति</string>
+    <string name="start">शुरू करें</string>
+    <string name="stop">रोकें</string>
+    <string name="pause">रोकें</string>
+    <string name="reset">रीसेट करें</string>
+    <string name="resume">फिर से शुरू करें</string>
+    <string name="gauge">एनालॉग</string>
+    <string name="digital">डिजिटल</string>
+    <string name="my_location">मानचित्र</string>
+    <string name="warning_when_over">सीमा पार करने पर चेतावनी</string>
+    <string name="driving">ड्राइविंग</string>
+    <string name="cycling">साइक्लिंग</string>
+    <string name="walking">चलना</string>
+    <string name="done">हो गया</string>
+    <string name="splash_description">अपनी गति और अवधि को बिना किसी रुकावट के मापें</string>
+    <string name="exit_details">क्या आप वाकई ऐप से बाहर निकलना चाहते हैं?</string>
+    <string name="exit_app">ऐप बंद करें</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+
+</resources>

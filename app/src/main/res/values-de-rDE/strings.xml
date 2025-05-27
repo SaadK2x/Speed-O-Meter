@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history">Verlauf</string>
+    <string name="clear_all">Alles löschen</string>
+    <string name="detail">Details</string>
+    <string name="privacy_policy">Datenschutzrichtlinie</string>
+    <string name="let_s_start">Zustimmen</string>
+    <string name="settings">Einstellungen</string>
+    <string name="speed_in">Geschwindigkeit in:</string>
+    <string name="select_theme">Thema auswählen</string>
+    <string name="notification_bar">Benachrichtigungsleiste</string>
+    <string name="vibration">Vibration</string>
+    <string name="keep_screen_on">Bildschirm eingeschaltet lassen</string>
+    <string name="sound_effects">Soundeffekte</string>
+    <string name="route_tracking_on_map">Routenverfolgung auf der Karte</string>
+    <string name="permission_settings">Berechtigungseinstellungen</string>
+    <string name="speed_warning">Maximale Geschwindigkeitsbegrenzung</string>
+    <string name="language">Sprache</string>
+    <string name="rate_us">Bewerten Sie uns</string>
+    <string name="shape_app">App teilen</string>
+    <string name="from">Von:</string>
+    <string name="destination">Ziel:</string>
+    <string name="duration">Dauer</string>
+    <string name="distance">Entfernung</string>
+    <string name="avg_speed">Durchschn. Geschwindigkeit</string>
+    <string name="max_speed">Max. Geschwindigkeit</string>
+    <string name="start">Start</string>
+    <string name="stop">Stopp</string>
+    <string name="pause">Pause</string>
+    <string name="reset">Zurücksetzen</string>
+    <string name="resume">Fortsetzen</string>
+    <string name="gauge">Analog</string>
+    <string name="digital">Digital</string>
+    <string name="my_location">Karte</string>
+    <string name="warning_when_over">Warnung bei Überschreitung</string>
+    <string name="driving">Fahren</string>
+    <string name="cycling">Radfahren</string>
+    <string name="walking">Gehen</string>
+    <string name="done">Fertig</string>
+    <string name="splash_description">Messen Sie Ihre Geschwindigkeit und Dauer nahtlos</string>
+    <string name="exit_details">Möchten Sie die App wirklich verlassen?</string>
+    <string name="exit_app">App beenden</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+
+</resources>

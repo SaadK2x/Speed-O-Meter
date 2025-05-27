@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history">Riwayat</string>
+    <string name="clear_all">Hapus Semua</string>
+    <string name="detail">Detail</string>
+    <string name="privacy_policy">Kebijakan Privasi</string>
+    <string name="let_s_start">Setuju</string>
+    <string name="settings">Pengaturan</string>
+    <string name="speed_in">Kecepatan Dalam:</string>
+    <string name="select_theme">Pilih Tema</string>
+    <string name="notification_bar">Bilah Notifikasi</string>
+    <string name="vibration">Getaran</string>
+    <string name="keep_screen_on">Layar Tetap Aktif</string>
+    <string name="sound_effects">Efek Suara</string>
+    <string name="route_tracking_on_map">Pelacakan Rute di Peta</string>
+    <string name="permission_settings">Pengaturan Izin</string>
+    <string name="speed_warning">Batas Kecepatan Maksimum</string>
+    <string name="language">Bahasa</string>
+    <string name="rate_us">Beri Kami Nilai</string>
+    <string name="shape_app">Bagikan Aplikasi</string>
+    <string name="from">Dari:</string>
+    <string name="destination">Tujuan:</string>
+    <string name="duration">Durasi</string>
+    <string name="distance">Jarak</string>
+    <string name="avg_speed">Kecep. Rata-rata</string>
+    <string name="max_speed">Kecep. Maksimum</string>
+    <string name="start">Mulai</string>
+    <string name="stop">Berhenti</string>
+    <string name="pause">Jeda</string>
+    <string name="reset">Atur Ulang</string>
+    <string name="resume">Lanjutkan</string>
+    <string name="gauge">Analog</string>
+    <string name="digital">Digital</string>
+    <string name="my_location">Peta</string>
+    <string name="warning_when_over">Peringatan Jika Melebihi</string>
+    <string name="driving">Mengemudi</string>
+    <string name="cycling">Bersepeda</string>
+    <string name="walking">Berjalan</string>
+    <string name="done">Selesai</string>
+    <string name="splash_description">Ukur kecepatan dan durasi Anda secara mulus</string>
+    <string name="exit_details">Apakah Anda yakin ingin keluar dari aplikasi?</string>
+    <string name="exit_app">Keluar Aplikasi</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+
+</resources>

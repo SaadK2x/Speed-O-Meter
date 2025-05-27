@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history">История</string>
+    <string name="clear_all">Очистить все</string>
+    <string name="detail">Детали</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="let_s_start">Согласен</string>
+    <string name="settings">Настройки</string>
+    <string name="speed_in">Скорость в:</string>
+    <string name="select_theme">Выбрать тему</string>
+    <string name="notification_bar">Панель уведомлений</string>
+    <string name="vibration">Вибрация</string>
+    <string name="keep_screen_on">Не выключать экран</string>
+    <string name="sound_effects">Звуковые эффекты</string>
+    <string name="route_tracking_on_map">Отслеживание маршрута на карте</string>
+    <string name="permission_settings">Настройки разрешений</string>
+    <string name="speed_warning">Макс. допустимая скорость</string>
+    <string name="language">Язык</string>
+    <string name="rate_us">Оцените нас</string>
+    <string name="shape_app">Поделиться приложением</string>
+    <string name="from">Откуда:</string>
+    <string name="destination">Назначение:</string>
+    <string name="duration">Продолжительность</string>
+    <string name="distance">Расстояние</string>
+    <string name="avg_speed">Средняя скорость</string>
+    <string name="max_speed">Макс. скорость</string>
+    <string name="start">Старт</string>
+    <string name="stop">Стоп</string>
+    <string name="pause">Пауза</string>
+    <string name="reset">Сброс</string>
+    <string name="resume">Продолжить</string>
+    <string name="gauge">Аналоговый</string>
+    <string name="digital">Цифровой</string>
+    <string name="my_location">Карта</string>
+    <string name="warning_when_over">Предупреждение при превышении</string>
+    <string name="driving">Вождение</string>
+    <string name="cycling">Велосипед</string>
+    <string name="walking">Пешком</string>
+    <string name="done">Готово</string>
+    <string name="splash_description">Измеряйте скорость и длительность без усилий</string>
+    <string name="exit_details">Вы действительно хотите выйти из приложения?</string>
+    <string name="exit_app">Выйти из приложения</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+
+</resources>

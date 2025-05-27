@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history">履歴</string>
+    <string name="clear_all">すべてクリア</string>
+    <string name="detail">詳細</string>
+    <string name="privacy_policy">プライバシーポリシー</string>
+    <string name="let_s_start">同意する</string>
+    <string name="settings">設定</string>
+    <string name="speed_in">速度単位：</string>
+    <string name="select_theme">テーマを選択</string>
+    <string name="notification_bar">通知バー</string>
+    <string name="vibration">バイブレーション</string>
+    <string name="keep_screen_on">画面を常にオンにする</string>
+    <string name="sound_effects">効果音</string>
+    <string name="route_tracking_on_map">地図上のルート追跡</string>
+    <string name="permission_settings">権限設定</string>
+    <string name="speed_warning">最高速度制限</string>
+    <string name="language">言語</string>
+    <string name="rate_us">評価する</string>
+    <string name="shape_app">アプリを共有</string>
+    <string name="from">出発地：</string>
+    <string name="destination">目的地：</string>
+    <string name="duration">所要時間</string>
+    <string name="distance">距離</string>
+    <string name="avg_speed">平均速度</string>
+    <string name="max_speed">最高速度</string>
+    <string name="start">開始</string>
+    <string name="stop">停止</string>
+    <string name="pause">一時停止</string>
+    <string name="reset">リセット</string>
+    <string name="resume">再開</string>
+    <string name="gauge">アナログ</string>
+    <string name="digital">デジタル</string>
+    <string name="my_location">地図</string>
+    <string name="warning_when_over">超過時に警告</string>
+    <string name="driving">運転</string>
+    <string name="cycling">サイクリング</string>
+    <string name="walking">徒歩</string>
+    <string name="done">完了</string>
+    <string name="splash_description">速度と時間をシームレスに計測</string>
+    <string name="exit_details">本当にアプリを終了しますか？</string>
+    <string name="exit_app">アプリを終了</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+
+</resources>

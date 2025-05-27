@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="history">Historial</string>
+    <string name="clear_all">Borrar todo</string>
+    <string name="detail">Detalle</string>
+    <string name="privacy_policy">Política de privacidad</string>
+    <string name="let_s_start">Aceptar</string>
+    <string name="settings">Ajustes</string>
+    <string name="speed_in">Velocidad en:</string>
+    <string name="select_theme">Seleccionar tema</string>
+    <string name="notification_bar">Barra de notificaciones</string>
+    <string name="vibration">Vibración</string>
+    <string name="keep_screen_on">Mantener pantalla encendida</string>
+    <string name="sound_effects">Efectos de sonido</string>
+    <string name="route_tracking_on_map">Seguimiento de ruta en el mapa</string>
+    <string name="permission_settings">Ajustes de permisos</string>
+    <string name="speed_warning">Límite máximo de velocidad</string>
+    <string name="language">Idioma</string>
+    <string name="rate_us">Califícanos</string>
+    <string name="shape_app">Compartir aplicación</string>
+    <string name="from">Desde:</string>
+    <string name="destination">Destino:</string>
+    <string name="duration">Duración</string>
+    <string name="distance">Distancia</string>
+    <string name="avg_speed">Vel. promedio</string>
+    <string name="max_speed">Vel. máxima</string>
+    <string name="start">Iniciar</string>
+    <string name="stop">Detener</string>
+    <string name="pause">Pausa</string>
+    <string name="resume">Reanudar</string>
+    <string name="reset">Reiniciar</string>
+    <string name="gauge">Analógico</string>
+    <string name="digital">Digital</string>
+    <string name="my_location">Mapa</string>
+    <string name="warning_when_over">Advertencia al exceder</string>
+    <string name="driving">Conduciendo</string>
+    <string name="cycling">En bicicleta</string>
+    <string name="walking">Caminando</string>
+    <string name="done">Hecho</string>
+    <string name="splash_description">Innovación sin límites. Confía en tu velocidad con SpeedMaster, el velocímetro definitivo.</string>
+    <string name="exit_details">¿Realmente quieres salir de la aplicación?</string>
+    <string name="exit_app">Salir de la aplicación</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+
+</resources>

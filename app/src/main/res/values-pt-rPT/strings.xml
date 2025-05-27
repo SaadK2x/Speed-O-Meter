@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history">Histórico</string>
+    <string name="clear_all">Limpar Tudo</string>
+    <string name="detail">Detalhes</string>
+    <string name="privacy_policy">Política de Privacidade</string>
+    <string name="let_s_start">Concordar</string>
+    <string name="settings">Configurações</string>
+    <string name="speed_in">Velocidade em:</string>
+    <string name="select_theme">Selecionar Tema</string>
+    <string name="notification_bar">Barra de Notificações</string>
+    <string name="vibration">Vibração</string>
+    <string name="keep_screen_on">Manter Tela Ligada</string>
+    <string name="sound_effects">Efeitos Sonoros</string>
+    <string name="route_tracking_on_map">Rastreamento de Rota no Mapa</string>
+    <string name="permission_settings">Configurações de Permissão</string>
+    <string name="speed_warning">Limite Máximo de Velocidade</string>
+    <string name="language">Idioma</string>
+    <string name="rate_us">Avalie-nos</string>
+    <string name="shape_app">Compartilhar App</string>
+    <string name="from">De:</string>
+    <string name="destination">Destino:</string>
+    <string name="duration">Duração</string>
+    <string name="distance">Distância</string>
+    <string name="avg_speed">Velocidade Média</string>
+    <string name="max_speed">Velocidade Máxima</string>
+    <string name="start">Iniciar</string>
+    <string name="stop">Parar</string>
+    <string name="pause">Pausar</string>
+    <string name="reset">Redefinir</string>
+    <string name="resume">Retomar</string>
+    <string name="gauge">Analógico</string>
+    <string name="digital">Digital</string>
+    <string name="my_location">Mapa</string>
+    <string name="warning_when_over">Aviso ao Ultrapassar</string>
+    <string name="driving">Dirigindo</string>
+    <string name="cycling">Ciclismo</string>
+    <string name="walking">Caminhada</string>
+    <string name="done">Concluído</string>
+    <string name="splash_description">Meça sua velocidade e duração perfeitamente</string>
+    <string name="exit_details">Deseja realmente sair do aplicativo?</string>
+    <string name="exit_app">Sair do App</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+
+</resources>
