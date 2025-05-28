@@ -132,33 +132,38 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.playBtn.setOnClickListener {
-            if (!Constants.isStart) {
-                if (isLocationEnabled(this)) {
-                    if (ContextCompat.checkSelfPermission(
-                            this, Manifest.permission.ACCESS_FINE_LOCATION
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        Log.d("TAG", "bindService: Not Allowed")
-                        ActivityCompat.requestPermissions(
-                            this,
-                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                            PERMISSION_REQUEST_LOCATION
-                        )
+            if (!isPaused) {
+                if (!Constants.isStart) {
+                    if (isLocationEnabled(this)) {
+                        if (ContextCompat.checkSelfPermission(
+                                this, Manifest.permission.ACCESS_FINE_LOCATION
+                            ) != PackageManager.PERMISSION_GRANTED
+                        ) {
+                            Log.d("TAG__", "bindService: Not Allowed")
+                            ActivityCompat.requestPermissions(
+                                this,
+                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                                PERMISSION_REQUEST_LOCATION
+                            )
+                        } else {
+                            Log.d("TAG__", "bindService: Starting")
+                            Constants.isStart = true
+                            bindService()
+                        }
                     } else {
-                        Log.d("TAG__", "bindService: Come here 1 DigitalFragment")
-
-                        Constants.isStart = true
-                        bindService()
+                        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
                     }
-                } else {
-                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
                 }
-            } else {
-                Constants.isStart = false
-                binding.playBtn.visibility = View.GONE
-                unbindService("Stop")
+                else {
+                    Log.d("TAG__", "bindService: Stoping")
+                    Constants.isStart = false
+                    binding.playBtn.visibility = View.GONE
+                    unbindService("Stop", false)
+                }
+            }else{
+                Toast.makeText(this, "Resume the Speedometer then press Stop button", Toast.LENGTH_SHORT).show()
             }
         }
         binding.pauseBtn.setOnClickListener {
@@ -179,7 +184,7 @@ class MainActivity : AppCompatActivity() {
             if (Constants.isStart) {
                 val speedIntent = Intent("ACTION_RESET_UPDATE")
                 sendBroadcast(speedIntent)
-                unbindService("Reset")
+                unbindService("Reset", false)
                 bindService()
             }
         }
@@ -211,23 +216,28 @@ class MainActivity : AppCompatActivity() {
 
     fun bindService() {
         if (status) return
-        sendBroadCast("Start")
+        sendBroadCast("Start", false)
         val i = Intent(this, gps.navigation.speedmeter.Service.LocationService::class.java)
         bindService(i, digitalSC, BIND_AUTO_CREATE)
         status = true
         startTime = System.currentTimeMillis()
     }
 
-    fun sendBroadCast(value: String) {
+    fun sendBroadCast(value: String, isDestroying: Boolean) {
         val speedIntent = Intent("ACTION_START_UPDATE")
         speedIntent.putExtra("isStart", value)
+        speedIntent.putExtra("isDestroying", isDestroying)
         sendBroadcast(speedIntent)
     }
 
-    fun unbindService(value: String) {
+    fun unbindService(value: String, isDestroying: Boolean) {
         if (!status) return
-        sendBroadCast(value)
-        unbindService(digitalSC)
+        try {
+            sendBroadCast(value, isDestroying)
+            unbindService(digitalSC)
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace() // Or log it
+        }
         status = false
     }
 
@@ -269,8 +279,6 @@ class MainActivity : AppCompatActivity() {
                         )
                     }
                 }
-            } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -544,11 +552,19 @@ class MainActivity : AppCompatActivity() {
         yesBtn.text = getString(R.string.yes)
         noBtn.text = getString(R.string.no)
         yesBtn.setOnClickListener {
+            Constants.isStart = false
+            unbindService("Stop", true)
             dialog.dismiss()
             finish()
             finishAffinity()
         }
         noBtn.setOnClickListener { dialog.dismiss() }
         dialog.show()
+    }
+
+    override fun onDestroy() {
+        Constants.isStart = false
+        unbindService("Stop", true)
+        super.onDestroy()
     }
 }

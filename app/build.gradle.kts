@@ -9,7 +9,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "gps.speedometer.digihud.odometer.speedometer"
+        applicationId = "gps.speedometer.gpsspeedometer.odometer.speedtracker"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

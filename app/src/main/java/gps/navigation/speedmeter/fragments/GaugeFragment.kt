@@ -110,7 +110,7 @@ class GaugeFragment : Fragment() {
             val start = intent?.getStringExtra("isStart")
             if (start == "Start") {
                 isStop = false
-                binding.playBtn.text = getString(R.string.stop)
+                binding.playBtn.text = context?.getString(R.string.stop) ?: "Stop"
                 Constants.viewScaling(0f, 1f, true, binding.pauseBtn)
                 Constants.viewScaling(0f, 1f, true, binding.resetBtn)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -129,7 +129,7 @@ class GaugeFragment : Fragment() {
             } else if (start == "Stop") {
                 isStop = true
                 activity?.unregisterReceiver(speedUpdateReceiver)
-                binding.playBtn.text = getString(R.string.start)
+                binding.playBtn.text = context?.getString(R.string.start)?:"Start"
                 Constants.viewScaling(1f, 0f, false, binding.pauseBtn)
                 Constants.viewScaling(1f, 0f, false, binding.resetBtn)
                 binding.time.text = "00:00:00"
@@ -146,11 +146,15 @@ class GaugeFragment : Fragment() {
             val start = intent?.getBooleanExtra("isPause", false) ?: false
             isResume = !start
             if (start) {
-                binding.pauseIcon.setImageResource(R.drawable.play_icon)
-                binding.pauseTxt.text = getString(R.string.resume)
+                if (activity!=null) {
+                    binding.pauseIcon.setImageResource(R.drawable.play_icon)
+                    binding.pauseTxt.text = getString(R.string.resume)
+                }
             } else {
-                binding.pauseIcon.setImageResource(R.drawable.resume_icon)
-                binding.pauseTxt.text = getString(R.string.pause)
+                if (activity!=null) {
+                    binding.pauseIcon.setImageResource(R.drawable.resume_icon)
+                    binding.pauseTxt.text = getString(R.string.pause)
+                }
             }
         }
     }
@@ -238,6 +242,15 @@ class GaugeFragment : Fragment() {
                 binding.avgSpeedUnit.text = "Knots"
                 binding.speedUnitTV.text = "Knots"
             }
+        }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        try {
+            requireActivity().unregisterReceiver(speedUpdateReceiver)
+            requireActivity().unregisterReceiver(startUpdateReceiver)
+        } catch (e: IllegalArgumentException) {
+            // Already unregistered
         }
     }
 }
