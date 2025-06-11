@@ -155,15 +155,18 @@ class MainActivity : AppCompatActivity() {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                     }
-                }
-                else {
+                } else {
                     Log.d("TAG__", "bindService: Stoping")
                     Constants.isStart = false
                     binding.playBtn.visibility = View.GONE
                     unbindService("Stop", false)
                 }
-            }else{
-                Toast.makeText(this, "Resume the Speedometer then press Stop button", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Resume the Speedometer then press Stop button",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         binding.pauseBtn.setOnClickListener {
@@ -181,11 +184,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.resetBtn.setOnClickListener {
-            if (Constants.isStart) {
-                val speedIntent = Intent("ACTION_RESET_UPDATE")
-                sendBroadcast(speedIntent)
-                unbindService("Reset", false)
-                bindService()
+            if (!isPaused) {
+                if (Constants.isStart) {
+                    val speedIntent = Intent("ACTION_RESET_UPDATE")
+                    sendBroadcast(speedIntent)
+                    unbindService("Reset", false)
+                    bindService()
+                }
+            } else {
+                Toast.makeText(
+                    this,
+                    "Resume the Speedometer then press Stop button",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 

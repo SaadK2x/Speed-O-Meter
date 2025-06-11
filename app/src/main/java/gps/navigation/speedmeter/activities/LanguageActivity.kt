@@ -1,8 +1,6 @@
 package gps.navigation.speedmeter.activities
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +19,6 @@ class LanguageActivity : AppCompatActivity(), OnLanguageClick {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
 
         binding.backBtn.setOnClickListener {
             onBackPressed()
@@ -68,7 +65,5 @@ class LanguageActivity : AppCompatActivity(), OnLanguageClick {
         mAdapter = LanguageAdapter(Constants.arrayLang, this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = mAdapter
-
-
     }
 }
