@@ -43,5 +43,6 @@
     <string name="exit_app">Salir de la aplicación</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
+    <string name="saving">Guardando</string>
 
 </resources>

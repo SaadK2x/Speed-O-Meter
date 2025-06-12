@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import gps.navigation.speedmeter.R
@@ -35,6 +36,7 @@ import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPolylineAnnotationManager
 import com.mapbox.maps.plugin.compass.compass
+import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -58,6 +60,7 @@ class HistoryDetail : AppCompatActivity(), MapLoadedCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        squareXGPSBannerAdsSmall()
         pid = intent.extras?.getInt("pointID") ?: 0
         historyDatabase = DatabaseBuilder.getInstance(this)
         databaseHelper = DatabaseHelperImpl(historyDatabase!!)
@@ -98,7 +101,13 @@ class HistoryDetail : AppCompatActivity(), MapLoadedCallback {
             }
         }
     }
-
+    private fun squareXGPSBannerAdsSmall() {
+        val adContainer = findViewById<LinearLayout>(R.id.adContainer)
+        val smallAd = findViewById<LinearLayout>(R.id.smallAd)
+        SpeedMeterLoadAds.loadBanner(
+            adContainer, smallAd, this
+        )
+    }
     fun settingColors(color: String) {
         binding.duration.setTextColor(Color.parseColor(color))
         binding.distance.setTextColor(Color.parseColor(color))

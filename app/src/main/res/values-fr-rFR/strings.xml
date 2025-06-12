@@ -42,5 +42,6 @@
     <string name="exit_app">Quitter l,application</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
+    <string name="saving">Enregistrement</string>
 
 </resources>

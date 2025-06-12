@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RatingBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.adapters.ThemeAdapter
+import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
 import gps.navigation.speedmeter.databinding.ActivitySettingsBinding
 import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import gps.navigation.speedmeter.utils.Constants
@@ -40,6 +42,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        squareXGPSBannerAdsSmall()
         bottomSheet = BottomSheetBehavior.from(binding.bottomSheet)
         bottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
         settingSwitches()
@@ -71,12 +74,17 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(this, LanguageActivity::class.java))
         }
 
-
         binding.btnShareApp.setOnClickListener {
             shareApp(this)
         }
     }
-
+    private fun squareXGPSBannerAdsSmall() {
+        val adContainer = findViewById<LinearLayout>(R.id.adContainer)
+        val smallAd = findViewById<LinearLayout>(R.id.smallAd)
+        SpeedMeterLoadAds.loadBanner(
+            adContainer, smallAd, this
+        )
+    }
     override fun onBackPressed() {
         super.onBackPressed()
     }

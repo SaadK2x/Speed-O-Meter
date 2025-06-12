@@ -42,5 +42,6 @@
     <string name="exit_app">アプリを終了</string>
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
+    <string name="saving">保存中</string>
 
 </resources>

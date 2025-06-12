@@ -2,9 +2,12 @@ package gps.navigation.speedmeter.activities
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.adapters.LanguageAdapter
+import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
 import gps.navigation.speedmeter.databinding.ActivityLanguageBinding
 import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import gps.navigation.speedmeter.utils.Constants
@@ -19,13 +22,20 @@ class LanguageActivity : AppCompatActivity(), OnLanguageClick {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        squareXGPSBannerAdsSmall()
 
         binding.backBtn.setOnClickListener {
             onBackPressed()
         }
 
     }
-
+    private fun squareXGPSBannerAdsSmall() {
+        val adContainer = findViewById<LinearLayout>(R.id.adContainer)
+        val smallAd = findViewById<LinearLayout>(R.id.smallAd)
+        SpeedMeterLoadAds.loadBanner(
+            adContainer, smallAd, this
+        )
+    }
     override fun onBackPressed() {
         super.onBackPressed()
     }

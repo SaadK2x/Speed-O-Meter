@@ -42,5 +42,6 @@
     <string name="exit_app">Keluar Aplikasi</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
+    <string name="saving">Menyimpan</string>
 
 </resources>

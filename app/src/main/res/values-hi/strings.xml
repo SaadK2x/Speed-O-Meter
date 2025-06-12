@@ -42,5 +42,6 @@
     <string name="exit_app">ऐप बंद करें</string>
     <string name="yes">हाँ</string>
     <string name="no">नहीं</string>
+    <string name="saving">सहेजा जा रहा है</string>
 
 </resources>

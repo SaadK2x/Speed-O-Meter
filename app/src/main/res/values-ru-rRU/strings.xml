@@ -42,5 +42,6 @@
     <string name="exit_app">Выйти из приложения</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="saving">Сохранение</string>
 
 </resources>

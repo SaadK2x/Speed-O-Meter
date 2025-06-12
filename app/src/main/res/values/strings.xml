@@ -4,6 +4,10 @@
     <string name="analog_meter" translatable="false">GPS Speedometer</string>
     <string name="todo" translatable="false">TODO</string>
     <string name="share_app_link" translatable="false">https://play.google.com/store/apps/details?id=gps.speedometer.digihud.odometer.speedometer</string>
+    <string name="str_download_complete" translatable="false">Download Complete</string>
+    <string name="str_restart" translatable="false">Restart</string>
+    <string name="str_app_update_fail" translatable="false">Update Failed</string>
+    <string name="admob_ad_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
     <string name="history">History</string>
     <string name="clear_all">Clear All</string>
     <string name="detail">Details</string>
@@ -46,4 +50,5 @@
     <string name="exit_app">Exit App</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="saving">Saving</string>
 </resources>

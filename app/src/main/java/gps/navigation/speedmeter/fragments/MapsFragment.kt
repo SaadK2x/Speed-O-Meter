@@ -44,6 +44,8 @@ import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.delegates.listeners.OnMapLoadedListener
 import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.activities.HistoryDetail
+import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
+import gps.navigation.speedmeter.ads.SpeedMeterShowAds
 import gps.navigation.speedmeter.database.DatabaseBuilder
 import gps.navigation.speedmeter.database.DatabaseHelperImpl
 import gps.navigation.speedmeter.database.History
@@ -55,6 +57,7 @@ import gps.navigation.speedmeter.utils.Constants
 import gps.navigation.speedmeter.utils.Constants.bitmapFromDrawableRes
 import gps.navigation.speedmeter.utils.Constants.isSATELLITE
 import gps.navigation.speedmeter.utils.Constants.mapLoaded
+import gps.navigation.speedmeter.utils.Constants.moveForward
 import gps.navigation.speedmeter.utils.LocationManager
 import gps.navigation.speedmeter.utils.Marker
 import gps.navigation.speedmeter.utils.MarkerManager
@@ -349,7 +352,7 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
             if (!isDestroying) {
                 if (start == "Start") {
                     isStop = false
-                    binding.playBtn.text = context?.getString(R.string.stop) ?: "Stop"
+                    binding.playTV.text = context?.getString(R.string.stop) ?: "Stop"
                     Constants.viewScaling(0f, 1f, true, binding.pauseBtn)
                     Constants.viewScaling(0f, 1f, true, binding.resetBtn)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -377,8 +380,11 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                     isStop = true
                     activity?.unregisterReceiver(speedUpdateReceiver)
                     activity?.unregisterReceiver(latlngUpdateReceiver)
+                    binding.playBtn.isEnabled = false
 
-                    binding.playBtn.text = context?.getString(R.string.start) ?: "Start"
+                    moveForward.value = "No"
+                    binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
+                    binding.playProgress.visibility = View.VISIBLE
                     Constants.viewScaling(1f, 0f, false, binding.pauseBtn)
                     Constants.viewScaling(1f, 0f, false, binding.resetBtn)
                     when (sharedPrefrences?.getString("Unit", "KMH")) {
@@ -419,14 +425,8 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                                 if (route.isNullOrEmpty()) {
 
                                     Log.d("TAG_DATA", "onReceive: Comes Empty")
-                                    val bundle = Bundle()
-                                    bundle.putInt("pointID", history.pointsID)
-                                    val intent1 =
-                                        Intent(requireContext(), HistoryDetail::class.java)
-                                    intent1.putExtras(bundle)
-                                    startActivity(intent1)
-                                }
-                                else {
+                                    moveToNext(history)
+                                } else {
                                     withContext(Dispatchers.Main) {
                                         Log.d("TAG_DATA", "onReceive: Comes Not Empty")
                                         clearPolygon()
@@ -465,12 +465,8 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                                         Constants.initialLng = 0.0
                                         //  previousLatLng = null
                                         //  polylineOptions = PolylineOptions()
-                                        val bundle = Bundle()
-                                        bundle.putInt("pointID", history.pointsID)
-                                        val intent1 =
-                                            Intent(requireContext(), HistoryDetail::class.java)
-                                        intent1.putExtras(bundle)
-                                        startActivity(intent1)
+
+                                        moveToNext(history)
                                     }
 
                                 }
@@ -545,12 +541,8 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                                         Constants.initialLng = 0.0
                                         //   previousLatLng = null
                                         //  polylineOptions = PolylineOptions()
-                                        val bundle = Bundle()
-                                        bundle.putInt("pointID", history.pointsID)
-                                        val intent =
-                                            Intent(requireContext(), HistoryDetail::class.java)
-                                        intent.putExtras(bundle)
-                                        startActivity(intent)
+
+                                        moveToNext(history)
                                     }
                                 }
                             }
@@ -628,12 +620,7 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                                         Constants.initialLng = 0.0
                                         //  previousLatLng = null
                                         //  polylineOptions = PolylineOptions()
-                                        val bundle = Bundle()
-                                        bundle.putInt("pointID", history.pointsID)
-                                        val intent =
-                                            Intent(requireContext(), HistoryDetail::class.java)
-                                        intent.putExtras(bundle)
-                                        startActivity(intent)
+                                        moveToNext(history)
                                     }
                                 }
                             }
@@ -651,12 +638,12 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
             val start = intent?.getBooleanExtra("isPause", false) ?: false
             isResume = !start
             if (start) {
-                if (activity!=null) {
+                if (activity != null) {
                     binding.pauseIcon.setImageResource(R.drawable.play_icon)
                     binding.pauseTxt.text = getString(R.string.resume)
                 }
             } else {
-                if (activity!=null) {
+                if (activity != null) {
                     binding.pauseIcon.setImageResource(R.drawable.resume_icon)
                     binding.pauseTxt.text = getString(R.string.pause)
                 }
@@ -677,10 +664,10 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
             rotation.interpolator = AccelerateDecelerateInterpolator()
             rotation.start()
             if (markerManger != null) {
-                if (previousMarker!=null) {
+                if (previousMarker != null) {
                     markerManger?.removeMarker(previousMarker!!)
                 }
-                if (startMarker!=null) {
+                if (startMarker != null) {
                     markerManger?.removeMarker(startMarker!!)
                 }
             }
@@ -738,9 +725,9 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
             binding.pauseTxt.text = getString(R.string.resume)
         }
         if (isStop) {
-            binding.playBtn.text = getString(R.string.start)
+            binding.playTV.text = getString(R.string.start)
         } else {
-            binding.playBtn.text = getString(R.string.stop)
+            binding.playTV.text = getString(R.string.stop)
         }
     }
 
@@ -921,5 +908,39 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
         }
     }
 
+    fun moveToNext(history: History) {
+        SpeedMeterLoadAds.loadVideoAdForPrompt(
+            requireActivity(),
+            object : SpeedMeterLoadAds.OnVideoLoad {
+                override fun onLoaded() {
+                    moveForward.value = "Yes"
+                    binding.playBtn.isEnabled = true
+                    binding.playTV.text = context?.getString(R.string.start) ?: "Start"
+                    binding.playProgress.visibility = View.GONE
+                    SpeedMeterShowAds.showingVideoAd(requireActivity()) {
+                        val bundle = Bundle()
+                        bundle.putInt("pointID", history.pointsID)
+                        val intent1 =
+                            Intent(requireContext(), HistoryDetail::class.java)
+                        intent1.putExtras(bundle)
+                        startActivity(intent1)
+                    }
+                }
+
+                override fun onFailed() {
+                    moveForward.value = "Yes"
+                    binding.playBtn.isEnabled = true
+                    binding.playTV.text = context?.getString(R.string.start) ?: "Start"
+                    binding.playProgress.visibility = View.GONE
+                    val bundle = Bundle()
+                    bundle.putInt("pointID", history.pointsID)
+                    val intent1 =
+                        Intent(requireContext(), HistoryDetail::class.java)
+                    intent1.putExtras(bundle)
+                    startActivity(intent1)
+                }
+
+            })
+    }
 
 }

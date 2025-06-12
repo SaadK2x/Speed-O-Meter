@@ -42,5 +42,6 @@
     <string name="exit_app">Sair do App</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
+    <string name="saving">Salvando</string>
 
 </resources>

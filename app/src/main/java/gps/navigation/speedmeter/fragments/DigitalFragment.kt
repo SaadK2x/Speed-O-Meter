@@ -32,8 +32,18 @@ class DigitalFragment : Fragment() {
     var isResume = true
     var isStop = true
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         sharedPrefrences = SharedPreferenceHelperClass(requireContext())
+        Constants.moveForward.observe(requireActivity()) {
+            if (it != "No") {
+                binding.playTV.text = context?.getString(R.string.start) ?: "Start"
+                binding.playProgress.visibility = View.GONE
+            }
+        }
         return binding.root
     }
 
@@ -95,7 +105,7 @@ class DigitalFragment : Fragment() {
             val start = intent?.getStringExtra("isStart")
             if (start == "Start") {
                 isStop = false
-                binding.playBtn.text = context?.getString(R.string.stop) ?: "Stop"
+                binding.playTV.text = context?.getString(R.string.stop) ?: "Stop"
                 viewScaling(0f, 1f, true, binding.pauseBtn)
                 viewScaling(0f, 1f, true, binding.resetBtn)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -105,12 +115,16 @@ class DigitalFragment : Fragment() {
                         Context.RECEIVER_EXPORTED
                     )
                 } else {
-                    activity?.registerReceiver(speedUpdateReceiver, IntentFilter("ACTION_SPEED_UPDATE"))
+                    activity?.registerReceiver(
+                        speedUpdateReceiver,
+                        IntentFilter("ACTION_SPEED_UPDATE")
+                    )
                 }
             } else if (start == "Stop") {
                 isStop = true
                 activity?.unregisterReceiver(speedUpdateReceiver)
-                binding.playBtn.text = context?.getString(R.string.start)?:"Start"
+                binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
+                binding.playProgress.visibility = View.VISIBLE
                 viewScaling(1f, 0f, false, binding.pauseBtn)
                 viewScaling(1f, 0f, false, binding.resetBtn)
                 binding.time.text = "00:00:00"
@@ -127,12 +141,12 @@ class DigitalFragment : Fragment() {
             val start = intent?.getBooleanExtra("isPause", false) ?: false
             isResume = !start
             if (start) {
-                if (activity!=null) {
+                if (activity != null) {
                     binding.pauseIcon.setImageResource(R.drawable.play_icon)
                     binding.pauseTxt.text = getString(R.string.resume)
                 }
             } else {
-                if (activity!=null) {
+                if (activity != null) {
                     binding.pauseIcon.setImageResource(R.drawable.resume_icon)
                     binding.pauseTxt.text = getString(R.string.pause)
                 }
@@ -189,9 +203,9 @@ class DigitalFragment : Fragment() {
             binding.pauseTxt.text = getString(R.string.resume)
         }
         if (isStop) {
-            binding.playBtn.text = getString(R.string.start)
+            binding.playTV.text = getString(R.string.start)
         } else {
-            binding.playBtn.text = getString(R.string.stop)
+            binding.playTV.text = getString(R.string.stop)
         }
     }
 
@@ -226,6 +240,7 @@ class DigitalFragment : Fragment() {
             }
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         try {

@@ -42,5 +42,6 @@
     <string name="exit_app">Uygulamadan Çık</string>
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
+    <string name="saving">Kaydediliyor</string>
 
 </resources>

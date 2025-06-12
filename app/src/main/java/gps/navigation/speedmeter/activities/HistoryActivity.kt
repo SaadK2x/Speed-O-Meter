@@ -2,10 +2,13 @@ package gps.navigation.speedmeter.activities
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.adapters.HistoryOuterAdapter
+import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
 import gps.navigation.speedmeter.database.DatabaseBuilder
 import gps.navigation.speedmeter.database.DatabaseHelperImpl
 import gps.navigation.speedmeter.database.HistoryDatabase
@@ -31,8 +34,7 @@ class HistoryActivity : AppCompatActivity(), OnItemDelete {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-
+        squareXGPSBannerAdsSmall()
         binding.clearTV.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 val list = databaseHelper!!.getDeleteAll()
@@ -50,6 +52,14 @@ class HistoryActivity : AppCompatActivity(), OnItemDelete {
         binding.backBtn.setOnClickListener {
             onBackPressed()
         }
+    }
+
+    private fun squareXGPSBannerAdsSmall() {
+        val adContainer = findViewById<LinearLayout>(R.id.adContainer)
+        val smallAd = findViewById<LinearLayout>(R.id.smallAd)
+        SpeedMeterLoadAds.loadBanner(
+            adContainer, smallAd, this
+        )
     }
 
     override fun onItemClick(id: Int, position: Int) {
@@ -74,10 +84,11 @@ class HistoryActivity : AppCompatActivity(), OnItemDelete {
         databaseHelper = DatabaseHelperImpl(historyDatabase!!)
         CoroutineScope(Dispatchers.IO).launch {
             list = databaseHelper!!.getHistoryWithRoutePoints() as ArrayList<HistoryWithRoutePoints>
-            val groupedByDate: Map<String, List<HistoryWithRoutePoints>> = list!!.groupBy { it.history.date }
+            val groupedByDate: Map<String, List<HistoryWithRoutePoints>> =
+                list!!.groupBy { it.history.date }
             val displayList = mutableListOf<HistoryDisplayItem>()
             groupedByDate.forEach { (date, items) ->
-                displayList.add(HistoryDisplayItem(date,items))
+                displayList.add(HistoryDisplayItem(date, items))
             }
             Log.d("TAG_LL", "onCreate: $groupedByDate")
             withContext(Dispatchers.Main) {

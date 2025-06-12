@@ -15,7 +15,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.databinding.FragmentGaugeBinding
@@ -27,7 +26,6 @@ class GaugeFragment : Fragment() {
     private val binding: FragmentGaugeBinding by lazy {
         FragmentGaugeBinding.inflate(layoutInflater)
     }
-    var playBtn: TextView? = null
     var sharedPrefrences: SharedPreferenceHelperClass? = null
 
     var isResume = true
@@ -39,7 +37,13 @@ class GaugeFragment : Fragment() {
 
         sharedPrefrences = SharedPreferenceHelperClass(requireContext())
 
-        playBtn = binding.root.findViewById(R.id.playBtn)
+
+        Constants.moveForward.observe(requireActivity()) {
+            if (it != "No") {
+                binding.playTV.text = context?.getString(R.string.start) ?: "Start"
+                binding.playProgress.visibility = View.GONE
+            }
+        }
 
         return binding.root
     }
@@ -110,7 +114,7 @@ class GaugeFragment : Fragment() {
             val start = intent?.getStringExtra("isStart")
             if (start == "Start") {
                 isStop = false
-                binding.playBtn.text = context?.getString(R.string.stop) ?: "Stop"
+                binding.playTV.text = context?.getString(R.string.stop) ?: "Stop"
                 Constants.viewScaling(0f, 1f, true, binding.pauseBtn)
                 Constants.viewScaling(0f, 1f, true, binding.resetBtn)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -128,8 +132,10 @@ class GaugeFragment : Fragment() {
 
             } else if (start == "Stop") {
                 isStop = true
+
                 activity?.unregisterReceiver(speedUpdateReceiver)
-                binding.playBtn.text = context?.getString(R.string.start)?:"Start"
+                binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
+                binding.playProgress.visibility = View.VISIBLE
                 Constants.viewScaling(1f, 0f, false, binding.pauseBtn)
                 Constants.viewScaling(1f, 0f, false, binding.resetBtn)
                 binding.time.text = "00:00:00"
@@ -146,12 +152,12 @@ class GaugeFragment : Fragment() {
             val start = intent?.getBooleanExtra("isPause", false) ?: false
             isResume = !start
             if (start) {
-                if (activity!=null) {
+                if (activity != null) {
                     binding.pauseIcon.setImageResource(R.drawable.play_icon)
                     binding.pauseTxt.text = getString(R.string.resume)
                 }
             } else {
-                if (activity!=null) {
+                if (activity != null) {
                     binding.pauseIcon.setImageResource(R.drawable.resume_icon)
                     binding.pauseTxt.text = getString(R.string.pause)
                 }
@@ -208,9 +214,9 @@ class GaugeFragment : Fragment() {
             binding.pauseTxt.text = getString(R.string.resume)
         }
         if (isStop) {
-            binding.playBtn.text = getString(R.string.start)
+            binding.playTV.text = getString(R.string.start)
         } else {
-            binding.playBtn.text = getString(R.string.stop)
+            binding.playTV.text = getString(R.string.stop)
         }
     }
 
@@ -244,6 +250,7 @@ class GaugeFragment : Fragment() {
             }
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         try {

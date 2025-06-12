@@ -23,6 +23,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.RemoteViews
 import android.widget.TextView
 import android.widget.Toast
@@ -34,8 +35,11 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.Service.LocationService
+import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
 import gps.navigation.speedmeter.databinding.ActivityMainBinding
 import gps.navigation.speedmeter.fragments.DigitalFragment
 import gps.navigation.speedmeter.fragments.GaugeFragment
@@ -50,6 +54,7 @@ import gps.navigation.speedmeter.utils.Constants.mediaPlayer
 import gps.navigation.speedmeter.utils.Constants.vibratePhone
 import gps.navigation.speedmeter.utils.LocationManager
 import gps.navigation.speedmeter.utils.SectionPageAdapter
+import gps.navigation.speedmeter.utils.checkForAppUpdates
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -67,6 +72,7 @@ class MainActivity : AppCompatActivity() {
     var builder: NotificationCompat.Builder? = null
     var maxSpeed: String = "0"
     var tablyout: TabLayout? = null
+    private lateinit var appUpdateManager: AppUpdateManager
 
     companion object {
         var status = false
@@ -79,13 +85,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        squareXGPSBannerAdsSmall()
         sharedPrefrences = SharedPreferenceHelperClass(this)
         tablyout = binding.tabs
         setupViewPager(binding.container)
         binding.tabs.setupWithViewPager(binding.container)
-
         binding.tabs.getTabAt(1)!!.select()
         binding.container.offscreenPageLimit = 3
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        checkForAppUpdates(appUpdateManager)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
                     this,
@@ -200,6 +208,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun squareXGPSBannerAdsSmall() {
+        val adContainer = findViewById<LinearLayout>(R.id.adContainer)
+        val smallAd = findViewById<LinearLayout>(R.id.smallAd)
+        SpeedMeterLoadAds.loadBanner(
+            adContainer, smallAd, this
+        )
     }
 
     val digitalSC: ServiceConnection = object : ServiceConnection {
