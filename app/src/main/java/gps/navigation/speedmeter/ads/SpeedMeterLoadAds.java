@@ -21,6 +21,8 @@ import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import gps.navigation.speedmeter.BuildConfig;
 import gps.navigation.speedmeter.R;
@@ -84,7 +86,7 @@ public class SpeedMeterLoadAds {
     public static int user_count = 0;
     public static RewardedAd rewardedAd;
     private static final Handler myHandler = new Handler();
-
+    private static final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("SpeedOMeter");
 
     public static void setHandlerForAd() {
         shouldGoForAds = false;
@@ -96,6 +98,18 @@ public class SpeedMeterLoadAds {
                 Log.d("ConstantAdsLoadAds", "shouldGoForAds onTimeComplete: " + shouldGoForAds);
             }
         }, next_ads_time);
+    }
+
+    public static void insertADSToFirebase() {
+        Log.d("insertDataToFirebase", "insertADSToFirebase: ");
+        databaseReference.child("ADS_IDS").setValue(new SpeedMeterAdsModel(
+                appid_admob_inApp
+                , banner_admob_inApp
+                , interstitial_admob_inApp
+                , native_admob_inApp
+                , app_open_ad_id_admob
+                , app_open_splash_ad_id_admob
+        ));
     }
 
     public static void loadAdMobMediumBannerAd(Context context, final LinearLayout adContainer, final View mView) {
@@ -400,7 +414,6 @@ public class SpeedMeterLoadAds {
             }
         }
     }
-
 
 
     public static void preReLoadAdsLiveEarth(final Context context) {

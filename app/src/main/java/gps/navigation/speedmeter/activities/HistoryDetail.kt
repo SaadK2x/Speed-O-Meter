@@ -9,16 +9,7 @@ import android.util.Log
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import gps.navigation.speedmeter.R
-import gps.navigation.speedmeter.database.DatabaseBuilder
-import gps.navigation.speedmeter.database.DatabaseHelperImpl
-import gps.navigation.speedmeter.database.HistoryDatabase
-import gps.navigation.speedmeter.databinding.ActivityHistoryDetailBinding
-import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
-import gps.navigation.speedmeter.utils.Constants
-import gps.navigation.speedmeter.utils.Constants.bitmapFromDrawableRes
-import gps.navigation.speedmeter.utils.Marker
-import gps.navigation.speedmeter.utils.MarkerManager
+import com.google.gson.Gson
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapLoaded
 import com.mapbox.maps.MapLoadedCallback
@@ -36,7 +27,17 @@ import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPolylineAnnotationManager
 import com.mapbox.maps.plugin.compass.compass
+import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
+import gps.navigation.speedmeter.database.DatabaseBuilder
+import gps.navigation.speedmeter.database.DatabaseHelperImpl
+import gps.navigation.speedmeter.database.HistoryDatabase
+import gps.navigation.speedmeter.databinding.ActivityHistoryDetailBinding
+import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
+import gps.navigation.speedmeter.utils.Constants
+import gps.navigation.speedmeter.utils.Constants.bitmapFromDrawableRes
+import gps.navigation.speedmeter.utils.Marker
+import gps.navigation.speedmeter.utils.MarkerManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -101,6 +102,7 @@ class HistoryDetail : AppCompatActivity(), MapLoadedCallback {
             }
         }
     }
+
     private fun squareXGPSBannerAdsSmall() {
         val adContainer = findViewById<LinearLayout>(R.id.adContainer)
         val smallAd = findViewById<LinearLayout>(R.id.smallAd)
@@ -108,6 +110,7 @@ class HistoryDetail : AppCompatActivity(), MapLoadedCallback {
             adContainer, smallAd, this
         )
     }
+
     fun settingColors(color: String) {
         binding.duration.setTextColor(Color.parseColor(color))
         binding.distance.setTextColor(Color.parseColor(color))
@@ -160,8 +163,10 @@ class HistoryDetail : AppCompatActivity(), MapLoadedCallback {
     override fun run(mapLoaded: MapLoaded) {
         setupPolylineManager(binding.map)
         CoroutineScope(Dispatchers.IO).launch {
+            Log.d("TAG_PPP", "run: pid: $pid")
             val item = databaseHelper!!.getSpecificHistoryAndRoute(pid)
             withContext(Dispatchers.Main) {
+                Log.d("TAG_PPP", "run: item: $${Gson().toJson(item)}")
                 binding.toTV.text = item.history.destination
                 binding.fromTV.text = item.history.source
                 binding.toTV.isSelected = true
@@ -205,7 +210,7 @@ class HistoryDetail : AppCompatActivity(), MapLoadedCallback {
 
                 }
                 Handler(Looper.getMainLooper()).postDelayed({
-                    Constants.zoomToPolyline(binding.map,points)
+                    Constants.zoomToPolyline(binding.map, points)
                     /*  Constants.zoomInAnimation(
                           fromLatLng!!.latitude(),
                           fromLatLng!!.longitude(),

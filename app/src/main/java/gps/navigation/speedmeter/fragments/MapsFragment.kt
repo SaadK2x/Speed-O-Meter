@@ -208,7 +208,6 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                 if (previousMarker != null) {
                     markerManger!!.removeMarker(previousMarker!!)
                 }
-
                 if (Constants.initialLat == 0.0 && Constants.initialLng == 0.0) {
                     Constants.initialLat = currentLatLng.latitude()
                     Constants.initialLng = currentLatLng.longitude()
@@ -421,14 +420,22 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                                 } catch (e: Exception) {
                                     null
                                 }
-                                Log.d("TAG_DATA", "onReceive: history $hist and Route $route")
+                                Log.d("TAG_DATA", "onReceive: KMH history $hist and Route $route")
                                 if (route.isNullOrEmpty()) {
 
-                                    Log.d("TAG_DATA", "onReceive: Comes Empty")
-                                    moveToNext(history)
+                                    Log.d("TAG_DATA", "onReceive: KMH Comes Empty")
+                                    dbID += 1
+                                    withContext(Dispatchers.Main) {
+                                        binding.time.text = "00:00:00"
+                                        binding.speedTV.text = "0"
+                                        binding.distance.text = "0"
+                                        binding.maxSpeed.text = "0"
+                                        binding.avgSpeed.text = "0"
+                                        moveToNext(history)
+                                    }
                                 } else {
                                     withContext(Dispatchers.Main) {
-                                        Log.d("TAG_DATA", "onReceive: Comes Not Empty")
+                                        Log.d("TAG_DATA", "onReceive: KMH Comes Not Empty")
                                         clearPolygon()
                                         previousMarker?.let { markerManger?.removeMarker(it) }
 
@@ -465,7 +472,6 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                                         Constants.initialLng = 0.0
                                         //  previousLatLng = null
                                         //  polylineOptions = PolylineOptions()
-
                                         moveToNext(history)
                                     }
 
@@ -506,9 +512,24 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                                 } catch (e: Exception) {
                                     null
                                 }
-                                Log.d("TAG_DATA", "onReceive: history $hist and Route $route")
-                                if (route!!.isNotEmpty()) {
+                                Log.d("TAG_DATA", "onReceive:MPH history $hist and Route $route")
+                                if (route.isNullOrEmpty()) {
+
+                                    Log.d("TAG_DATA", "onReceive: MPH Comes Empty")
+
+                                    dbID += 1
                                     withContext(Dispatchers.Main) {
+                                        binding.time.text = "00:00:00"
+                                        binding.speedTV.text = "0"
+                                        binding.distance.text = "0"
+                                        binding.maxSpeed.text = "0"
+                                        binding.avgSpeed.text = "0"
+                                        moveToNext(history)
+                                    }
+                                } else {
+                                    withContext(Dispatchers.Main) {
+
+                                        Log.d("TAG_DATA", "onReceive: MPH Comes  not Empty")
                                         clearPolygon()
                                         markerManger?.removeMarker(previousMarker!!)
                                         markerManger?.removeMarker(startMarker!!)
@@ -541,7 +562,6 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                                         Constants.initialLng = 0.0
                                         //   previousLatLng = null
                                         //  polylineOptions = PolylineOptions()
-
                                         moveToNext(history)
                                     }
                                 }
@@ -585,8 +605,23 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                                 } catch (e: Exception) {
                                     null
                                 }
-                                Log.d("TAG_DATA", "onReceive: history $hist and Route $route")
-                                if (route!!.isNotEmpty()) {
+                                Log.d("TAG_DATA", "onReceive: KNOT history $hist and Route $route")
+                                if (route.isNullOrEmpty()) {
+
+                                    Log.d("TAG_DATA", "onReceive: KNOT Comes Empty")
+
+                                    dbID += 1
+                                    withContext(Dispatchers.Main) {
+                                        binding.time.text = "00:00:00"
+                                        binding.speedTV.text = "0"
+                                        binding.distance.text = "0"
+                                        binding.maxSpeed.text = "0"
+                                        binding.avgSpeed.text = "0"
+                                        moveToNext(history)
+                                    }
+                                } else {
+
+                                    Log.d("TAG_DATA", "onReceive: KNOT Comes NOT Empty")
                                     withContext(Dispatchers.Main) {
                                         polygonPoints.clear()
                                         markerManger?.removeMarker(previousMarker!!)

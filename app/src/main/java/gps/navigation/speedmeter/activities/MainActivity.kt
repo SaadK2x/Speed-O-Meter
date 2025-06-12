@@ -473,7 +473,7 @@ class MainActivity : AppCompatActivity() {
         val customView = notificationTextView(context, speed, distance, avg)
         // Build the notification
         builder = NotificationCompat.Builder(context, "channel_id")
-            .setSmallIcon(android.R.mipmap.sym_def_app_icon)
+            .setSmallIcon(R.drawable.speed_meter_notifi)
             .setContentTitle("My Notification")
             .setOnlyAlertOnce(true)
             .setContentText("This is a notification from my app")
