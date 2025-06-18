@@ -7,9 +7,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import com.google.android.gms.ads.AdLoader
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.VideoController
 import com.google.android.gms.ads.VideoOptions
 import com.google.android.gms.ads.nativead.NativeAd
@@ -52,29 +49,29 @@ class SpeedMeterNativeAd {
             frameLayout: FrameLayout,
         ) {
             val inflater = LayoutInflater.from(mContext)
-            val builder = AdLoader.Builder(
-                mContext,
-                SpeedMeterLoadAds.intro_native_admob_inApp
-            )
-            var admobNativeAd: NativeAd? = null
-            builder.forNativeAd { unifiedNativeAd ->
-                if (admobNativeAd != null) {
-                    admobNativeAd!!.destroy()
-                }
-                try {
-                    admobNativeAd = unifiedNativeAd
-                    val adView =  //actually card view of fb ad
-                        inflater.inflate(
-                            R.layout.intro_native_layout,
-                            null
-                        ) as NativeAdView
-                    populateHoneyBeeMapNavigationNativeAdView(unifiedNativeAd, adView)
-                    frameLayout.removeAllViews()
-                    frameLayout.addView(adView)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
+            /* val builder = AdLoader.Builder(
+                 mContext,
+                 SpeedMeterLoadAds.intro_native_admob_inApp
+             )
+             var admobNativeAd: NativeAd? = null
+             builder.forNativeAd { unifiedNativeAd ->
+                 if (admobNativeAd != null) {
+                     admobNativeAd!!.destroy()
+                 }
+                 try {
+                     admobNativeAd = unifiedNativeAd
+                     val adView =  //actually card view of fb ad
+                         inflater.inflate(
+                             R.layout.intro_native_layout,
+                             null
+                         ) as NativeAdView
+                     populateHoneyBeeMapNavigationNativeAdView(unifiedNativeAd, adView)
+                     frameLayout.removeAllViews()
+                     frameLayout.addView(adView)
+                 } catch (e: Exception) {
+                     e.printStackTrace()
+                 }
+             }*/
 
             val videoOptions = VideoOptions.Builder()
                 .setStartMuted(true/*startVideoAdsMuted.isChecked()*/)
@@ -84,24 +81,24 @@ class SpeedMeterNativeAd {
                 .setVideoOptions(videoOptions)
                 .build()
 
-            builder.withNativeAdOptions(adOptions)
-            val adLoader = builder.withAdListener(object : com.google.android.gms.ads.AdListener() {
+            // builder.withNativeAdOptions(adOptions)
+            /* val adLoader = builder.withAdListener(object : com.google.android.gms.ads.AdListener() {
 
-                override fun onAdFailedToLoad(p0: LoadAdError) {
-                    super.onAdFailedToLoad(p0)
-                }
+                 override fun onAdFailedToLoad(p0: LoadAdError) {
+                     super.onAdFailedToLoad(p0)
+                 }
 
-                override fun onAdLoaded() {
-                    super.onAdLoaded()
-                }
-            }).build()
+                 override fun onAdLoaded() {
+                     super.onAdLoaded()
+                 }
+             }).build()*/
 
             val billingHelper =
                 SpeedMeterBillingHelper(
                     mContext
                 )
             if (billingHelper.shouldShowAds()) {
-                adLoader.loadAd(AdRequest.Builder().build())
+                //  adLoader.loadAd(AdRequest.Builder().build())
             }
         }
 
@@ -110,29 +107,29 @@ class SpeedMeterNativeAd {
             frameLayout: FrameLayout
         ) {
             val inflater = LayoutInflater.from(mContext)
-            val builder = AdLoader.Builder(
-                mContext,
-                SpeedMeterLoadAds.native_admob_inApp
-            )
-            var admobNativeAd: NativeAd? = null
-            builder.forNativeAd { unifiedNativeAd ->
-                if (admobNativeAd != null) {
-                    admobNativeAd!!.destroy()
-                }
-                try {
-                    admobNativeAd = unifiedNativeAd
-                    val adView =  //actually card view of fb ad
-                        inflater.inflate(
-                            R.layout.small_native_layout_black,
-                            null
-                        ) as NativeAdView
-                    populateHoneyBeeMapNavigationNativeAdView(unifiedNativeAd, adView)
-                    frameLayout.removeAllViews()
-                    frameLayout.addView(adView)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
+            /* val builder = AdLoader.Builder(
+                 mContext,
+                 SpeedMeterLoadAds.native_admob_inApp
+             )
+             var admobNativeAd: NativeAd? = null
+             builder.forNativeAd { unifiedNativeAd ->
+                 if (admobNativeAd != null) {
+                     admobNativeAd!!.destroy()
+                 }
+                 try {
+                     admobNativeAd = unifiedNativeAd
+                     val adView =  //actually card view of fb ad
+                         inflater.inflate(
+                             R.layout.small_native_layout_black,
+                             null
+                         ) as NativeAdView
+                     populateHoneyBeeMapNavigationNativeAdView(unifiedNativeAd, adView)
+                     frameLayout.removeAllViews()
+                     frameLayout.addView(adView)
+                 } catch (e: Exception) {
+                     e.printStackTrace()
+                 }
+             }*/
 
             val videoOptions = VideoOptions.Builder()
                 .setStartMuted(true/*startVideoAdsMuted.isChecked()*/)
@@ -142,7 +139,7 @@ class SpeedMeterNativeAd {
                 .setVideoOptions(videoOptions)
                 .build()
 
-            builder.withNativeAdOptions(adOptions)
+            /*builder.withNativeAdOptions(adOptions)
             val adLoader = builder.withAdListener(object : com.google.android.gms.ads.AdListener() {
 
                 override fun onAdFailedToLoad(p0: LoadAdError) {
@@ -154,13 +151,13 @@ class SpeedMeterNativeAd {
                     super.onAdLoaded()
                 }
             }).build()
-
+*/
             val billingHelper =
                 SpeedMeterBillingHelper(
                     mContext
                 )
             if (billingHelper.shouldShowAds()) {
-                adLoader.loadAd(AdRequest.Builder().build())
+                // adLoader.loadAd(AdRequest.Builder().build())
             }
         }
 

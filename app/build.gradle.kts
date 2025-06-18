@@ -14,8 +14,8 @@ android {
         applicationId = "gps.speedometer.gpsspeedometer.odometer.speedtracker"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.1"
+        versionCode = 2
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -31,77 +31,32 @@ android {
             buildConfigField(
                 "String",
                 "admob_ad_id",
-                "\"ca-app-pub-3940256099942544~3347511713\""
+                "\"ca-app-pub-4016151566711692~3601854534\""
             )
             buildConfigField(
                 "String",
                 "admob_banner_id",
-                "\"ca-app-pub-4016151566711692/7097421699\""
-            )
-            buildConfigField(
-                "String",
-                "medium_admob_banner_id",
-                "\"ca-app-pub-4016151566711692/1060147526\""
+                "\"ca-app-pub-4016151566711692/4322380587\""
             )
             buildConfigField(
                 "String",
                 "admob_interstitial_id",
-                "\"ca-app-pub-4016151566711692/3910155618\""
-            )
-            buildConfigField(
-                "String",
-                "admob_interstitial_id_main",
-                "\"ca-app-pub-4016151566711692/9700368454\""
-            )
-            buildConfigField(
-                "String",
-                "admob_medium_banner_intro_id",
-                "\"ca-app-pub-4016151566711692/3123102455\""
+                "\"ca-app-pub-4016151566711692/5050775375\""
             )
             buildConfigField(
                 "String",
                 "app_open_ad_id_admob",
-                "\"ca-app-pub-4016151566711692/4668367770\""
+                "\"ca-app-pub-4016151566711692/1612456766\""
             )
             buildConfigField(
                 "String",
                 "app_open_ad_id_admob_splash",
-                "\"ca-app-pub-4016151566711692/3125054537\""
+                "\"ca-app-pub-3940256099942544/9257395921\""
             )
             buildConfigField(
                 "String",
-                "native_small",
-                "\"ca-app-pub-4016151566711692/4635744035\""
-            )
-            buildConfigField(
-                "String",
-                "rewarded",
-                "\"ca-app-pub-4016151566711692/5726753489\""
-            )
-            buildConfigField(
-                "String",
-                "video_interstitial",
-                "\"ca-app-pub-4016151566711692/3419799126\""
-            )
-            buildConfigField(
-                "String",
-                "intro_admob_native_id",
-                "\"ca-app-pub-4016151566711692/7670570091\""
-            )
-            buildConfigField(
-                "String",
-                "facebook_banner",
-                "\"1140362210925883_1161406428821461\""
-            )
-            buildConfigField(
-                "String",
-                "facebook_native",
-                "\"1140362210925883_1161406768821427\""
-            )
-            buildConfigField(
-                "String",
-                "facebook_interstitial",
-                "\"1140362210925883_1161406615488109\""
+                "admob_interstitial_splash",
+                "\"ca-app-pub-4016151566711692/2047571036\""
             )
             buildConfigField(
                 "String",
@@ -134,29 +89,10 @@ android {
             )
             buildConfigField(
                 "String",
-                "medium_admob_banner_id",
-                "\"ca-app-pub-3940256099942544/6300978111\""
-            )
-            buildConfigField(
-                "String",
                 "admob_interstitial_id",
                 "\"ca-app-pub-3940256099942544/1033173712\""
             )
-            buildConfigField(
-                "String",
-                "admob_interstitial_id_main",
-                "\"ca-app-pub-3940256099942544/1033173712\""
-            )
-            buildConfigField(
-                "String",
-                "video_interstitial",
-                "\"ca-app-pub-3940256099942544/1033173712\""
-            )
-            buildConfigField(
-                "String",
-                "admob_medium_banner_intro_id",
-                "\"ca-app-pub-3940256099942544/6300978111\""
-            )
+
             buildConfigField(
                 "String",
                 "app_open_ad_id_admob",
@@ -169,34 +105,10 @@ android {
             )
             buildConfigField(
                 "String",
-                "native_small",
-                "\"ca-app-pub-3940256099942544/2247696110\""
+                "admob_interstitial_splash",
+                "\"ca-app-pub-3940256099942544/1033173712\""
             )
-            buildConfigField(
-                "String",
-                "rewarded",
-                "\"ca-app-pub-3940256099942544/5224354917\""
-            )
-            buildConfigField(
-                "String",
-                "intro_admob_native_id",
-                "\"ca-app-pub-3940256099942544/2247696110\""
-            )
-            buildConfigField(
-                "String",
-                "facebook_banner",
-                "\"1140362210925883_1161406428821461\""
-            )
-            buildConfigField(
-                "String",
-                "facebook_native",
-                "\"1140362210925883_1161406768821427\""
-            )
-            buildConfigField(
-                "String",
-                "facebook_interstitial",
-                "\"1140362210925883_1161406615488109\""
-            )
+
             buildConfigField(
                 "String",
                 "tokenApi",

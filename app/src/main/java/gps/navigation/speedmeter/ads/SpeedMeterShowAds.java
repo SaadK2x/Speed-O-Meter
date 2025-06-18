@@ -1,7 +1,7 @@
 package gps.navigation.speedmeter.ads;
 
 
-import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.preReLoadAdsHoneyBee;
+import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.splashInterstitial;
 import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.videoInterstitial;
 
 import android.app.Activity;
@@ -97,7 +97,7 @@ public class SpeedMeterShowAds {
                         SpeedMeterLoadAds.adClickCounter = 1;
                         // HoneyBeeMapNavigationLoadAds.preReLoadAdsHoneyBee(context);
                         //  HoneyBeeMapNavigationLoadAds.setHandlerForAd();
-                        preReLoadAdsHoneyBee(context);
+                        // preReLoadAdsHoneyBee(context);
                         context.startActivity(intent);
                     }
 
@@ -109,14 +109,14 @@ public class SpeedMeterShowAds {
                 });
             } else {
                 Log.d("ConstantAdsLoadAds", "ctr is not true");
-                preReLoadAdsHoneyBee(context);
+                //preReLoadAdsHoneyBee(context);
                 context.startActivity(intent);
             }
 
 
         } else {
             Log.d("ConstantAdsLoadAds", "ctr is not true");
-            preReLoadAdsHoneyBee(context);
+            // preReLoadAdsHoneyBee(context);
             context.startActivity(intent);
         }
     }
@@ -178,6 +178,40 @@ public class SpeedMeterShowAds {
                     SpeedMeterLoadAds.canShowAppOpen = true;
                     SpeedMeterLoadAds.canReLoadedAdMob = true;
                     videoInterstitial = null;
+                    callback.onDismiss();
+                }
+
+                @Override
+                public void onAdShowedFullScreenContent() {
+                    super.onAdShowedFullScreenContent();
+                    SpeedMeterLoadAds.canShowAppOpen = false;
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                    super.onAdFailedToShowFullScreenContent(adError);
+                    SpeedMeterLoadAds.canShowAppOpen = true;
+                    callback.onDismiss();
+
+                }
+            });
+        } else {
+            SpeedMeterLoadAds.canShowAppOpen = true;
+            callback.onDismiss();
+        }
+
+    }
+
+    public static void showingSplashAd(final Activity context, OnAdShowed callback) {
+        if (splashInterstitial != null) {
+            splashInterstitial.show(context);
+            splashInterstitial.setFullScreenContentCallback(new FullScreenContentCallback() {
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    super.onAdDismissedFullScreenContent();
+                    SpeedMeterLoadAds.canShowAppOpen = true;
+                    SpeedMeterLoadAds.canReLoadedAdMob = true;
+                    splashInterstitial = null;
                     callback.onDismiss();
                 }
 

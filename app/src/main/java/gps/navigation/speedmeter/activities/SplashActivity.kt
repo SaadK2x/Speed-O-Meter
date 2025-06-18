@@ -11,6 +11,7 @@ import com.google.android.gms.ads.MobileAds
 import gps.navigation.speedmeter.ads.SpeedMeterAppOpenSplashAd
 import gps.navigation.speedmeter.ads.SpeedMeterBillingHelper
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
+import gps.navigation.speedmeter.ads.SpeedMeterShowAds
 import gps.navigation.speedmeter.databinding.ActivitySplashBinding
 import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import gps.navigation.speedmeter.utils.Constants
@@ -60,28 +61,29 @@ class SplashActivity : AppCompatActivity() {
         } catch (e: Exception) {
         }
         if (purchaseHelper1!!.shouldShowAds()) {
-            MyApp.sStreetViewTruckCTAppOpenSplashAdManager!!.loadStreetViewTruckCTStartAppOpenAd(
-                object :
-                    SpeedMeterAppOpenSplashAd.SplashCallback {
-                    override fun onAdLoad() {
+            SpeedMeterLoadAds.loadSplashAd(this, object : SpeedMeterLoadAds.OnVideoLoad {
+                override fun onLoaded() {
+                    SpeedMeterShowAds.showingSplashAd(
+                        this@SplashActivity
+                    ) {
                         timer?.cancel()
                         timer = null
                         binding.progressBar.visibility = View.INVISIBLE
                         binding.textView1.visibility = View.INVISIBLE
                         showingSplash()
                     }
+                }
 
-                    override fun onAdFailed() {
-                        timer?.cancel()
-                        timer = null
-                        binding.progressBar.visibility = View.INVISIBLE
-                        binding.textView1.visibility = View.INVISIBLE
-                        showingSplash()
-                    }
+                override fun onFailed() {
+                    timer?.cancel()
+                    timer = null
+                    binding.progressBar.visibility = View.INVISIBLE
+                    binding.textView1.visibility = View.INVISIBLE
+                    showingSplash()
+                }
 
-                })
-
-            doWork(6000)
+            })
+            doWork(8000)
         } else {
             val intent = Intent(this@SplashActivity, MainActivity::class.java)
             startActivity(intent)

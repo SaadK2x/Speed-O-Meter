@@ -20,7 +20,6 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.rewarded.RewardedAd;
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -31,45 +30,16 @@ import gps.navigation.speedmeter.utils.MyApp;
 public class SpeedMeterLoadAds {
     public static String appid_admob_inApp = MyApp.Companion.getStr(R.string.admob_ad_id);
     public static String interstitial_admob_inApp = BuildConfig.admob_interstitial_id;
-    public static String interstitial_facebook = BuildConfig.facebook_interstitial;
-    public static String interstitial_admob_inApp_main = BuildConfig.admob_interstitial_id_main;
-    public static String interstitial_video = BuildConfig.video_interstitial;
-
     public static String banner_admob_inApp = BuildConfig.admob_banner_id;
-    public static String banner_facebook = BuildConfig.facebook_banner;
-    public static String banner_medium_admob_inApp = BuildConfig.medium_admob_banner_id;
-    public static String intro_banner_medium_admob_inApp = BuildConfig.admob_medium_banner_intro_id;
-    public static String rewarded_ad = BuildConfig.rewarded;
     public static String app_open_ad_id_admob = BuildConfig.app_open_ad_id_admob;
     public static String app_open_splash_ad_id_admob = BuildConfig.app_open_ad_id_admob_splash;
-
-    public static String native_admob_inApp = BuildConfig.native_small;
-    public static String native_facebook = BuildConfig.facebook_native;
-    public static String intro_native_admob_inApp = BuildConfig.intro_admob_native_id;
+    public static String admob_interstitial_splash = BuildConfig.admob_interstitial_splash;
 
 
     public static boolean shouldShowAdmob = true;
 
-    public static boolean shouldShowAds = false;
-    public static boolean isAdsShow = true;
-
     public static boolean canShowAppOpen = true;
-
-    public static double ad_click_value_key_var = 1;
-    public static double ad_impression_value_key_var = 6;
-    public static float percentage;
     public static boolean haveGotSnapshot = false;
-    public static boolean should_show_allfb_ads = true;
-
-    public static double current_counter = 19;
-
-    /*new 13/1/2022*/
-    public static double splash_counter = 1;
-    public static double splash_threshold = 2;
-
-
-    public static boolean ctr_control = false;
-    public static boolean show_splash_ad = true;
     public static long next_ads_time = 12000;
 
     public static boolean shouldGoForAds = true;
@@ -77,9 +47,8 @@ public class SpeedMeterLoadAds {
     public static InterstitialAd admobInterstitialAdHoneyBee;
     public static InterstitialAd admobInterstitialAdMain;
     public static InterstitialAd videoInterstitial;
-    public static InterstitialAd admobInterstitialAdHoneyBeeSplash;
+    public static InterstitialAd splashInterstitial;
     public static boolean canReLoadedAdMob = false;
-    public static boolean canReLoadedHighAdMob = false;
 
     public static int adClickCounter = 0;
     public static int adShowAfter = 5;
@@ -98,99 +67,6 @@ public class SpeedMeterLoadAds {
                 Log.d("ConstantAdsLoadAds", "shouldGoForAds onTimeComplete: " + shouldGoForAds);
             }
         }, next_ads_time);
-    }
-
-    public static void insertADSToFirebase() {
-        Log.d("insertDataToFirebase", "insertADSToFirebase: ");
-        databaseReference.child("ADS_IDS").setValue(new SpeedMeterAdsModel(
-                appid_admob_inApp
-                , banner_admob_inApp
-                , interstitial_admob_inApp
-                , native_admob_inApp
-                , app_open_ad_id_admob
-                , app_open_splash_ad_id_admob
-        ));
-    }
-
-    public static void loadAdMobMediumBannerAd(Context context, final LinearLayout adContainer, final View mView) {
-
-        SpeedMeterBillingHelper billingHelper = new SpeedMeterBillingHelper(context);
-        if (billingHelper.shouldShowAds()) {
-            AdView mAdView = new AdView(context);
-            mAdView.setAdUnitId(SpeedMeterLoadAds.banner_medium_admob_inApp);
-            mAdView.setAdSize(AdSize.MEDIUM_RECTANGLE);
-            mAdView.setAdListener(new com.google.android.gms.ads.AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    super.onAdLoaded();
-                    Log.d("ConstantAdsLoadAds", "Bannen onAdLoaded: ");
-                    try {
-                        adContainer.removeAllViews();
-                        adContainer.addView(mAdView);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                    super.onAdFailedToLoad(loadAdError);
-                    Log.d("ConstantAdsLoadAds", "Bannen onAdFailedToLoad: " + loadAdError.toString());
-                    mAdView.destroy();
-                    mView.setVisibility(View.GONE);
-                }
-
-            });
-            try {
-                mAdView.loadAd(new AdRequest.Builder().build());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            mView.setVisibility(View.GONE);
-        }
-
-
-    }
-
-    public static void loadAdMobIntroMediumBannerAd(Context context, final LinearLayout adContainer, final View mView) {
-        SpeedMeterBillingHelper billingHelper = new SpeedMeterBillingHelper(context);
-        if (billingHelper.shouldShowAds()) {
-            AdView mAdView = new AdView(context);
-            mAdView.setAdUnitId(SpeedMeterLoadAds.intro_banner_medium_admob_inApp);
-            mAdView.setAdSize(AdSize.MEDIUM_RECTANGLE);
-            mAdView.setAdListener(new com.google.android.gms.ads.AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    super.onAdLoaded();
-                    Log.d("ConstantAdsLoadAds", "Bannen onAdLoaded: ");
-                    try {
-                        adContainer.removeAllViews();
-                        adContainer.addView(mAdView);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                    super.onAdFailedToLoad(loadAdError);
-                    Log.d("ConstantAdsLoadAds", "Bannen onAdFailedToLoad: " + loadAdError.toString());
-                    mAdView.destroy();
-
-                }
-
-            });
-            try {
-                mAdView.loadAd(new AdRequest.Builder().build());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            mView.setVisibility(View.GONE);
-        }
-
-
     }
 
     private static void loadHoneyBeeMapNavigationAdMobBanner(final LinearLayout adContainer, final View mView, final Context context, TextView tv) {
@@ -220,6 +96,7 @@ public class SpeedMeterLoadAds {
                         super.onAdFailedToLoad(loadAdError);
                         Log.d("ConstantAdsLoadAds", "Bannen onAdFailedToLoad: " + loadAdError.toString());
                         mAdView.destroy();
+                        mView.setVisibility(View.GONE);
                     }
 
                 });
@@ -303,37 +180,6 @@ public class SpeedMeterLoadAds {
     }
 
     //1
-    public static void preLoadAdsHoneyBee(final Context context) {
-        SpeedMeterBillingHelper billingHelper = new SpeedMeterBillingHelper(context);
-        if (billingHelper.shouldShowAds()) {
-            //admobeload
-            if (admobInterstitialAdMain == null) {
-                canReLoadedAdMob = false;
-                InterstitialAd.load(context, SpeedMeterLoadAds.interstitial_admob_inApp_main, new AdRequest.Builder().build(), new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        super.onAdLoaded(interstitialAd);
-                        Log.d("ConstantAdsLoadAds", "Admob loaded");
-                        canReLoadedAdMob = true;
-                        admobInterstitialAdMain = interstitialAd;
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        super.onAdFailedToLoad(loadAdError);
-                        Log.d("ConstantAdsLoadAds", "Admob Faild: " + loadAdError.toString());
-                        canReLoadedAdMob = true;
-                        admobInterstitialAdMain = null;
-                    }
-                });
-            } else {
-                Log.d("ConstantAdsLoadAds", "admobe AlReady loaded");
-            }
-
-        }
-    }
-
-    //1
     public static void loadVideoAdForPrompt(final Context context, OnVideoLoad videoCallback) {
         SpeedMeterBillingHelper billingHelper = new SpeedMeterBillingHelper(context);
         if (billingHelper.shouldShowAds()) {
@@ -355,6 +201,7 @@ public class SpeedMeterLoadAds {
                             super.onAdFailedToLoad(loadAdError);
                             Log.d("ConstantAdsLoadAds", "Admob Faild: " + loadAdError.toString());
                             videoInterstitial = null;
+                            videoCallback.onFailed();
                         }
                     });
                 } else {
@@ -374,44 +221,35 @@ public class SpeedMeterLoadAds {
         void onFailed();
     }
 
-
-    //all
-    public static void preReLoadAdsHoneyBee(final Context context) {
+    //1
+    public static void loadSplashAd(final Context context, OnVideoLoad videoCallback) {
         SpeedMeterBillingHelper billingHelper = new SpeedMeterBillingHelper(context);
         if (billingHelper.shouldShowAds()) {
-            //admobeload
-            if (shouldShowAdmob) {
-                if (admobInterstitialAdMain != null) {
-                    Log.d("ConstantAdsLoadAds", "admobe ReAlReady loaded");
-                } else {
-                    Log.d("ConstantAdsLoadAds", "canReLoadedAdMob " + canReLoadedAdMob);
-                    if (canReLoadedAdMob) {
-                        canReLoadedAdMob = false;
-
-                        InterstitialAd.load(context, SpeedMeterLoadAds.interstitial_admob_inApp_main, new AdRequest.Builder().build(), new InterstitialAdLoadCallback() {
-                            @Override
-                            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                                super.onAdLoaded(interstitialAd);
-                                Log.d("ConstantAdsLoadAds", "Admob Reloaded");
-                                canReLoadedAdMob = true;
-                                admobInterstitialAdMain = interstitialAd;
-                            }
-
-                            @Override
-                            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                                super.onAdFailedToLoad(loadAdError);
-                                Log.d("ConstantAdsLoadAds", "Admob ReFaild: " + loadAdError.toString());
-                                canReLoadedAdMob = true;
-                                admobInterstitialAdMain = null;
-                            }
-                        });
-
-                    } else {
-
-                        Log.d("ConstantAdsLoadAds", "Admob last ad request is in pending");
+            if (splashInterstitial == null) {
+                InterstitialAd.load(context, SpeedMeterLoadAds.admob_interstitial_splash, new AdRequest.Builder().build(), new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        super.onAdLoaded(interstitialAd);
+                        Log.d("ConstantAdsLoadAds", "Admob loaded");
+                        splashInterstitial = interstitialAd;
+                        videoCallback.onLoaded();
                     }
-                }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                        Log.d("ConstantAdsLoadAds", "Admob Faild: " + loadAdError.toString());
+                        splashInterstitial = null;
+                        videoCallback.onFailed();
+                    }
+                });
+            } else {
+                Log.d("ConstantAdsLoadAds", "admobe AlReady loaded");
+                videoCallback.onLoaded();
             }
+
+        } else {
+            videoCallback.onFailed();
         }
     }
 
@@ -449,36 +287,6 @@ public class SpeedMeterLoadAds {
 
             }
         }
-    }
-
-
-    public static void loadRewardedAd(Context context, RewardedCallback callbacks) {
-        Log.d("ConstantAdsLoadAds", "Request for Rewarded Ad");
-        AdRequest adRequest = new AdRequest.Builder().build();
-        RewardedAd.load(context, rewarded_ad,
-                adRequest, new RewardedAdLoadCallback() {
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error.
-                        Log.d("ConstantAdsLoadAds", loadAdError.toString());
-                        rewardedAd = null;
-                        callbacks.onAdFailed();
-                    }
-
-                    @Override
-                    public void onAdLoaded(@NonNull RewardedAd ad) {
-                        rewardedAd = ad;
-                        callbacks.onAdLoad();
-                        Log.d("ConstantAdsLoadAds", "Ad was loaded.");
-                    }
-                });
-
-    }
-
-    public interface RewardedCallback {
-        void onAdLoad();
-
-        void onAdFailed();
     }
 
 }

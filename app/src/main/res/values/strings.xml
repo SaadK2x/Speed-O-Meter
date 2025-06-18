@@ -7,7 +7,7 @@
     <string name="str_download_complete" translatable="false">Download Complete</string>
     <string name="str_restart" translatable="false">Restart</string>
     <string name="str_app_update_fail" translatable="false">Update Failed</string>
-    <string name="admob_ad_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_ad_id" translatable="false">ca-app-pub-4016151566711692~3601854534</string>
     <string name="history">History</string>
     <string name="clear_all">Clear All</string>
     <string name="detail">Details</string>

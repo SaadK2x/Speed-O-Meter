@@ -21,7 +21,7 @@
         app:sv_image="@drawable/speedometer_shape"
         app:sv_indicator="HalfLineIndicator"
         app:sv_indicatorColor="@color/white"
-        app:sv_indicatorWidth="8sp"
+        app:sv_indicatorWidth="4sp"
         app:sv_markColor="@color/white"
         app:sv_speedTextColor="@color/blueColor"
         app:sv_speedTextFormat="INTEGER"
