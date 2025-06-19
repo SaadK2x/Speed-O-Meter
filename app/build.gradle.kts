@@ -181,4 +181,6 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("io.github.farimarwat:grizzly:2.3")
+    //Meta Bidding
+    implementation ("com.google.ads.mediation:facebook:6.20.0.0")
 }
