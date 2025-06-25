@@ -43,5 +43,7 @@
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="saving">Salvando</string>
+    <string name="lets_start">Vamos começar</string>
+
 
 </resources>

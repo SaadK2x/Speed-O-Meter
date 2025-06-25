@@ -1,21 +1,21 @@
 package gps.navigation.speedmeter.activities
 
+import android.animation.ValueAnimator
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.MobileAds
-import gps.navigation.speedmeter.ads.SpeedMeterAppOpenSplashAd
 import gps.navigation.speedmeter.ads.SpeedMeterBillingHelper
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
 import gps.navigation.speedmeter.ads.SpeedMeterShowAds
 import gps.navigation.speedmeter.databinding.ActivitySplashBinding
 import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import gps.navigation.speedmeter.utils.Constants
-import gps.navigation.speedmeter.utils.MyApp
 
 class SplashActivity : AppCompatActivity() {
     private val binding: ActivitySplashBinding by lazy {
@@ -29,6 +29,25 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
         purchaseHelper1 = SpeedMeterBillingHelper(this)
         loadSplash()
+
+        val scaleAnimator = ValueAnimator.ofFloat(1.0f, 1.03f).apply {
+            duration = 1000 // Duration of the animation
+            repeatCount = ValueAnimator.INFINITE // Repeat infinitely
+            repeatMode = ValueAnimator.REVERSE // Reverse direction on repeat
+            interpolator = AccelerateDecelerateInterpolator() // Smooth transition
+            addUpdateListener { animation ->
+                val animatedValue = animation.animatedValue as Float
+                binding.startBtn.scaleX = animatedValue
+                binding.startBtn.scaleY = animatedValue
+            }
+        }
+        scaleAnimator.start()
+
+        binding.startBtn.setOnClickListener {
+            SpeedMeterShowAds.showingSplashAd(this@SplashActivity) {
+                moveForward()
+            }
+        }
     }
 
     override fun onResume() {
@@ -49,7 +68,7 @@ class SplashActivity : AppCompatActivity() {
             override fun onFinish() {
                 binding.progressBar.visibility = View.INVISIBLE
                 binding.textView1.visibility = View.INVISIBLE
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                binding.startBtn.visibility = View.INVISIBLE
             }
         }
         timer?.start()
@@ -63,15 +82,12 @@ class SplashActivity : AppCompatActivity() {
         if (purchaseHelper1!!.shouldShowAds()) {
             SpeedMeterLoadAds.loadSplashAd(this, object : SpeedMeterLoadAds.OnVideoLoad {
                 override fun onLoaded() {
-                    SpeedMeterShowAds.showingSplashAd(
-                        this@SplashActivity
-                    ) {
-                        timer?.cancel()
-                        timer = null
-                        binding.progressBar.visibility = View.INVISIBLE
-                        binding.textView1.visibility = View.INVISIBLE
-                        showingSplash()
-                    }
+                    timer?.cancel()
+                    timer = null
+                    binding.progressBar.visibility = View.INVISIBLE
+                    binding.textView1.visibility = View.INVISIBLE
+                    binding.startBtn.visibility = View.VISIBLE
+
                 }
 
                 override fun onFailed() {
@@ -79,32 +95,15 @@ class SplashActivity : AppCompatActivity() {
                     timer = null
                     binding.progressBar.visibility = View.INVISIBLE
                     binding.textView1.visibility = View.INVISIBLE
-                    showingSplash()
+                    binding.startBtn.visibility = View.VISIBLE
                 }
 
             })
             doWork(8000)
         } else {
-            val intent = Intent(this@SplashActivity, MainActivity::class.java)
-            startActivity(intent)
+            moveForward()
         }
 
-    }
-
-    fun showingSplash() {
-        MyApp.sStreetViewTruckCTAppOpenSplashAdManager!!.showStreetViewTruckCTStartAppOpenAd(this,
-            object :
-                SpeedMeterAppOpenSplashAd.SplashShowAppOpenCallback {
-                override fun onAdDismissedFullScreenContent() {
-                    SpeedMeterLoadAds.adClickCounter = 1
-                    moveForward()
-                }
-
-                override fun onAdFailedToShowFullScreenContent() {
-                    moveForward()
-                }
-
-            })
     }
 
     private fun moveForward() {

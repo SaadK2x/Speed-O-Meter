@@ -14,8 +14,8 @@ android {
         applicationId = "gps.speedometer.gpsspeedometer.odometer.speedtracker"
         minSdk = 24
         targetSdk = 35
-        versionCode = 2
-        versionName = "1.0.2"
+        versionCode = 4
+        versionName = "1.0.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,17 +36,17 @@ android {
             buildConfigField(
                 "String",
                 "admob_banner_id",
-                "\"ca-app-pub-4016151566711692/4322380587\""
+                "\"ca-app-pub-4016151566711692/9384394759\""
             )
             buildConfigField(
                 "String",
                 "admob_interstitial_id",
-                "\"ca-app-pub-4016151566711692/5050775375\""
+                "\"ca-app-pub-4016151566711692/9966176235\""
             )
             buildConfigField(
                 "String",
                 "app_open_ad_id_admob",
-                "\"ca-app-pub-4016151566711692/1612456766\""
+                "\"ca-app-pub-4016151566711692/3066398418\""
             )
             buildConfigField(
                 "String",
@@ -56,7 +56,7 @@ android {
             buildConfigField(
                 "String",
                 "admob_interstitial_splash",
-                "\"ca-app-pub-4016151566711692/2047571036\""
+                "\"ca-app-pub-4016151566711692/8071313083\""
             )
             buildConfigField(
                 "String",
@@ -182,5 +182,5 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("io.github.farimarwat:grizzly:2.3")
     //Meta Bidding
-    implementation ("com.google.ads.mediation:facebook:6.20.0.0")
+    implementation("com.google.ads.mediation:facebook:6.20.0.0")
 }

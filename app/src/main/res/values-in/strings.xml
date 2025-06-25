@@ -43,5 +43,7 @@
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
     <string name="saving">Menyimpan</string>
+    <string name="lets_start">Ayo Mulai</string>
+
 
 </resources>

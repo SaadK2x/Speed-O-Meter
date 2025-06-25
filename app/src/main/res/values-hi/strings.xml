@@ -43,5 +43,7 @@
     <string name="yes">हाँ</string>
     <string name="no">नहीं</string>
     <string name="saving">सहेजा जा रहा है</string>
+    <string name="lets_start">चलो शुरू करें</string>
+
 
 </resources>

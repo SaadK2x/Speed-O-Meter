@@ -43,5 +43,7 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="saving">Сохранение</string>
+    <string name="lets_start">Давайте начнем</string>
+
 
 </resources>

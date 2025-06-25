@@ -43,5 +43,7 @@
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
     <string name="saving">Kaydediliyor</string>
+    <string name="lets_start">Haydi Başlayalım</string>
+
 
 </resources>
