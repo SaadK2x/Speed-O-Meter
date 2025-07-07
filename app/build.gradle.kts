@@ -168,7 +168,7 @@ dependencies {
 
     implementation("com.intuit.sdp:sdp-android:1.0.6")
     implementation("com.intuit.ssp:ssp-android:1.0.6")
-    //googlebilling
+    //googleBilling
     implementation("com.android.billingclient:billing:7.1.1")
     //ads
     implementation("com.google.android.gms:play-services-ads:24.2.0")

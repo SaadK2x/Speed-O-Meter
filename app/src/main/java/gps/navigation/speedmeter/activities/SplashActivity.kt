@@ -69,6 +69,7 @@ class SplashActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.INVISIBLE
                 binding.textView1.visibility = View.INVISIBLE
                 binding.startBtn.visibility = View.INVISIBLE
+                moveForward()
             }
         }
         timer?.start()

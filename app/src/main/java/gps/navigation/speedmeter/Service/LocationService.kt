@@ -9,13 +9,13 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.IBinder
 import android.util.Log
-import gps.navigation.speedmeter.activities.MainActivity.Companion.isPaused
-import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import gps.navigation.speedmeter.activities.MainActivity.Companion.isPaused
+import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
@@ -54,9 +54,9 @@ class LocationService : Service(), LocationListener, GoogleApiClient.ConnectionC
     protected fun createLocationRequest() {
         mLocationRequest = LocationRequest()
         mLocationRequest!!.interval =
-            gps.navigation.speedmeter.Service.LocationService.Companion.INTERVAL
+            INTERVAL
         mLocationRequest!!.fastestInterval =
-            gps.navigation.speedmeter.Service.LocationService.Companion.FASTEST_INTERVAL
+            FASTEST_INTERVAL
         mLocationRequest!!.priority =
             LocationRequest.PRIORITY_HIGH_ACCURACY
     }
@@ -76,7 +76,7 @@ class LocationService : Service(), LocationListener, GoogleApiClient.ConnectionC
         LocationServices.FusedLocationApi.removeLocationUpdates(
             mGoogleApiClient!!, this
         )
-        gps.navigation.speedmeter.Service.LocationService.Companion.distance = 0.0
+        distance = 0.0
     }
 
     private fun startLocationUpdates() {
@@ -121,17 +121,20 @@ class LocationService : Service(), LocationListener, GoogleApiClient.ConnectionC
 
     //The live feed of Distance and Speed are being set in the method below .
     private fun updateUI() {
-        gps.navigation.speedmeter.Service.LocationService.Companion.distance += lStart!!.distanceTo(lEnd!!) / 1000.00
+        distance += lStart!!.distanceTo(
+            lEnd!!
+        ) / 1000.00
 
-        if (speed > gps.navigation.speedmeter.Service.LocationService.Companion.maxSpeed) {
-            gps.navigation.speedmeter.Service.LocationService.Companion.maxSpeed = speed.toDouble()
+        if (speed > maxSpeed) {
+            maxSpeed = speed.toDouble()
             //  SpeedometerStreetView.maxSpeed.setText(new DecimalFormat("#.#").format(maxSpeed) + "km/s");
         }
-        if (speed <= gps.navigation.speedmeter.Service.LocationService.Companion.minspeed) {
-            gps.navigation.speedmeter.Service.LocationService.Companion.minspeed = speed.toDouble()
+        if (speed <= minspeed) {
+            minspeed = speed.toDouble()
             //  SpeedometerStreetView.minSpeed.setText(new DecimalFormat("#.#").format(minspeed) + "km/s");
         }
-        gps.navigation.speedmeter.Service.LocationService.Companion.avgSpeed = (gps.navigation.speedmeter.Service.LocationService.Companion.maxSpeed + gps.navigation.speedmeter.Service.LocationService.Companion.minspeed) / 2
+        avgSpeed =
+            (maxSpeed + minspeed) / 2
         // SpeedometerStreetView.avgSpeed.setText(new DecimalFormat("#.#").format(avgSpeed) + "km/s");
         lStart = lEnd
     }
@@ -141,13 +144,13 @@ class LocationService : Service(), LocationListener, GoogleApiClient.ConnectionC
         if (mGoogleApiClient!!.isConnected) mGoogleApiClient!!.disconnect()
         lStart = null
         lEnd = null
-        gps.navigation.speedmeter.Service.LocationService.Companion.distance = 0.0
+        distance = 0.0
         isServiceRunning = false
-        gps.navigation.speedmeter.Service.LocationService.Companion.maxSpeed = 0.0
-        gps.navigation.speedmeter.Service.LocationService.Companion.minspeed = 0.0
-        gps.navigation.speedmeter.Service.LocationService.Companion.avgSpeed = 0.0
+        maxSpeed = 0.0
+        minspeed = 0.0
+        avgSpeed = 0.0
         elapsedSeconds = 0L
-        gps.navigation.speedmeter.Service.LocationService.Companion.countdownTimer?.cancel()
+        countdownTimer?.cancel()
         return super.onUnbind(intent)
     }
 
@@ -162,76 +165,118 @@ class LocationService : Service(), LocationListener, GoogleApiClient.ConnectionC
     }
 
     private fun startTimer() {
-        gps.navigation.speedmeter.Service.LocationService.Companion.countdownTimer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                if (!isPaused) {
+        countdownTimer =
+            object : CountDownTimer(Long.MAX_VALUE, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    if (!isPaused) {
+                        val getPrevious = sp!!.getBoolean("getPrevious", false)
+                        val newDistance =
+                            if (getPrevious) {
+                                Log.d("TAG__", "distance: ${sp!!.getFloat("distance").toDouble()}")
+                                sp!!.getFloat("distance").toDouble()
+                            } else 0.0
 
-                    elapsedSeconds++
-                    val hours = elapsedSeconds / 3600
-                    val minutes = (elapsedSeconds % 3600) / 60
-                    val seconds = elapsedSeconds % 60
-                    val timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds)
-                    if (speed > 0.0) {
-                        val speedIntent = Intent("ACTION_SPEED_UPDATE")
-                        val finalDistance = parseLocaleNumber(
-                            gps.navigation.speedmeter.Service.LocationService.Companion.distance.toString(),
-                            Locale("en")
-                        )
-                        speedIntent.putExtra(
-                            "speed", DecimalFormat("#.#",DecimalFormatSymbols(Locale.US)).format(speed.toDouble()).toFloat()
-                        )
-                        speedIntent.putExtra("time", timeString)
-                        speedIntent.putExtra("distance",  DecimalFormat("#.#",DecimalFormatSymbols(Locale.US)).format(finalDistance))
-                        val finalHour = (elapsedSeconds / 3600.000000000000000)
+                        distance += newDistance
+                        val newTime = if (getPrevious) {
+                            sp!!.putBoolean("getPrevious", false)
+                            sp!!.getLong("time")
+                        } else {
+                            0
+                        }
+                        elapsedSeconds = newTime + (elapsedSeconds + 1)
 
+                        sp!!.putLong("time", elapsedSeconds)
+                        val hours = elapsedSeconds / 3600
+                        val minutes = (elapsedSeconds % 3600) / 60
+                        val seconds = elapsedSeconds % 60
+                        val timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                        if (speed > 0.0) {
 
-                        if (finalDistance > 0.0) {
-                            val calAvg = finalDistance / finalHour.toFloat()
-                            val finalAVG = parseLocaleNumber(
-                                calAvg.toString(),
+                            Log.d("TAG__", "VAr distance: ${newDistance}")
+
+                            Log.d("TAG__", "new distance: $distance")
+                            val speedIntent = Intent("ACTION_SPEED_UPDATE")
+                            val finalDistance = parseLocaleNumber(
+                                distance.toString(),
                                 Locale("en")
                             )
+                            sp!!.putFloat("distance", finalDistance)
                             speedIntent.putExtra(
-                                "avgSpeed",  DecimalFormat("#.#", DecimalFormatSymbols(Locale.US)).format(finalAVG)
+                                "speed",
+                                DecimalFormat(
+                                    "#.#",
+                                    DecimalFormatSymbols(Locale.US)
+                                ).format(speed.toDouble()).toFloat()
                             )
-                        } else {
-                            speedIntent.putExtra("avgSpeed", "0")
-                        }
-                        sendBroadcast(speedIntent)
-                    } else {
-                        val speedIntent = Intent("ACTION_SPEED_UPDATE")
-                        val finalDistance = parseLocaleNumber(
-                            gps.navigation.speedmeter.Service.LocationService.Companion.distance.toString(),
-                            Locale( "en")
-                        )
-                        speedIntent.putExtra("speed", 0.0f)
-                        speedIntent.putExtra("time", timeString)
-                        speedIntent.putExtra("distance",  DecimalFormat("#.#",DecimalFormatSymbols(Locale.US)).format(finalDistance))
-                        val finalHour = (elapsedSeconds / 3600.000000000000000)
+                            speedIntent.putExtra("time", timeString)
 
-                        if (finalDistance > 0.0) {
-                            val calAvg = finalDistance / finalHour.toFloat()
-                            val finalAVG = parseLocaleNumber(
-                                calAvg.toString(),
+                            speedIntent.putExtra(
+                                "distance",
+                                DecimalFormat("#.#", DecimalFormatSymbols(Locale.US)).format(
+                                    finalDistance
+                                )
+                            )
+                            val finalHour = (elapsedSeconds / 3600.000000000000000)
+
+
+                            if (finalDistance > 0.0) {
+                                val calAvg = finalDistance / finalHour.toFloat()
+                                val finalAVG = parseLocaleNumber(
+                                    calAvg.toString(),
+                                    Locale("en")
+                                )
+                                speedIntent.putExtra(
+                                    "avgSpeed",
+                                    DecimalFormat("#.#", DecimalFormatSymbols(Locale.US)).format(
+                                        finalAVG
+                                    )
+                                )
+                            } else {
+                                speedIntent.putExtra("avgSpeed", "0")
+                            }
+                            sendBroadcast(speedIntent)
+                        } else {
+                            val speedIntent = Intent("ACTION_SPEED_UPDATE")
+                            val finalDistance = parseLocaleNumber(
+                                distance.toString(),
                                 Locale("en")
                             )
+                            speedIntent.putExtra("speed", 0.0f)
+                            speedIntent.putExtra("time", timeString)
                             speedIntent.putExtra(
-                                "avgSpeed",  DecimalFormat("#.#",DecimalFormatSymbols(Locale.US)).format(finalAVG)
+                                "distance",
+                                DecimalFormat("#.#", DecimalFormatSymbols(Locale.US)).format(
+                                    finalDistance
+                                )
                             )
-                        } else {
-                            speedIntent.putExtra("avgSpeed", "0")
+                            val finalHour = (elapsedSeconds / 3600.000000000000000)
+
+                            if (finalDistance > 0.0) {
+                                val calAvg = finalDistance / finalHour.toFloat()
+                                val finalAVG = parseLocaleNumber(
+                                    calAvg.toString(),
+                                    Locale("en")
+                                )
+                                speedIntent.putExtra(
+                                    "avgSpeed",
+                                    DecimalFormat("#.#", DecimalFormatSymbols(Locale.US)).format(
+                                        finalAVG
+                                    )
+                                )
+                            } else {
+                                speedIntent.putExtra("avgSpeed", "0")
+                            }
+                            sendBroadcast(speedIntent)
                         }
-                        sendBroadcast(speedIntent)
                     }
+
                 }
 
-            }
+                override fun onFinish() {
 
-            override fun onFinish() {
-
+                }
             }
-        }
-        gps.navigation.speedmeter.Service.LocationService.Companion.countdownTimer?.start()
+        countdownTimer?.start()
     }
 
     fun parseLocaleNumber(input: String, locale: Locale = Locale.getDefault()): Float {

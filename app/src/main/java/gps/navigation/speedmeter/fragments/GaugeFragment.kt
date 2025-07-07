@@ -36,7 +36,27 @@ class GaugeFragment : Fragment() {
     ): View? {
 
         sharedPrefrences = SharedPreferenceHelperClass(requireContext())
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            activity?.registerReceiver(
+                startUpdateReceiver,
+                IntentFilter("ACTION_START_UPDATE"),
+                Context.RECEIVER_EXPORTED
+            )
+            activity?.registerReceiver(
+                pauseUpdateReceiver,
+                IntentFilter("ACTION_PAUSE_UPDATE"),
+                Context.RECEIVER_EXPORTED
+            )
+            activity?.registerReceiver(
+                resetUpdateReceiver,
+                IntentFilter("ACTION_RESET_UPDATE"),
+                Context.RECEIVER_EXPORTED
+            )
+        } else {
+            activity?.registerReceiver(startUpdateReceiver, IntentFilter("ACTION_START_UPDATE"))
+            activity?.registerReceiver(pauseUpdateReceiver, IntentFilter("ACTION_PAUSE_UPDATE"))
+            activity?.registerReceiver(resetUpdateReceiver, IntentFilter("ACTION_RESET_UPDATE"))
+        }
 
         Constants.moveForward.observe(requireActivity()) {
             if (it != "No") {
@@ -179,27 +199,7 @@ class GaugeFragment : Fragment() {
         updatingText()
         settingColors(sp.getString("AppColor", "#FBC100"))
         changeUnit(sp.getString("Unit", "KMH"))
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            activity?.registerReceiver(
-                startUpdateReceiver,
-                IntentFilter("ACTION_START_UPDATE"),
-                Context.RECEIVER_EXPORTED
-            )
-            activity?.registerReceiver(
-                pauseUpdateReceiver,
-                IntentFilter("ACTION_PAUSE_UPDATE"),
-                Context.RECEIVER_EXPORTED
-            )
-            activity?.registerReceiver(
-                resetUpdateReceiver,
-                IntentFilter("ACTION_RESET_UPDATE"),
-                Context.RECEIVER_EXPORTED
-            )
-        } else {
-            activity?.registerReceiver(startUpdateReceiver, IntentFilter("ACTION_START_UPDATE"))
-            activity?.registerReceiver(pauseUpdateReceiver, IntentFilter("ACTION_PAUSE_UPDATE"))
-            activity?.registerReceiver(resetUpdateReceiver, IntentFilter("ACTION_RESET_UPDATE"))
-        }
+
     }
 
     fun updatingText() {

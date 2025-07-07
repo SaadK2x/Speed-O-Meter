@@ -55,6 +55,7 @@ import gps.navigation.speedmeter.databinding.FragmentMapsBinding
 import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import gps.navigation.speedmeter.utils.Constants
 import gps.navigation.speedmeter.utils.Constants.bitmapFromDrawableRes
+import gps.navigation.speedmeter.utils.Constants.directZoom
 import gps.navigation.speedmeter.utils.Constants.isSATELLITE
 import gps.navigation.speedmeter.utils.Constants.mapLoaded
 import gps.navigation.speedmeter.utils.Constants.moveForward
@@ -100,6 +101,7 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
         savedInstanceState: Bundle?
     ): View? {
         MapboxOptions.accessToken = Constants.keyMapbox
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             activity?.registerReceiver(
                 startUpdateReceiver,
@@ -117,7 +119,7 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                 Context.RECEIVER_EXPORTED
             )
         } else {
-            activity?.registerReceiver(speedUpdateReceiver, IntentFilter("ACTION_SPEED_UPDATE"))
+            activity?.registerReceiver(startUpdateReceiver, IntentFilter("ACTION_SPEED_UPDATE"))
             activity?.registerReceiver(pauseUpdateReceiver, IntentFilter("ACTION_PAUSE_UPDATE"))
             activity?.registerReceiver(resetUpdateReceiver, IntentFilter("ACTION_RESET_UPDATE"))
         }
@@ -125,8 +127,7 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
         sharedPrefrences = SharedPreferenceHelperClass(requireContext())
         markerManger = MarkerManager(binding.mapView)
 
-        historyDatabase = DatabaseBuilder.getInstance(requireContext())
-        databaseHelper = DatabaseHelperImpl(historyDatabase!!)
+
         binding.mapView.apply {
             mapboxMap.loadStyle(style(Style.SATELLITE) {
                 compass.enabled = false
@@ -173,10 +174,7 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
 
 
         binding.mapView.mapboxMap.addOnMapLoadedListener(this)
-        CoroutineScope(Dispatchers.IO).launch {
-            dbID = databaseHelper!!.getHistoryWithRoutePoints().size + 1
-            Log.d("TAG_DATA", "databaseHelper:  ${databaseHelper!!.getHistoryWithRoutePoints()}")
-        }
+
 
         binding.mapStyle.setOnClickListener {
             if (!isSATELLITE) {
@@ -236,6 +234,20 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                 }
                 Constants.endLat = lat
                 Constants.endLng = lng
+                if (dbID == 0) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        dbID = if (points.isNotEmpty()) {
+                            Log.d("TAG_DATA", "if: ${sharedPrefrences!!.getInt("dbID")}")
+                            sharedPrefrences!!.getInt("dbID")
+                        } else {
+                            val id = Constants.getUniqueRandomInt(activity!!)
+                            sharedPrefrences!!.putInt("dbID", id)
+                            Log.d("TAG_DATA", "else : $id")
+                            id
+
+                        }
+                    }
+                }
                 Constants.routePoints.add(RoutePoints(0, dbID, lat, lng))
 
                 if (activity != null) {
@@ -260,6 +272,7 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                     setAddPolyline()
                 }
                 previousLatLng = currentLatLng
+                sharedPrefrences!!.putPoints("mapPoints", points)
             }
         }
     }
@@ -379,13 +392,16 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                     isStop = true
                     activity?.unregisterReceiver(speedUpdateReceiver)
                     activity?.unregisterReceiver(latlngUpdateReceiver)
-                    binding.playBtn.isEnabled = false
 
+                    sharedPrefrences!!.putPoints("mapPoints", ArrayList())
+                    binding.playBtn.isEnabled = false
                     moveForward.value = "No"
                     binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
                     binding.playProgress.visibility = View.VISIBLE
                     Constants.viewScaling(1f, 0f, false, binding.pauseBtn)
                     Constants.viewScaling(1f, 0f, false, binding.resetBtn)
+
+                    Log.d("TAG_DB", "onSAving: $dbID")
                     when (sharedPrefrences?.getString("Unit", "KMH")) {
                         "KMH" -> {
                             CoroutineScope(Dispatchers.IO).launch {
@@ -418,9 +434,13 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                                     hist = databaseHelper!!.insertHistory(history)
                                     databaseHelper!!.insertRoutePoints(Constants.routePoints)
                                 } catch (e: Exception) {
+                                    Log.d("TAG_DATA", "onReceive: ${e.localizedMessage} ")
                                     null
                                 }
-                                Log.d("TAG_DATA", "onReceive: KMH history $hist and Route $route")
+                                Log.d(
+                                    "TAG_DATA",
+                                    "onReceive: KMH history $hist and Route ${Constants.routePoints}"
+                                )
                                 if (route.isNullOrEmpty()) {
 
                                     Log.d("TAG_DATA", "onReceive: KMH Comes Empty")
@@ -667,7 +687,6 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
             }
         }
     }
-
     private val pauseUpdateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val start = intent?.getBooleanExtra("isPause", false) ?: false
@@ -718,11 +737,74 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
 
     override fun onResume() {
         super.onResume()
+        historyDatabase = DatabaseBuilder.getInstance(requireContext())
+        databaseHelper = DatabaseHelperImpl(historyDatabase!!)
+
         val sp = SharedPreferenceHelperClass(requireContext())
+        isResume= !sharedPrefrences!!.getBoolean("isPaused", false)
         updatingText()
         settingColors(sp.getString("AppColor", "#FBC100"))
         changeUnit(sp.getString("Unit", "KMH"))
-        if (previousMarker == null && Constants.currentLongitude != 0.0 && Constants.currentLatitude != 0.0) {
+        points = sp.getPoints("mapPoints")
+        CoroutineScope(Dispatchers.IO).launch {
+            dbID = if (points.isNotEmpty()) {
+                Log.d("TAG_DATA", "if: ${sp.getInt("dbID")}")
+                sp.getInt("dbID")
+            } else {
+                val id = Constants.getUniqueRandomInt(requireActivity())
+                sp.putInt("dbID", id)
+                Log.d("TAG_DATA", "else : $id")
+                id
+
+            }
+        }
+        Log.d("TAG_DB", "onResume: $dbID")
+        if (points.isNotEmpty()) {
+
+            for (i in 0..points.size - 1) {
+                Constants.routePoints.add(
+                    RoutePoints(
+                        0,
+                        dbID,
+                        points[i].latitude(),
+                        points[i].longitude()
+                    )
+                )
+            }
+            Constants.initialLat = points[0].latitude()
+            Constants.initialLng = points[0].longitude()
+            if (activity != null) {
+                startMarker = Marker(
+                    title = "",
+                    snippet = "",
+                    position = Point.fromLngLat(
+                        points[0].longitude(),
+                        points[0].latitude()
+                    ),
+                    icon = requireActivity().bitmapFromDrawableRes(R.drawable.dest_icon)
+                )
+            }
+            markerManger!!.addMarker(startMarker!!)
+
+            Constants.endLat = points[points.size - 1].latitude()
+            Constants.endLng = points[points.size - 1].longitude()
+
+            if (activity != null) {
+                previousMarker = Marker(
+                    title = "",
+                    snippet = "",
+                    position = Point.fromLngLat(
+                        Constants.endLng,
+                        Constants.endLat
+                    ),
+                    icon = requireActivity().bitmapFromDrawableRes(R.drawable.source_icon),
+                )
+            }
+            markerManger?.addMarker(previousMarker!!)
+
+            setAddPolyline()
+        }
+        else if (previousMarker == null && Constants.currentLongitude != 0.0 && Constants.currentLatitude != 0.0) {
             Log.d("LAT_TAGG", "Resume: latitude ${Constants.currentLongitude}")
             val sydney = Point.fromLngLat(Constants.currentLongitude, Constants.currentLatitude)
             previousMarker = Marker(
@@ -756,7 +838,9 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
         binding.resetTV.text = getString(R.string.reset)
         if (isResume) {
             binding.pauseTxt.text = getString(R.string.pause)
+            binding.pauseIcon.setImageResource(R.drawable.resume_icon)
         } else {
+            binding.pauseIcon.setImageResource(R.drawable.play_icon)
             binding.pauseTxt.text = getString(R.string.resume)
         }
         if (isStop) {
@@ -821,7 +905,7 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                                 title = "",
                                 snippet = "",
                                 position = sydney,
-                                icon = requireContext().bitmapFromDrawableRes(R.drawable.source_icon),
+                                icon = requireActivity().bitmapFromDrawableRes(R.drawable.source_icon),
                             )
                             markerManger?.addMarker(previousMarker!!)
                             Handler(Looper.getMainLooper()).postDelayed({
@@ -916,30 +1000,41 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
 
     override fun onMapLoaded(eventData: MapLoadedEventData) {
         Log.d("TAG_LL", "onMapLoaded: ")
-        if (Constants.currentLatitude != 0.0 && Constants.currentLongitude != 0.0) {
-            if (!mapLoaded) {
-                Log.d("LAT_TAGG", "onMapLoaded: latitude ${Constants.currentLongitude}")
-                setupPolylineManager(binding.mapView)
-                val sydney = Point.fromLngLat(Constants.currentLongitude, Constants.currentLatitude)
-                previousMarker = Marker(
-                    title = "",
-                    snippet = "",
-                    position = sydney,
-                    icon = requireContext().bitmapFromDrawableRes(R.drawable.source_icon),
-                )
-                markerManger?.addMarker(previousMarker!!)
-                Handler(Looper.getMainLooper()).postDelayed({
-                    Constants.zoomInAnimation(
-                        Constants.currentLatitude,
-                        Constants.currentLongitude,
-                        binding.mapView.mapboxMap,
-                        true
+        val array = sharedPrefrences!!.getPoints("mapPoints")
+        setupPolylineManager(binding.mapView)
+        if (array.isEmpty())
+            if (Constants.currentLatitude != 0.0 && Constants.currentLongitude != 0.0) {
+                if (!mapLoaded) {
+                    Log.d("LAT_TAGG", "onMapLoaded: latitude ${Constants.currentLongitude}")
+
+                    val sydney =
+                        Point.fromLngLat(Constants.currentLongitude, Constants.currentLatitude)
+                    previousMarker = Marker(
+                        title = "",
+                        snippet = "",
+                        position = sydney,
+                        icon = requireContext().bitmapFromDrawableRes(R.drawable.source_icon),
                     )
-                    mapLoaded = true
-                }, 2000)
-            }
-        } else {
-            fetchingLocation()
+                    markerManger?.addMarker(previousMarker!!)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        Constants.zoomInAnimation(
+                            Constants.currentLatitude,
+                            Constants.currentLongitude,
+                            binding.mapView.mapboxMap,
+                            true
+                        )
+                        mapLoaded = true
+                    }, 2000)
+                }
+            } else {
+                fetchingLocation()
+            } else {
+            directZoom(
+                array[0].latitude(),
+                array[0].longitude(),
+                binding.mapView.mapboxMap,
+                true
+            )
         }
     }
 

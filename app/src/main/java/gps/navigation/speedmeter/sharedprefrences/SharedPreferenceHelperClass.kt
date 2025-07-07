@@ -1,6 +1,10 @@
 package gps.navigation.speedmeter.sharedprefrences
+
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.mapbox.geojson.Point
 
 
 class SharedPreferenceHelperClass(private var context: Context) {
@@ -38,8 +42,14 @@ class SharedPreferenceHelperClass(private var context: Context) {
         return editor.commit()
     }
 
+    fun putDouble(key: String, value: Float): Boolean {
+        val editor = sp.edit()
+        editor.putFloat(key, value)
+        return editor.commit()
+    }
 
-    fun getString(key: String,default:String): String {
+
+    fun getString(key: String, default: String): String {
         return sp.getString(key, default)!!
     }
 
@@ -47,7 +57,7 @@ class SharedPreferenceHelperClass(private var context: Context) {
         return sp.getInt(key, 0)
     }
 
-    fun getBoolean(key: String,default: Boolean): Boolean {
+    fun getBoolean(key: String, default: Boolean): Boolean {
         return sp.getBoolean(key, default)
     }
 
@@ -58,8 +68,36 @@ class SharedPreferenceHelperClass(private var context: Context) {
         return editor.commit()
     }
 
-    fun getFloat(key: String) : Float {
-        return sp.getFloat(key,0F)
+    fun getFloat(key: String): Float {
+        return sp.getFloat(key, 0F)
+    }
+
+    fun putPoints(key: String, value: ArrayList<Point>): Boolean {
+        val jsonString = Gson().toJson(value)
+        return putString(key, jsonString)
+    }
+
+    fun putConstraints(key: String, value: ArrayList<Int>): Boolean {
+        val jsonString = Gson().toJson(value)
+        return putString(key, jsonString)
+    }
+
+    fun getPoints(key: String): ArrayList<Point> {
+        val jsonString = getString(key, "")
+        return if (jsonString.isNullOrEmpty()) {
+            ArrayList()
+        } else {
+            Gson().fromJson(jsonString, object : TypeToken<ArrayList<Point>>() {}.type)
+        }
+    }
+
+    fun getConstraints(key: String): ArrayList<Int> {
+        val jsonString = getString(key, "")
+        return if (jsonString.isNullOrEmpty()) {
+            ArrayList()
+        } else {
+            Gson().fromJson(jsonString, object : TypeToken<ArrayList<Int>>() {}.type)
+        }
     }
 
 }

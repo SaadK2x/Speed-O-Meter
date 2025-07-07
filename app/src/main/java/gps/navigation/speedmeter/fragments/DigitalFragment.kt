@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +39,27 @@ class DigitalFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         sharedPrefrences = SharedPreferenceHelperClass(requireContext())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            activity?.registerReceiver(
+                startUpdateReceiver,
+                IntentFilter("ACTION_START_UPDATE"),
+                Context.RECEIVER_EXPORTED
+            )
+            activity?.registerReceiver(
+                pauseUpdateReceiver,
+                IntentFilter("ACTION_PAUSE_UPDATE"),
+                Context.RECEIVER_EXPORTED
+            )
+            activity?.registerReceiver(
+                resetUpdateReceiver,
+                IntentFilter("ACTION_RESET_UPDATE"),
+                Context.RECEIVER_EXPORTED
+            )
+        } else {
+            activity?.registerReceiver(startUpdateReceiver, IntentFilter("ACTION_START_UPDATE"))
+            activity?.registerReceiver(pauseUpdateReceiver, IntentFilter("ACTION_PAUSE_UPDATE"))
+            activity?.registerReceiver(resetUpdateReceiver, IntentFilter("ACTION_RESET_UPDATE"))
+        }
         Constants.moveForward.observe(requireActivity()) {
             if (it != "No") {
                 binding.playTV.text = context?.getString(R.string.start) ?: "Start"
@@ -54,6 +76,7 @@ class DigitalFragment : Fragment() {
             val time = intent?.getStringExtra("time")
             val distance = intent?.getStringExtra("distance")
             val avgSpeed = intent?.getStringExtra("avgSpeed")
+            Log.d("TAG_SPeed", "onReceive: Running $speed")
             if (time != "")
                 binding.time.text = time
             when (sharedPrefrences?.getString("Unit", "KMH")) {
@@ -103,35 +126,39 @@ class DigitalFragment : Fragment() {
     private val startUpdateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val start = intent?.getStringExtra("isStart")
-            if (start == "Start") {
-                isStop = false
-                binding.playTV.text = context?.getString(R.string.stop) ?: "Stop"
-                viewScaling(0f, 1f, true, binding.pauseBtn)
-                viewScaling(0f, 1f, true, binding.resetBtn)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    activity?.registerReceiver(
-                        speedUpdateReceiver,
-                        IntentFilter("ACTION_SPEED_UPDATE"),
-                        Context.RECEIVER_EXPORTED
-                    )
-                } else {
-                    activity?.registerReceiver(
-                        speedUpdateReceiver,
-                        IntentFilter("ACTION_SPEED_UPDATE")
-                    )
+            val isDestroying = intent?.getBooleanExtra("isDestroying", false) ?: false
+            Log.d("TAG__", "Digital Fragment: isStart $start")
+            if (!isDestroying) {
+                if (start == "Start") {
+                    isStop = false
+                    binding.playTV.text = context?.getString(R.string.stop) ?: "Stop"
+                    viewScaling(0f, 1f, true, binding.pauseBtn)
+                    viewScaling(0f, 1f, true, binding.resetBtn)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        activity?.registerReceiver(
+                            speedUpdateReceiver,
+                            IntentFilter("ACTION_SPEED_UPDATE"),
+                            Context.RECEIVER_EXPORTED
+                        )
+                    } else {
+                        activity?.registerReceiver(
+                            speedUpdateReceiver,
+                            IntentFilter("ACTION_SPEED_UPDATE")
+                        )
+                    }
+                } else if (start == "Stop") {
+                    isStop = true
+                    activity?.unregisterReceiver(speedUpdateReceiver)
+                    binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
+                    binding.playProgress.visibility = View.VISIBLE
+                    viewScaling(1f, 0f, false, binding.pauseBtn)
+                    viewScaling(1f, 0f, false, binding.resetBtn)
+                    binding.time.text = "00:00:00"
+                    binding.speedTV.text = "00"
+                    binding.distance.text = "0"
+                    binding.maxSpeed.text = "0"
+                    binding.avgSpeed.text = "0"
                 }
-            } else if (start == "Stop") {
-                isStop = true
-                activity?.unregisterReceiver(speedUpdateReceiver)
-                binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
-                binding.playProgress.visibility = View.VISIBLE
-                viewScaling(1f, 0f, false, binding.pauseBtn)
-                viewScaling(1f, 0f, false, binding.resetBtn)
-                binding.time.text = "00:00:00"
-                binding.speedTV.text = "00"
-                binding.distance.text = "0"
-                binding.maxSpeed.text = "0"
-                binding.avgSpeed.text = "0"
             }
         }
     }
@@ -168,27 +195,6 @@ class DigitalFragment : Fragment() {
         updatingText()
         settingColors(sp.getString("AppColor", "#FBC100"))
         changeUnit(sp.getString("Unit", "KMH"))
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            activity?.registerReceiver(
-                startUpdateReceiver,
-                IntentFilter("ACTION_START_UPDATE"),
-                Context.RECEIVER_EXPORTED
-            )
-            activity?.registerReceiver(
-                pauseUpdateReceiver,
-                IntentFilter("ACTION_PAUSE_UPDATE"),
-                Context.RECEIVER_EXPORTED
-            )
-            activity?.registerReceiver(
-                resetUpdateReceiver,
-                IntentFilter("ACTION_RESET_UPDATE"),
-                Context.RECEIVER_EXPORTED
-            )
-        } else {
-            activity?.registerReceiver(startUpdateReceiver, IntentFilter("ACTION_START_UPDATE"))
-            activity?.registerReceiver(pauseUpdateReceiver, IntentFilter("ACTION_PAUSE_UPDATE"))
-            activity?.registerReceiver(resetUpdateReceiver, IntentFilter("ACTION_RESET_UPDATE"))
-        }
     }
 
     fun updatingText() {
@@ -244,8 +250,9 @@ class DigitalFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         try {
-            requireActivity().unregisterReceiver(speedUpdateReceiver)
-            requireActivity().unregisterReceiver(startUpdateReceiver)
+            activity?.unregisterReceiver(pauseUpdateReceiver)
+            activity?.unregisterReceiver(speedUpdateReceiver)
+            activity?.unregisterReceiver(startUpdateReceiver)
         } catch (e: IllegalArgumentException) {
             // Already unregistered
         }

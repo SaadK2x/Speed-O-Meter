@@ -11,7 +11,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.ServiceConnection
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
@@ -22,6 +24,8 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.Window
+import android.view.WindowInsets
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RemoteViews
@@ -55,6 +59,8 @@ import gps.navigation.speedmeter.utils.Constants.vibratePhone
 import gps.navigation.speedmeter.utils.LocationManager
 import gps.navigation.speedmeter.utils.SectionPageAdapter
 import gps.navigation.speedmeter.utils.checkForAppUpdates
+import gps.navigation.speedmeter.utils.setupAppUpdateListeners
+import gps.navigation.speedmeter.utils.unregisterAppUpdateListeners
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -135,6 +141,18 @@ class MainActivity : AppCompatActivity() {
             requestLocationPermission()
         }
 
+        binding.rotateBtn.setOnClickListener {
+            val screenRotate = sharedPrefrences!!.getBoolean("screenRotate", false)
+            sharedPrefrences!!.putBoolean("callForRotate", true)
+            if (screenRotate) {
+                sharedPrefrences!!.putBoolean("screenRotate", false)
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
+            } else {
+                sharedPrefrences!!.putBoolean("screenRotate", true)
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            }
+        }
         binding.settingsBtn.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
@@ -166,6 +184,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     Log.d("TAG__", "bindService: Stoping")
                     Constants.isStart = false
+                    sharedPrefrences!!.putBoolean("isStart", false)
                     binding.playBtn.visibility = View.GONE
                     unbindService("Stop", false)
                 }
@@ -180,11 +199,13 @@ class MainActivity : AppCompatActivity() {
         binding.pauseBtn.setOnClickListener {
             if (!isPaused) {
                 isPaused = true
+                sharedPrefrences!!.putBoolean("isPaused", true)
                 val speedIntent = Intent("ACTION_PAUSE_UPDATE")
                 speedIntent.putExtra("isPause", isPaused)
                 sendBroadcast(speedIntent)
             } else {
                 isPaused = false
+                sharedPrefrences!!.putBoolean("isPaused", false)
                 val speedIntent = Intent("ACTION_PAUSE_UPDATE")
                 speedIntent.putExtra("isPause", isPaused)
                 sendBroadcast(speedIntent)
@@ -248,6 +269,7 @@ class MainActivity : AppCompatActivity() {
         bindService(i, digitalSC, BIND_AUTO_CREATE)
         status = true
         startTime = System.currentTimeMillis()
+        sharedPrefrences!!.putBoolean("isStart", true)
     }
 
     fun sendBroadCast(value: String, isDestroying: Boolean) {
@@ -346,6 +368,7 @@ class MainActivity : AppCompatActivity() {
     fun settingColors(color: String) {
         binding.tabs.setTabTextColors(getColor(R.color.grayColor), Color.parseColor(color))
         binding.tabs.setSelectedTabIndicatorColor(Color.parseColor(color))
+        binding.shapeBG.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
     }
 
     private val speedUpdateReceiver = object : BroadcastReceiver() {
@@ -441,8 +464,40 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
+        setupAppUpdateListeners(appUpdateManager)
         binding.playBtn.visibility = View.VISIBLE
+        val callForRotate = sharedPrefrences!!.getBoolean("callForRotate", false)
+        val isStart = sharedPrefrences!!.getBoolean("isStart", false)
+        Log.d("TAG_LL", "onResume callForRotate : $callForRotate.  $isStart")
+        if (callForRotate && isStart) {
+            sharedPrefrences!!.putBoolean("callForRotate", false)
+            Constants.isStart = true
+            sharedPrefrences!!.putBoolean("getPrevious", true)
+            bindService()
+        }
+
+        val screenRotate = sharedPrefrences!!.getBoolean("screenRotate", false)
+
+        if (!screenRotate) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                window.setDecorFitsSystemWindows(true)
+                window.insetsController?.show(WindowInsets.Type.statusBars())
+            } else {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            }
+        } else {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                window.setDecorFitsSystemWindows(false)
+                window.insetsController?.hide(WindowInsets.Type.statusBars())
+            } else {
+                window.setFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN
+                )
+            }
+        }
         val sp = SharedPreferenceHelperClass(this)
         settingColors(sp.getString("AppColor", "#FBC100"))
         if (tablyout != null) {
@@ -590,6 +645,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        unregisterAppUpdateListeners(appUpdateManager)
         Constants.isStart = false
         unbindService("Stop", true)
         super.onDestroy()

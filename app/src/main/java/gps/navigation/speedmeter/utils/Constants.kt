@@ -32,6 +32,7 @@ import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.database.RoutePoints
 import gps.navigation.speedmeter.models.LanguageModel
 import gps.navigation.speedmeter.models.ThemeModel
+import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
@@ -234,6 +235,28 @@ object Constants {
         )
     }
 
+    fun directZoom(lat: Double, lng: Double, mapboxMap: MapboxMap, is2D: Boolean) {
+        val target = if (is2D) {
+            cameraOptions {
+                center(Point.fromLngLat(lng, lat))
+                zoom(12.5)
+                pitch(15.0)
+                bearing(130.0)
+            }
+        } else {
+            cameraOptions {
+                center(Point.fromLngLat(lng, lat))
+                zoom(12.5)
+                pitch(75.0)
+                bearing(130.0)
+            }
+
+        }
+        mapboxMap.flyTo(
+            target,
+        )
+    }
+
     fun Context.bitmapFromDrawableRes(@DrawableRes resourceId: Int): Bitmap =
         drawableToBitmap(AppCompatResources.getDrawable(this, resourceId)!!)
 
@@ -334,5 +357,23 @@ object Constants {
                 duration(2_000)
             }
         )
+    }
+
+    fun getUniqueRandomInt(context: Context): Int {
+        val sp = SharedPreferenceHelperClass(context)
+        val min = 10_001
+        val max = Int.MAX_VALUE
+        val usedNumbers = sp.getConstraints("Unique")
+        if (usedNumbers.size >= (max - min + 1)) {
+            throw IllegalStateException("All unique values have been used.")
+        }
+
+        while (true) {
+            val number = (min..max).random()
+            if (usedNumbers.add(number)) {
+                sp.putConstraints("Unique", usedNumbers)
+                return number
+            }
+        }
     }
 }

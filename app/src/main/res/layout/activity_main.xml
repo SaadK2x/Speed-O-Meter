@@ -7,12 +7,13 @@
     android:background="@color/blueColor"
     tools:context=".activities.MainActivity">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topConstraint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
         android:layout_marginTop="20dp"
+        android:background="@color/black"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -44,15 +45,16 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
-            android:layout_width="match_parent"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_marginTop="3sp"
-            app:tabTextAppearance="@style/CustomTabTextStyle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleTxt"
             app:tabGravity="fill"
-            app:tabMode="fixed" />
+            app:tabMode="fixed"
+            app:tabMaxWidth="0dp"
+            app:tabTextAppearance="@style/CustomTabTextStyle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -105,7 +107,7 @@
         android:padding="14sp"
         app:layout_constraintBottom_toTopOf="@id/smallAd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:id="@+id/pauseBtn"
@@ -131,6 +133,7 @@
             android:fontFamily="@font/poppins_medium"
             android:textColor="@color/grayColor" />
     </LinearLayout>
+
     <include
         android:id="@+id/smallAd"
         layout="@layout/bannar_small"
@@ -139,4 +142,33 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/shapeBG"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:alpha="0.27"
+        android:contentDescription="@string/todo"
+        android:background="@drawable/rotate_shape"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/container" />
+
+    <ImageView
+        android:id="@+id/rotateBtn"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/rotate_icon"
+        android:contentDescription="@string/todo"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="@id/shapeBG"
+        app:layout_constraintTop_toTopOf="@id/shapeBG" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvImages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
