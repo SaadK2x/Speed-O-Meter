@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueColor"
+    tools:context=".activities.MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/_30sdp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topConstraint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/titleTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/analog_meter"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_17sdp"
+                app:layout_constraintBottom_toBottomOf="@id/tabs"
+                app:layout_constraintEnd_toStartOf="@+id/hudBtn"
+                app:layout_constraintStart_toEndOf="@id/tabs"
+                app:layout_constraintTop_toTopOf="@id/tabs" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+                app:layout_constraintEnd_toEndOf="@+id/innerGuide"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabGravity="fill"
+                app:tabMaxWidth="0sp"
+                app:tabMode="fixed"
+                app:tabTextAppearance="@style/CustomTabTextStyle" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/innerGuide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.33" />
+
+            <ImageView
+                android:id="@+id/settingsBtn"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginEnd="18sp"
+                android:contentDescription="@string/todo"
+                android:padding="4sp"
+                android:src="@drawable/setting_sm"
+                app:layout_constraintBottom_toBottomOf="@id/titleTxt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/titleTxt" />
+
+            <ImageView
+                android:id="@+id/hudBtn"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginEnd="10sp"
+                android:contentDescription="@string/todo"
+                android:padding="5sp"
+                android:src="@drawable/hud_icon"
+                app:layout_constraintBottom_toBottomOf="@id/titleTxt"
+                app:layout_constraintEnd_toStartOf="@id/settingsBtn"
+                app:layout_constraintTop_toTopOf="@id/titleTxt" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toTopOf="@id/smallAd"
+            app:layout_constraintTop_toBottomOf="@id/topConstraint" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottom1GL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.85" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/centerGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <LinearLayout
+            android:id="@+id/resetBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27sp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/playBtn"
+            app:layout_constraintStart_toStartOf="@id/centerGuide"
+            app:layout_constraintTop_toTopOf="@+id/playBtn"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/resetIcon"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:contentDescription="@string/todo"
+                android:padding="10sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/grayColor" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/playBtn"
+            android:layout_width="60sp"
+            android:layout_height="60sp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/todo"
+            android:padding="14sp"
+            app:layout_constraintBottom_toTopOf="@id/smallAd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/centerGuide" />
+
+        <LinearLayout
+            android:id="@+id/pauseBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="27sp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/playBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/playBtn"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/pauseIcon"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:contentDescription="@string/todo"
+                android:padding="10sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/grayColor" />
+        </LinearLayout>
+
+        <include
+            android:id="@+id/smallAd"
+            layout="@layout/bannar_small"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/shapeBG"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:alpha="0.27"
+            android:background="@drawable/rotate_shape"
+            android:contentDescription="@string/todo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/container" />
+
+        <ImageView
+            android:id="@+id/rotateBtn"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:contentDescription="@string/todo"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/rotate_icon"
+            app:layout_constraintStart_toStartOf="@id/shapeBG"
+            app:layout_constraintTop_toTopOf="@id/shapeBG" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
