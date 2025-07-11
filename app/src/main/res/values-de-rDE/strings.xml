@@ -27,7 +27,7 @@
     <string name="start">Start</string>
     <string name="stop">Stopp</string>
     <string name="pause">Pause</string>
-    <string name="reset">Zurücksetzen</string>
+    <string name="reset">Löschen</string>
     <string name="resume">Fortsetzen</string>
     <string name="gauge">Analog</string>
     <string name="digital">Digital</string>

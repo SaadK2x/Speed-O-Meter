@@ -142,19 +142,33 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.rotateBtn.setOnClickListener {
-            val screenRotate = sharedPrefrences!!.getBoolean("screenRotate", false)
-            sharedPrefrences!!.putBoolean("callForRotate", true)
-            if (screenRotate) {
-                sharedPrefrences!!.putBoolean("screenRotate", false)
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            if (!isPaused) {
+                val screenRotate = sharedPrefrences!!.getBoolean("screenRotate", false)
+                sharedPrefrences!!.putBoolean("callForRotate", true)
+                if (screenRotate) {
+                    sharedPrefrences!!.putBoolean("screenRotate", false)
+                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
+                } else {
+                    sharedPrefrences!!.putBoolean("screenRotate", true)
+                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                }
             } else {
-                sharedPrefrences!!.putBoolean("screenRotate", true)
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                Toast.makeText(
+                    this,
+                    "Resume the Speedometer then press Rotate Button",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         binding.settingsBtn.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
+        }
+        binding.hudBtn.setOnClickListener {
+            binding.layoutHUD.visibility = View.VISIBLE
+        }
+        binding.hudRevertBtn.setOnClickListener {
+            binding.layoutHUD.visibility = View.GONE
         }
 
         binding.playBtn.setOnClickListener {
@@ -374,7 +388,7 @@ class MainActivity : AppCompatActivity() {
     private val speedUpdateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val speed = intent?.getFloatExtra("speed", 0.0f)
-
+            binding.speedTV.text = (speed!!.toInt().toString())
             val distance = intent?.getStringExtra("distance")
             val avgSpeed = intent?.getStringExtra("avgSpeed")
 
@@ -469,6 +483,20 @@ class MainActivity : AppCompatActivity() {
         val callForRotate = sharedPrefrences!!.getBoolean("callForRotate", false)
         val isStart = sharedPrefrences!!.getBoolean("isStart", false)
         Log.d("TAG_LL", "onResume callForRotate : $callForRotate.  $isStart")
+        val unit = sharedPrefrences?.getString("Unit", "KMH")
+        when (unit) {
+            "KMH" -> {
+                binding.unitTV.text = "Km/h"
+            }
+
+            "MPH" -> {
+                binding.unitTV.text = "Mph"
+            }
+
+            "KNOT" -> {
+                binding.unitTV.text = "Knots"
+            }
+        }
         if (callForRotate && isStart) {
             sharedPrefrences!!.putBoolean("callForRotate", false)
             Constants.isStart = true
@@ -486,7 +514,8 @@ class MainActivity : AppCompatActivity() {
             } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
             }
-        } else {
+        }
+        else {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 window.setDecorFitsSystemWindows(false)
@@ -500,6 +529,7 @@ class MainActivity : AppCompatActivity() {
         }
         val sp = SharedPreferenceHelperClass(this)
         settingColors(sp.getString("AppColor", "#FBC100"))
+        Constants.setLocale(this, sp.getString("language", "en"))
         if (tablyout != null) {
             tablyout!!.getTabAt(0)?.text = getString(R.string.gauge)
             tablyout!!.getTabAt(1)?.text = getString(R.string.digital)

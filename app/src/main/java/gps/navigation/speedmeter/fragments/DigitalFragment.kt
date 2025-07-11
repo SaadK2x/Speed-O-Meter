@@ -192,6 +192,7 @@ class DigitalFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val sp = SharedPreferenceHelperClass(requireContext())
+        Constants.setLocale(requireActivity(), sp.getString("language", "en"))
         updatingText()
         settingColors(sp.getString("AppColor", "#FBC100"))
         changeUnit(sp.getString("Unit", "KMH"))

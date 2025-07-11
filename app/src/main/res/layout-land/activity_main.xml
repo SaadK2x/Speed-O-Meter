@@ -193,4 +193,54 @@
             app:layout_constraintTop_toTopOf="@id/shapeBG" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutHUD"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/_30sdp"
+        android:background="@color/black">
+
+        <ImageView
+            android:id="@+id/hudRevertBtn"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_40sdp"
+            android:contentDescription="@string/todo"
+            android:padding="5sp"
+            android:src="@drawable/hud_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/speedTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/digital_font"
+
+            android:scaleY="-1"
+            android:text="00"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_160sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/unitTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-25sp"
+            android:fontFamily="@font/digital_font"
+
+            android:scaleY="-1"
+            android:text="km/h"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_30sdp"
+            app:layout_constraintBottom_toTopOf="@+id/speedTV"
+            app:layout_constraintEnd_toEndOf="@+id/speedTV" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

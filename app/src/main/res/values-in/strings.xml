@@ -27,7 +27,7 @@
     <string name="start">Mulai</string>
     <string name="stop">Berhenti</string>
     <string name="pause">Jeda</string>
-    <string name="reset">Atur Ulang</string>
+    <string name="reset">Ulangi</string>
     <string name="resume">Lanjutkan</string>
     <string name="gauge">Analog</string>
     <string name="digital">Digital</string>

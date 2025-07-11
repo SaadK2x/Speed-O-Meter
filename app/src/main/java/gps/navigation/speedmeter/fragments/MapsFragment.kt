@@ -741,6 +741,7 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
         databaseHelper = DatabaseHelperImpl(historyDatabase!!)
 
         val sp = SharedPreferenceHelperClass(requireContext())
+        Constants.setLocale(requireActivity(), sp.getString("language", "en"))
         isResume= !sharedPrefrences!!.getBoolean("isPaused", false)
         updatingText()
         settingColors(sp.getString("AppColor", "#FBC100"))

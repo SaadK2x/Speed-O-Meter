@@ -9,6 +9,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -24,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import gps.navigation.speedmeter.BuildConfig
 import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.adapters.ThemeAdapter
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
@@ -78,6 +80,7 @@ class SettingsActivity : AppCompatActivity() {
             shareApp(this)
         }
     }
+
     private fun squareXGPSBannerAdsSmall() {
         val adContainer = findViewById<LinearLayout>(R.id.adContainer)
         val smallAd = findViewById<LinearLayout>(R.id.smallAd)
@@ -85,6 +88,7 @@ class SettingsActivity : AppCompatActivity() {
             adContainer, smallAd, this
         )
     }
+
     override fun onBackPressed() {
         super.onBackPressed()
     }
@@ -226,6 +230,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val sp = SharedPreferenceHelperClass(this)
+        Constants.setLocale(this, sp.getString("language", "en"))
         changingLanguage()
         settingTextView(sp.getString("AppColor", "#FBC100"))
         binding.languageName.text = sp.getString("languageName", "English")
@@ -502,8 +507,10 @@ class SettingsActivity : AppCompatActivity() {
                     emoji.setImageResource(R.drawable.rate_3)
                 } else if (p1 > 3 && p1 <= 4) {
                     emoji.setImageResource(R.drawable.rate_4)
+                    moveForward()
                 } else if (p1 > 4 && p1 <= 5) {
                     emoji.setImageResource(R.drawable.rate_5)
+                    moveForward()
                 }
                 Handler(Looper.getMainLooper()).postDelayed({
                     dialog.dismiss()
@@ -513,6 +520,20 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         dialog.show()
+    }
+
+    fun moveForward() {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data =
+            Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        } else {
+            val webIntent = Intent(Intent.ACTION_VIEW)
+            webIntent.data =
+                Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)
+            startActivity(webIntent)
+        }
     }
 
     private fun checkLocationPermission(): Boolean {
