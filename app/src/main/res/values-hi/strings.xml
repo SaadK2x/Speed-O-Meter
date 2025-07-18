@@ -44,6 +44,16 @@
     <string name="no">नहीं</string>
     <string name="saving">सहेजा जा रहा है</string>
     <string name="lets_start">चलो शुरू करें</string>
+    <string name="select_speed_units">गति इकाई चुनें</string>
+    <string name="theme_appearance"><![CDATA[थीम और रूप]]></string>
+    <string name="traveling_history">यात्रा इतिहास</string>
+    <string name="max_speed_limit">अधिकतम गति सीमा</string>
+    <string name="app_language">ऐप की भाषा</string>
+    <string name="speed_units">गति इकाइयाँ</string>
+    <string name="themes">थीम्स</string>
+    <string name="speed_limit">गति सीमा</string>
+    <string name="tap_on_digit_to_edit">संपादन के लिए अंक पर टैप करें</string>
+
 
 
 </resources>

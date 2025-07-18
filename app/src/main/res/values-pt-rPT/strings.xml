@@ -44,6 +44,15 @@
     <string name="no">Não</string>
     <string name="saving">Salvando</string>
     <string name="lets_start">Vamos começar</string>
+    <string name="select_speed_units">Selecionar unidades de velocidade</string>
+    <string name="theme_appearance"><![CDATA[Tema e aparência]]></string>
+    <string name="traveling_history">Histórico de viagens</string>
+    <string name="max_speed_limit">Limite de velocidade máxima</string>
+    <string name="app_language">Idioma do aplicativo</string>
+    <string name="speed_units">Unidades de velocidade</string>
+    <string name="themes">Temas</string>
+    <string name="speed_limit">Limite de velocidade</string>
+    <string name="tap_on_digit_to_edit">Toque no número para editar</string>
 
 
 </resources>

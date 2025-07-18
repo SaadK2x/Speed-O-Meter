@@ -44,6 +44,15 @@
     <string name="no">いいえ</string>
     <string name="saving">保存中</string>
     <string name="lets_start">さあ、始めましょう</string>
+    <string name="select_speed_units">速度単位を選択</string>
+    <string name="theme_appearance"><![CDATA[テーマと外観]]></string>
+    <string name="traveling_history">移動履歴</string>
+    <string name="max_speed_limit">最高速度制限</string>
+    <string name="app_language">アプリの言語</string>
+    <string name="speed_units">速度単位</string>
+    <string name="themes">テーマ</string>
+    <string name="speed_limit">速度制限</string>
+    <string name="tap_on_digit_to_edit">編集するには数字をタップ</string>
 
 
 </resources>

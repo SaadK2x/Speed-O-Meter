@@ -32,6 +32,7 @@ public class SpeedMeterLoadAds {
     public static String interstitial_admob_inApp = BuildConfig.admob_interstitial_id;
     public static String nav_interstitial = BuildConfig.nav_interstitial;
     public static String banner_admob_inApp = BuildConfig.admob_banner_id;
+    public static String medium_banner = BuildConfig.medium_banner;
     public static String app_open_ad_id_admob = BuildConfig.app_open_ad_id_admob;
     public static String app_open_splash_ad_id_admob = BuildConfig.app_open_ad_id_admob_splash;
     public static String admob_interstitial_splash = BuildConfig.admob_interstitial_splash;
@@ -106,6 +107,46 @@ public class SpeedMeterLoadAds {
                 }
             }
         }
+    }
+    public static void loadAdMobIntroMediumBannerAd(Context context, final LinearLayout adContainer, final View mView) {
+
+        SpeedMeterBillingHelper billingHelper = new SpeedMeterBillingHelper(context);
+        if (billingHelper.shouldShowAds()) {
+            AdView mAdView = new AdView(context);
+            mAdView.setAdUnitId(medium_banner);
+            mAdView.setAdSize(AdSize.MEDIUM_RECTANGLE);
+            mAdView.setAdListener(new com.google.android.gms.ads.AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    Log.d("ConstantAdsLoadAds", "Bannen onAdLoaded: ");
+                    try {
+                        adContainer.removeAllViews();
+                        adContainer.addView(mAdView);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    super.onAdFailedToLoad(loadAdError);
+                    Log.d("ConstantAdsLoadAds", "Bannen onAdFailedToLoad: " + loadAdError.toString());
+                    mAdView.destroy();
+                    mView.setVisibility(View.GONE);
+                }
+
+            });
+            try {
+                mAdView.loadAd(new AdRequest.Builder().build());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            mView.setVisibility(View.GONE);
+        }
+
+
     }
 
     public static void loadHoneyBeeMapNavigationAdMobBannerSpecific(final LinearLayout adContainer, final View mView, final Context context) {

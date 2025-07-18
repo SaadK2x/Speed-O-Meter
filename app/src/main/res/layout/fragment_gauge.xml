@@ -12,21 +12,21 @@
         android:id="@+id/speedView"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/_50sdp"
+        android:layout_margin="@dimen/_15sdp"
         app:layout_constraintBottom_toTopOf="@id/unitsLinear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:sv_centerCircleColor="@color/blueColor"
-        app:sv_image="@drawable/speedometer_shape"
+        app:sv_image="@drawable/speedometer_shape_new"
         app:sv_indicator="HalfLineIndicator"
         app:sv_indicatorColor="@color/white"
-        app:sv_indicatorWidth="4sp"
+        app:sv_indicatorWidth="8sp"
         app:sv_markColor="@color/white"
+        app:sv_maxSpeed="160"
         app:sv_speedTextColor="@color/blueColor"
         app:sv_speedTextFormat="INTEGER"
         app:sv_textColor="@color/white"
-        app:sv_maxSpeed="160"
         app:sv_unitTextColor="@color/blueColor" />
 
     <TextView
@@ -98,11 +98,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
-        android:paddingHorizontal="@dimen/_35sdp"
         android:background="@drawable/round_shape"
         android:elevation="5sp"
         android:gravity="center"
         android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/_35sdp"
         android:paddingTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -112,8 +112,8 @@
             android:id="@+id/playProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:indeterminateTint="@color/black" />
+            android:indeterminateTint="@color/black"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/playTV"

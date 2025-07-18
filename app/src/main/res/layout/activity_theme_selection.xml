@@ -98,9 +98,9 @@
     </com.google.android.material.card.MaterialCardView>
     <include
         android:id="@+id/smallAd"
-        layout="@layout/bannar_small"
+        layout="@layout/bannar_medium"
         android:layout_width="match_parent"
-        android:layout_height="68dp"
+        android:layout_height="270dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

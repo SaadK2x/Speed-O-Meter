@@ -114,8 +114,17 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun moveForward() {
-        val intent = Intent(this@SplashActivity, MainActivity::class.java)
-        startActivity(intent)
+        val sp = SharedPreferenceHelperClass(this)
+        val data = sp.getBoolean("firstTime", true)
+        if (data) {
+            sp.putBoolean("firstTime", false)
+            val intent = Intent(this@SplashActivity, IntroActivity::class.java)
+            startActivity(intent)
+        } else {
+            val intent = Intent(this@SplashActivity, MainActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun remoteConfigValues() {

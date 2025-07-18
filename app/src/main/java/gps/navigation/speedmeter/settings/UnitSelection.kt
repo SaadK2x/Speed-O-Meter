@@ -65,8 +65,8 @@ class UnitSelection : AppCompatActivity() {
     private fun squareXGPSBannerAdsSmall() {
         val adContainer = findViewById<LinearLayout>(R.id.adContainer)
         val smallAd = findViewById<LinearLayout>(R.id.smallAd)
-        SpeedMeterLoadAds.loadBanner(
-            adContainer, smallAd, this
+        SpeedMeterLoadAds.loadAdMobIntroMediumBannerAd(
+            this, adContainer, smallAd
         )
     }
 

@@ -44,6 +44,16 @@
     <string name="no">Нет</string>
     <string name="saving">Сохранение</string>
     <string name="lets_start">Давайте начнем</string>
+    <string name="select_speed_units">Выберите единицы скорости</string>
+    <string name="theme_appearance"><![CDATA[Тема и внешний вид]]></string>
+    <string name="traveling_history">История поездок</string>
+    <string name="max_speed_limit">Максимальное ограничение скорости</string>
+    <string name="app_language">Язык приложения</string>
+    <string name="speed_units">Единицы скорости</string>
+    <string name="themes">Темы</string>
+    <string name="speed_limit">Ограничение скорости</string>
+    <string name="tap_on_digit_to_edit">Нажмите на цифру, чтобы изменить</string>
+
 
 
 </resources>

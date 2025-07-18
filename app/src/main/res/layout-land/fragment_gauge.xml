@@ -21,10 +21,10 @@
 
         <com.github.anastr.speedviewlib.ImageSpeedometer
             android:id="@+id/speedView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:sv_centerCircleColor="@color/blueColor"
-            app:sv_image="@drawable/speedometer_shape"
+            app:sv_image="@drawable/speedometer_shape_new"
             app:sv_indicator="HalfLineIndicator"
             app:sv_indicatorColor="@color/white"
             app:sv_indicatorWidth="4sp"

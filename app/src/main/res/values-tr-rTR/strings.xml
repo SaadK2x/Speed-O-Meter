@@ -44,6 +44,16 @@
     <string name="no">Hayır</string>
     <string name="saving">Kaydediliyor</string>
     <string name="lets_start">Haydi Başlayalım</string>
+    <string name="select_speed_units">Hız birimlerini seçin</string>
+    <string name="theme_appearance"><![CDATA[Tema ve Görünüm]]></string>
+    <string name="traveling_history">Seyahat geçmişi</string>
+    <string name="max_speed_limit">Maksimum hız sınırı</string>
+    <string name="app_language">Uygulama dili</string>
+    <string name="speed_units">Hız birimleri</string>
+    <string name="themes">Temalar</string>
+    <string name="speed_limit">Hız sınırı</string>
+    <string name="tap_on_digit_to_edit">Düzenlemek için rakama dokunun</string>
+
 
 
 </resources>

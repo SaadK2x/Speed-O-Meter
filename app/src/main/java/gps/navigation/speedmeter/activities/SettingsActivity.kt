@@ -21,9 +21,7 @@ import android.widget.LinearLayout
 import android.widget.RatingBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import gps.navigation.speedmeter.BuildConfig
 import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
@@ -55,29 +53,39 @@ class SettingsActivity : AppCompatActivity() {
         }
         binding.speedUnitLayout.setOnClickListener {
             val intent = Intent(this, UnitSelection::class.java)
-            directAdsSpecificModulesSquareXNavigation(this,
-                SpeedMeterLoadAds.admobInterstitialNav,intent)
+            directAdsSpecificModulesSquareXNavigation(
+                this,
+                SpeedMeterLoadAds.admobInterstitialNav, intent
+            )
         }
         binding.themesLayout.setOnClickListener {
             val intent = Intent(this, ThemeSelection::class.java)
-            directAdsSpecificModulesSquareXNavigation(this,
-                SpeedMeterLoadAds.admobInterstitialNav,intent)
+            directAdsSpecificModulesSquareXNavigation(
+                this,
+                SpeedMeterLoadAds.admobInterstitialNav, intent
+            )
         }
         binding.maxSpeedLayout.setOnClickListener {
             val intent = Intent(this, MaxSpeed::class.java)
-            directAdsSpecificModulesSquareXNavigation(this,
-                SpeedMeterLoadAds.admobInterstitialNav,intent)
+            directAdsSpecificModulesSquareXNavigation(
+                this,
+                SpeedMeterLoadAds.admobInterstitialNav, intent
+            )
         }
 
         binding.languageLayout.setOnClickListener {
-            val intent=(Intent(this, LanguageActivity::class.java))
-            directAdsSpecificModulesSquareXNavigation(this,
-                SpeedMeterLoadAds.admobInterstitialNav,intent)
+            val intent = (Intent(this, LanguageActivity::class.java))
+            directAdsSpecificModulesSquareXNavigation(
+                this,
+                SpeedMeterLoadAds.admobInterstitialNav, intent
+            )
         }
         binding.historyLayout.setOnClickListener {
-            val intent=(Intent(this, HistoryActivity::class.java))
-            directAdsSpecificModulesSquareXNavigation(this,
-                SpeedMeterLoadAds.admobInterstitialNav,intent)
+            val intent = (Intent(this, HistoryActivity::class.java))
+            directAdsSpecificModulesSquareXNavigation(
+                this,
+                SpeedMeterLoadAds.admobInterstitialNav, intent
+            )
         }
         binding.btnShareApp.setOnClickListener {
             shareApp(this)
@@ -93,7 +101,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        mediationBackPressedSimpleHoneyBeeMapNavigation(this,admobInterstitialNav)
+        mediationBackPressedSimpleHoneyBeeMapNavigation(this, admobInterstitialNav)
     }
 
     fun shareApp(mContext: Context) {
@@ -234,6 +242,11 @@ class SettingsActivity : AppCompatActivity() {
         binding.soundEffectTV.text = getString(R.string.sound_effects)
         binding.routeTrackingTV.text = getString(R.string.route_tracking_on_map)
         binding.shareAppTV.text = getString(R.string.shape_app)
+        binding.titleUnits1.text = getString(R.string.select_speed_units)
+        binding.titleThemes1.text = getString(R.string.theme_appearance)
+        binding.titleHistory.text = getString(R.string.traveling_history)
+        binding.titleMax.text = getString(R.string.max_speed_limit)
+        binding.titleLanguage.text = getString(R.string.app_language)
 
     }
 

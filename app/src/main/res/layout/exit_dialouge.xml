@@ -25,7 +25,8 @@
         app:layout_constraintEnd_toEndOf="@+id/main_card"
         app:layout_constraintStart_toStartOf="@+id/main_card"
         app:layout_constraintTop_toTopOf="@id/main_card"
-        app:srcCompat="@drawable/exit_emoji" />
+        app:srcCompat="@drawable/exit_emoji"
+        app:tint="@color/greenColor" />
 
     <TextView
         android:id="@+id/titletxt"
@@ -35,7 +36,7 @@
         android:elevation="2dp"
         android:fontFamily="@font/poppins_bold"
         android:text="@string/exit_app"
-        android:textColor="@color/redColor"
+        android:textColor="@color/greenColor"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/main_card"
         app:layout_constraintStart_toStartOf="@+id/main_card"
@@ -57,7 +58,7 @@
 
     <LinearLayout
         android:layout_width="0sp"
-        android:layout_height="36sp"
+        android:layout_height="40sp"
         android:layout_marginHorizontal="45sp"
         android:layout_marginTop="26sp"
         android:elevation="2sp"
@@ -66,24 +67,49 @@
         app:layout_constraintStart_toStartOf="@id/main_card"
         app:layout_constraintTop_toBottomOf="@id/detailTV">
 
-        <Button
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnNo"
             android:layout_width="0sp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/solid_shape"
-            android:text="@string/no"
-            android:textColor="@color/blueColor" />
+            app:cardBackgroundColor="@color/greenColor"
+            app:cardCornerRadius="8sp"
+            app:strokeWidth="0sp">
 
-        <Button
+            <TextView
+                android:id="@+id/tvNo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:paddingTop="3dp"
+                android:text="@string/no"
+                android:textColor="@color/blueColor"
+                android:textSize="@dimen/_11sdp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnYes"
             android:layout_width="0sp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:layout_marginStart="8sp"
-            android:background="@drawable/stroke_shape"
-            android:text="@string/yes"
-            android:textColor="@color/white" />
+            android:layout_weight="1"
+            app:cardBackgroundColor="@color/blueColor"
+            app:cardCornerRadius="8sp"
+            app:strokeColor="@color/greenColor"
+            app:strokeWidth="1dp">
+
+            <TextView
+                android:id="@+id/tvYes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:paddingTop="3dp"
+                android:text="@string/yes"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_11sdp" />
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

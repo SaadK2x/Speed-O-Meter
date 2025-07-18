@@ -46,7 +46,7 @@
         <ImageView
             android:layout_width="@dimen/_17sdp"
             android:layout_height="@dimen/_17sdp"
-            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginStart="@dimen/_17sdp"
             android:contentDescription="@string/select_speed_units"
             android:src="@drawable/car_icon" />
 
@@ -54,7 +54,7 @@
             android:id="@+id/titleDriving"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="3dp"
             android:layout_weight="1"
             android:fontFamily="@font/poppins_medium"
@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_17sdp"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center_vertical"
             android:text=" km/h"
@@ -103,7 +103,7 @@
         <ImageView
             android:layout_width="@dimen/_17sdp"
             android:layout_height="@dimen/_17sdp"
-            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginStart="@dimen/_17sdp"
             android:contentDescription="@string/select_speed_units"
             android:src="@drawable/cycle_icon" />
 
@@ -111,7 +111,7 @@
             android:id="@+id/titleCycling"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="3dp"
             android:layout_weight="1"
             android:fontFamily="@font/poppins_medium"
@@ -137,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_17sdp"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center_vertical"
             android:text=" km/h"
@@ -160,7 +160,7 @@
         <ImageView
             android:layout_width="@dimen/_17sdp"
             android:layout_height="@dimen/_17sdp"
-            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginStart="@dimen/_17sdp"
             android:contentDescription="@string/select_speed_units"
             android:src="@drawable/walk_icon" />
 
@@ -168,7 +168,7 @@
             android:id="@+id/titleWalking"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="3dp"
             android:layout_weight="1"
             android:fontFamily="@font/poppins_medium"
@@ -194,7 +194,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_17sdp"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center_vertical"
             android:text=" km/h"
@@ -217,7 +217,7 @@
         <LinearLayout
             android:layout_width="0sp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_17sdp"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="vertical">
@@ -251,7 +251,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginVertical="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_14sdp"
             android:background="@drawable/units_shape"
             android:orientation="horizontal">
 
@@ -272,7 +272,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
                 android:text="km/h"
-                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_gravity="bottom"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_9sdp" />

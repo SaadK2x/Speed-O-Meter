@@ -15,6 +15,7 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.os.Build
@@ -27,6 +28,7 @@ import android.view.Window
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RemoteViews
 import android.widget.TextView
@@ -38,6 +40,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -659,14 +662,23 @@ class MainActivity : AppCompatActivity() {
         dialog.requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         dialog.setContentView(R.layout.exit_dialouge)
         dialog.setCancelable(true)
+        val sp= SharedPreferenceHelperClass(this)
+        val color=sp.getString("AppColor", "#0DCF31")
+        val emojiIcon = dialog.findViewById<ImageView>(R.id.emojiIcon)
         val titletxt = dialog.findViewById<TextView>(R.id.titletxt)
         val detailTV = dialog.findViewById<TextView>(R.id.detailTV)
-        val yesBtn = dialog.findViewById<Button>(R.id.btnYes)
-        val noBtn = dialog.findViewById<Button>(R.id.btnNo)
+        val yesBtn = dialog.findViewById<MaterialCardView>(R.id.btnYes)
+        val noBtn = dialog.findViewById<MaterialCardView>(R.id.btnNo)
+        titletxt.setTextColor(Color.parseColor(color))
+        noBtn.setCardBackgroundColor(Color.parseColor(color))
+        yesBtn.setStrokeColor(Color.parseColor(color))
+        emojiIcon.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
+        val tvYes = dialog.findViewById<TextView>(R.id.tvYes)
+        val tvNo = dialog.findViewById<TextView>(R.id.tvNo)
         titletxt.text = getString(R.string.exit_app)
         detailTV.text = getString(R.string.exit_details)
-        yesBtn.text = getString(R.string.yes)
-        noBtn.text = getString(R.string.no)
+        tvYes.text = getString(R.string.yes)
+        tvNo.text = getString(R.string.no)
         yesBtn.setOnClickListener {
             Constants.isStart = false
             unbindService("Stop", true)

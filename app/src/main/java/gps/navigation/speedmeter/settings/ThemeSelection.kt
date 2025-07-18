@@ -35,15 +35,17 @@ class ThemeSelection : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        mediationBackPressedSimpleHoneyBeeMapNavigation(this,admobInterstitialNav)
+        mediationBackPressedSimpleHoneyBeeMapNavigation(this, admobInterstitialNav)
     }
 
     private fun squareXGPSBannerAdsSmall() {
         val adContainer = findViewById<LinearLayout>(R.id.adContainer)
         val smallAd = findViewById<LinearLayout>(R.id.smallAd)
-        SpeedMeterLoadAds.loadBanner(
-            adContainer, smallAd, this
+
+        SpeedMeterLoadAds.loadAdMobIntroMediumBannerAd(
+            this, adContainer, smallAd
         )
+
     }
 
     override fun onResume() {
@@ -64,8 +66,8 @@ class ThemeSelection : AppCompatActivity() {
             }
         }
         val color = sp.getString("AppColor", "#0DCF31")
-        binding.titleUnits.text = getString(R.string.themes)
-        binding.titleTxt.text = getString(R.string.select_theme)
+        binding.titleUnits.text = getString(R.string.select_theme)
+        binding.titleTxt.text = getString(R.string.themes)
         binding.doneTV.text = getString(R.string.done)
         binding.btnDone.setCardBackgroundColor(Color.parseColor(color))
         binding.colorsRv.layoutManager =

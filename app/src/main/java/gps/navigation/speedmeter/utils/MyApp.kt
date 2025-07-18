@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.multidex.MultiDex
+import com.farimarwat.grizzly.GrizzlyMonitorBuilder
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.database.DataSnapshot
@@ -45,14 +46,13 @@ class MyApp : Application() {
         val firebaseCrashlytics = FirebaseCrashlytics.getInstance()
 
         // Initialize and start GrizzlyMonitor with default settings
-        /*  GrizzlyMonitorBuilder(this)
-              .withTicker(500L) // Set ticker interval (1-500ms)
+          GrizzlyMonitorBuilder(this)
               .withThreshold(4500L) // Set ANR threshold (1000-4500ms)
               .withTitle("App Error") // Set custom crash dialog title
               .withMessage("An error occurred. Please restart.") // Set custom crash dialog message
               .withFirebaseCrashLytics(firebaseCrashlytics) // Integrate with Firebase Crashlytics
               .build()
-              .start()*/
+              .start()
 
 
 

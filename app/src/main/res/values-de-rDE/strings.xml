@@ -44,6 +44,15 @@
     <string name="no">Nein</string>
     <string name="saving">Speichern</string>
     <string name="lets_start">Lass uns anfangen</string>
+    <string name="select_speed_units">Geschwindigkeitseinheit auswählen</string>
+    <string name="theme_appearance"><![CDATA[Thema & Erscheinungsbild]]></string>
+    <string name="traveling_history">Reiseverlauf</string>
+    <string name="max_speed_limit">Höchstgeschwindigkeit</string>
+    <string name="app_language">App-Sprache</string>
+    <string name="speed_units">Geschwindigkeitseinheiten</string>
+    <string name="themes">Themen</string>
+    <string name="speed_limit">Geschwindigkeitsbegrenzung</string>
+    <string name="tap_on_digit_to_edit">Zum Bearbeiten auf die Ziffer tippen</string>
 
 
 </resources>

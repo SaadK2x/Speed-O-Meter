@@ -24,6 +24,7 @@ class MaxSpeed : AppCompatActivity() {
             val sp = SharedPreferenceHelperClass(this)
             sp.putString("modeSpeed", modeSpeed)
             sp.putInt("speedLimit", binding.speedLimit.text.toString().toInt())
+            onBackPressed()
         }
 
 
@@ -34,8 +35,10 @@ class MaxSpeed : AppCompatActivity() {
 
             binding.speedLimit.setText(binding.limitDriving.text.toString())
             binding.btnDriving.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
-            binding.btnCycling.backgroundTintList = ColorStateList.valueOf(getColor(R.color.fadeBlue))
-            binding.btnWalking.backgroundTintList = ColorStateList.valueOf(getColor(R.color.fadeBlue))
+            binding.btnCycling.backgroundTintList =
+                ColorStateList.valueOf(getColor(R.color.fadeBlue))
+            binding.btnWalking.backgroundTintList =
+                ColorStateList.valueOf(getColor(R.color.fadeBlue))
             sp.putString("modeSpeed", modeSpeed)
             sp.putInt("speedLimit", binding.speedLimit.text.toString().toInt())
 
@@ -46,8 +49,10 @@ class MaxSpeed : AppCompatActivity() {
             modeSpeed = "Walking"
             binding.speedLimit.setText(binding.limitWalking.text.toString())
             binding.btnWalking.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
-            binding.btnDriving.backgroundTintList = ColorStateList.valueOf(getColor(R.color.fadeBlue))
-            binding.btnCycling.backgroundTintList = ColorStateList.valueOf(getColor(R.color.fadeBlue))
+            binding.btnDriving.backgroundTintList =
+                ColorStateList.valueOf(getColor(R.color.fadeBlue))
+            binding.btnCycling.backgroundTintList =
+                ColorStateList.valueOf(getColor(R.color.fadeBlue))
             sp.putString("modeSpeed", modeSpeed)
             sp.putInt("speedLimit", binding.speedLimit.text.toString().toInt())
         }
@@ -57,14 +62,13 @@ class MaxSpeed : AppCompatActivity() {
             modeSpeed = "Cycling"
             binding.speedLimit.setText(binding.limitCycling.text.toString())
             binding.btnCycling.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
-            binding.btnDriving.backgroundTintList = ColorStateList.valueOf(getColor(R.color.fadeBlue))
-            binding.btnWalking.backgroundTintList = ColorStateList.valueOf(getColor(R.color.fadeBlue))
+            binding.btnDriving.backgroundTintList =
+                ColorStateList.valueOf(getColor(R.color.fadeBlue))
+            binding.btnWalking.backgroundTintList =
+                ColorStateList.valueOf(getColor(R.color.fadeBlue))
             sp.putString("modeSpeed", modeSpeed)
             sp.putInt("speedLimit", binding.speedLimit.text.toString().toInt())
 
-        }
-        binding.btnDone.setOnClickListener {
-            onBackPressed()
         }
         binding.backBtn.setOnClickListener {
             onBackPressed()
@@ -73,13 +77,12 @@ class MaxSpeed : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        mediationBackPressedSimpleHoneyBeeMapNavigation(this,admobInterstitialNav)
+        mediationBackPressedSimpleHoneyBeeMapNavigation(this, admobInterstitialNav)
     }
 
     override fun onResume() {
         super.onResume()
         settingTextView()
-
 
 
     }
@@ -100,21 +103,24 @@ class MaxSpeed : AppCompatActivity() {
             limit = 100
         }
 
-        binding.speedLimit.setText( limit.toString())
+        binding.speedLimit.setText(limit.toString())
         binding.btnDone.setCardBackgroundColor(Color.parseColor(color))
 
 
         when (mode) {
             "Driving" -> {
-                binding.btnDriving.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+                binding.btnDriving.backgroundTintList =
+                    ColorStateList.valueOf(Color.parseColor(color))
             }
 
             "Walking" -> {
-                binding.btnWalking.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+                binding.btnWalking.backgroundTintList =
+                    ColorStateList.valueOf(Color.parseColor(color))
             }
 
             "Cycling" -> {
-                binding.btnCycling.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+                binding.btnCycling.backgroundTintList =
+                    ColorStateList.valueOf(Color.parseColor(color))
             }
 
         }

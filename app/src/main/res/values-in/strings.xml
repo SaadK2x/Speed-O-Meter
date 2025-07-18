@@ -44,6 +44,16 @@
     <string name="no">Tidak</string>
     <string name="saving">Menyimpan</string>
     <string name="lets_start">Ayo Mulai</string>
+    <string name="select_speed_units">Pilih satuan kecepatan</string>
+    <string name="theme_appearance"><![CDATA[Tema & Tampilan]]></string>
+    <string name="traveling_history">Riwayat perjalanan</string>
+    <string name="max_speed_limit">Batas kecepatan maksimum</string>
+    <string name="app_language">Bahasa aplikasi</string>
+    <string name="speed_units">Satuan kecepatan</string>
+    <string name="themes">Tema</string>
+    <string name="speed_limit">Batas kecepatan</string>
+    <string name="tap_on_digit_to_edit">Ketuk angka untuk mengedit</string>
+
 
 
 </resources>
