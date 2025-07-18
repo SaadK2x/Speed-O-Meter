@@ -1,6 +1,9 @@
 package gps.navigation.speedmeter.ads;
 
 
+import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.preReLoadAdsLiveEarth;
+import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.setHandlerForAd;
+import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.shouldGoForAds;
 import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.splashInterstitial;
 import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.videoInterstitial;
 
@@ -17,11 +20,22 @@ import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import gps.navigation.speedmeter.utils.Constants;
+
 public class SpeedMeterShowAds {
 
     public static void mediationBackPressedSimpleHoneyBeeMapNavigation(final Activity context, final InterstitialAd mInterstitialAd) {
 
-        if (adShowCounter(context)) {
+        if (Constants.INSTANCE.getIsAppOnTimer()) {
+            backPressForTimer(context, mInterstitialAd);
+        } else {
+            backPressForClick(context, mInterstitialAd);
+        }
+    }
+
+    public static void backPressForClick(final Activity context, final InterstitialAd mInterstitialAd) {
+        if (adShowCounter()) {
+
             if (mInterstitialAd != null) {
                 mInterstitialAd.show(context);
                 mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
@@ -29,9 +43,9 @@ public class SpeedMeterShowAds {
                     public void onAdDismissedFullScreenContent() {
                         super.onAdDismissedFullScreenContent();
                         SpeedMeterLoadAds.canShowAppOpen = true;
-                        SpeedMeterLoadAds.admobInterstitialAdHoneyBee = null;
+                        SpeedMeterLoadAds.admobInterstitialNav = null;
                         SpeedMeterLoadAds.adClickCounter = 0;
-                        //  HoneyBeeMapNavigationLoadAds.preReLoadAdsHoneyBee(context);
+                        preReLoadAdsLiveEarth(context);
                         context.finish();
                     }
 
@@ -44,15 +58,18 @@ public class SpeedMeterShowAds {
                 });
 
             } else {
+                preReLoadAdsLiveEarth(context);
                 context.finish();
             }
         } else {
+            preReLoadAdsLiveEarth(context);
             context.finish();
         }
     }
 
-    public static void backpressSpecificActivity(final Activity context, final InterstitialAd mInterstitialAd) {
-        if (adShowCounter(context)) {
+    public static void backPressForTimer(final Activity context, final InterstitialAd mInterstitialAd) {
+        if (shouldGoForAds) {
+
             if (mInterstitialAd != null) {
                 mInterstitialAd.show(context);
                 mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
@@ -60,9 +77,9 @@ public class SpeedMeterShowAds {
                     public void onAdDismissedFullScreenContent() {
                         super.onAdDismissedFullScreenContent();
                         SpeedMeterLoadAds.canShowAppOpen = true;
-                        SpeedMeterLoadAds.admobInterstitialAdHoneyBee = null;
-                        SpeedMeterLoadAds.adClickCounter = 0;
-                        //  HoneyBeeMapNavigationLoadAds.preReLoadAdsHoneyBee(context);
+                        SpeedMeterLoadAds.admobInterstitialNav = null;
+                        preReLoadAdsLiveEarth(context);
+                        setHandlerForAd();
                         context.finish();
                     }
 
@@ -75,29 +92,37 @@ public class SpeedMeterShowAds {
                 });
 
             } else {
+                preReLoadAdsLiveEarth(context);
                 context.finish();
             }
         } else {
+            preReLoadAdsLiveEarth(context);
             context.finish();
         }
     }
 
     public static void directAdsSpecificModulesSquareXNavigation(final Context context, final InterstitialAd mInterstitialAd, final Intent intent) {
-        if (adShowCounter(context)) {
-            Log.d("ConstantAdsLoadAds", "showing");
+        if (Constants.INSTANCE.getIsAppOnTimer()) {
+            forTimerAds(context, mInterstitialAd, intent);
+        } else {
+            forClickAds(context, mInterstitialAd, intent);
+        }
+    }
+
+    public static void forClickAds(final Context context, final InterstitialAd mInterstitialAd, final Intent intent) {
+        if (adShowCounter()) {
             if (mInterstitialAd != null) {
-                Log.d("ConstantAdsLoadAds", "not null");
                 mInterstitialAd.show((Activity) context);
                 mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
                     public void onAdDismissedFullScreenContent() {
                         super.onAdDismissedFullScreenContent();
                         SpeedMeterLoadAds.canShowAppOpen = true;
-                        SpeedMeterLoadAds.admobInterstitialAdMain = null;
-                        SpeedMeterLoadAds.adClickCounter = 1;
-                        // HoneyBeeMapNavigationLoadAds.preReLoadAdsHoneyBee(context);
+                        SpeedMeterLoadAds.admobInterstitialNav = null;
+                        SpeedMeterLoadAds.adClickCounter = 0;
+                        preReLoadAdsLiveEarth(context);
                         //  HoneyBeeMapNavigationLoadAds.setHandlerForAd();
-                        // preReLoadAdsHoneyBee(context);
+                        Log.d("ConstantAdsLoadAds", "onAdDismissedFullScreenContent: " + SpeedMeterLoadAds.next_ads_time);
                         context.startActivity(intent);
                     }
 
@@ -108,15 +133,44 @@ public class SpeedMeterShowAds {
                     }
                 });
             } else {
-                Log.d("ConstantAdsLoadAds", "ctr is not true");
-                //preReLoadAdsHoneyBee(context);
+                preReLoadAdsLiveEarth(context);
                 context.startActivity(intent);
             }
-
-
         } else {
-            Log.d("ConstantAdsLoadAds", "ctr is not true");
-            // preReLoadAdsHoneyBee(context);
+            preReLoadAdsLiveEarth(context);
+            context.startActivity(intent);
+        }
+    }
+
+    public static void forTimerAds(final Context context, final InterstitialAd mInterstitialAd, final Intent intent) {
+        if (shouldGoForAds) {
+            if (mInterstitialAd != null) {
+                mInterstitialAd.show((Activity) context);
+                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        super.onAdDismissedFullScreenContent();
+                        SpeedMeterLoadAds.canShowAppOpen = true;
+                        SpeedMeterLoadAds.admobInterstitialNav = null;
+
+                        preReLoadAdsLiveEarth(context);
+                        setHandlerForAd();
+                        Log.d("ConstantAdsLoadAds", "onAdDismissedFullScreenContent: " + SpeedMeterLoadAds.next_ads_time);
+                        context.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        super.onAdShowedFullScreenContent();
+                        SpeedMeterLoadAds.canShowAppOpen = false;
+                    }
+                });
+            } else {
+                preReLoadAdsLiveEarth(context);
+                context.startActivity(intent);
+            }
+        } else {
+            preReLoadAdsLiveEarth(context);
             context.startActivity(intent);
         }
     }
@@ -144,23 +198,12 @@ public class SpeedMeterShowAds {
         context.startActivity(intent);
     }
 
-    public static Boolean adShowCounter(Context context) {
-
+    public static Boolean adShowCounter() {
         SpeedMeterLoadAds.adClickCounter++;
         Log.d("adShowCounter", " " + SpeedMeterLoadAds.adClickCounter);
-      /*  if (AiPhotoLoadAds.adClickCounter == 2) {
-            Log.d("adShowCounter", "going to load");
-            AiPhotoLoadAds.preReLoadAdsHoneyBee(context);
-            return false;
-        }*/
-        if (SpeedMeterLoadAds.adClickCounter == 1) {
-            Log.d("adShowCounter", "one:  1  show");
-            Log.d("adShowCounter", " " + SpeedMeterLoadAds.adClickCounter);
-            return true;
-
-        } else if (SpeedMeterLoadAds.adClickCounter > SpeedMeterLoadAds.adShowAfter) {
-            SpeedMeterLoadAds.adClickCounter = 1;
+        if (SpeedMeterLoadAds.adClickCounter >= SpeedMeterLoadAds.adShowAfter) {
             Log.d("adShowCounter", "two:   >  show ");
+            SpeedMeterLoadAds.adClickCounter = 0;
             return true;
         } else {
             Log.d("adShowCounter", " three  else  No");

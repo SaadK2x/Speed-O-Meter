@@ -10,6 +10,8 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +22,9 @@ import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.databinding.FragmentDigitalBinding
 import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import gps.navigation.speedmeter.utils.Constants
-import gps.navigation.speedmeter.utils.Constants.getDoubleDigit
+import gps.navigation.speedmeter.utils.Constants.countAnimKMH
+import gps.navigation.speedmeter.utils.Constants.countAnimKNOTS
+import gps.navigation.speedmeter.utils.Constants.countAnimMPH
 import gps.navigation.speedmeter.utils.Constants.viewScaling
 
 class DigitalFragment : Fragment() {
@@ -32,6 +36,9 @@ class DigitalFragment : Fragment() {
 
     var isResume = true
     var isStop = true
+    var startKMH = 0
+    var startMPH = 0f
+    var startKNOTS = 0f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,7 +90,9 @@ class DigitalFragment : Fragment() {
                 "KMH" -> {
                     binding.distance.text = distance
                     binding.avgSpeed.text = avgSpeed
-                    binding.speedTV.text = getDoubleDigit(speed!!.toInt())
+                    countAnimKMH(startKMH, speed!!.toInt(), text = binding.speedTV)
+
+                    startKMH = speed.toInt()
                 }
 
                 "MPH" -> {
@@ -91,7 +100,10 @@ class DigitalFragment : Fragment() {
                         Constants.kmTomi(distance!!.toFloat()).toInt().toString()
                     binding.avgSpeed.text =
                         Constants.kmhToMph(avgSpeed!!.toFloat()).toInt().toString()
-                    binding.speedTV.text = getDoubleDigit(Constants.kmhToMph(speed!!).toInt())
+
+                    countAnimMPH(startMPH, speed!!, text = binding.speedTV)
+
+                    startMPH = Constants.kmhToMph(speed)
                 }
 
                 "KNOT" -> {
@@ -99,7 +111,9 @@ class DigitalFragment : Fragment() {
                         Constants.kmTonm(distance!!.toFloat()).toInt().toString()
                     binding.avgSpeed.text =
                         Constants.kmhToKnots(avgSpeed!!.toFloat()).toInt().toString()
-                    binding.speedTV.text = getDoubleDigit(Constants.kmhToKnots(speed!!).toInt())
+                    countAnimKNOTS(startKNOTS, speed!!, text = binding.speedTV)
+
+                    startKNOTS = Constants.kmhToKnots(speed)
                 }
             }
 
@@ -154,10 +168,12 @@ class DigitalFragment : Fragment() {
                     viewScaling(1f, 0f, false, binding.pauseBtn)
                     viewScaling(1f, 0f, false, binding.resetBtn)
                     binding.time.text = "00:00:00"
-                    binding.speedTV.text = "00"
                     binding.distance.text = "0"
                     binding.maxSpeed.text = "0"
                     binding.avgSpeed.text = "0"
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        binding.speedTV.text = "00"
+                    }, 1500)
                 }
             }
         }
@@ -194,7 +210,7 @@ class DigitalFragment : Fragment() {
         val sp = SharedPreferenceHelperClass(requireContext())
         Constants.setLocale(requireActivity(), sp.getString("language", "en"))
         updatingText()
-        settingColors(sp.getString("AppColor", "#FBC100"))
+        settingColors(sp.getString("AppColor", "#0DCF31"))
         changeUnit(sp.getString("Unit", "KMH"))
     }
 

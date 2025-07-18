@@ -223,7 +223,9 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                             icon = activity!!.bitmapFromDrawableRes(R.drawable.dest_icon)
                         )
                     }
-                    markerManger!!.addMarker(startMarker!!)
+                    if (startMarker != null) {
+                        markerManger!!.addMarker(startMarker!!)
+                    }
 
                     points.add(
                         Point.fromLngLat(
@@ -388,7 +390,8 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                             IntentFilter("ACTION_CONSTRAINTS_UPDATE")
                         )
                     }
-                } else if (start == "Stop") {
+                }
+                else if (start == "Stop") {
                     isStop = true
                     activity?.unregisterReceiver(speedUpdateReceiver)
                     activity?.unregisterReceiver(latlngUpdateReceiver)
@@ -474,7 +477,9 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                                             position = sydney,
                                             icon = requireContext().bitmapFromDrawableRes(R.drawable.source_icon),
                                         )
-                                        markerManger!!.addMarker(previousMarker!!)
+                                        if (previousMarker != null) {
+                                            markerManger!!.addMarker(previousMarker!!)
+                                        }
                                         Constants.zoomInAnimation(
                                             Constants.currentLatitude,
                                             Constants.currentLongitude,
@@ -742,9 +747,9 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
 
         val sp = SharedPreferenceHelperClass(requireContext())
         Constants.setLocale(requireActivity(), sp.getString("language", "en"))
-        isResume= !sharedPrefrences!!.getBoolean("isPaused", false)
+        isResume = !sharedPrefrences!!.getBoolean("isPaused", false)
         updatingText()
-        settingColors(sp.getString("AppColor", "#FBC100"))
+        settingColors(sp.getString("AppColor", "#0DCF31"))
         changeUnit(sp.getString("Unit", "KMH"))
         points = sp.getPoints("mapPoints")
         CoroutineScope(Dispatchers.IO).launch {
@@ -804,8 +809,7 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
             markerManger?.addMarker(previousMarker!!)
 
             setAddPolyline()
-        }
-        else if (previousMarker == null && Constants.currentLongitude != 0.0 && Constants.currentLatitude != 0.0) {
+        } else if (previousMarker == null && Constants.currentLongitude != 0.0 && Constants.currentLatitude != 0.0) {
             Log.d("LAT_TAGG", "Resume: latitude ${Constants.currentLongitude}")
             val sydney = Point.fromLngLat(Constants.currentLongitude, Constants.currentLatitude)
             previousMarker = Marker(

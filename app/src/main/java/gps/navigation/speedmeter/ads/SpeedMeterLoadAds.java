@@ -30,6 +30,7 @@ import gps.navigation.speedmeter.utils.MyApp;
 public class SpeedMeterLoadAds {
     public static String appid_admob_inApp = MyApp.Companion.getStr(R.string.admob_ad_id);
     public static String interstitial_admob_inApp = BuildConfig.admob_interstitial_id;
+    public static String nav_interstitial = BuildConfig.nav_interstitial;
     public static String banner_admob_inApp = BuildConfig.admob_banner_id;
     public static String app_open_ad_id_admob = BuildConfig.app_open_ad_id_admob;
     public static String app_open_splash_ad_id_admob = BuildConfig.app_open_ad_id_admob_splash;
@@ -44,8 +45,7 @@ public class SpeedMeterLoadAds {
 
     public static boolean shouldGoForAds = true;
 
-    public static InterstitialAd admobInterstitialAdHoneyBee;
-    public static InterstitialAd admobInterstitialAdMain;
+    public static InterstitialAd admobInterstitialNav;
     public static InterstitialAd videoInterstitial;
     public static InterstitialAd splashInterstitial;
     public static boolean canReLoadedAdMob = false;
@@ -96,7 +96,6 @@ public class SpeedMeterLoadAds {
                         super.onAdFailedToLoad(loadAdError);
                         Log.d("ConstantAdsLoadAds", "Bannen onAdFailedToLoad: " + loadAdError.toString());
                         mAdView.destroy();
-                        mView.setVisibility(View.GONE);
                     }
 
                 });
@@ -106,8 +105,6 @@ public class SpeedMeterLoadAds {
                     e.printStackTrace();
                 }
             }
-        } else {
-            mView.setVisibility(View.GONE);
         }
     }
 
@@ -172,8 +169,6 @@ public class SpeedMeterLoadAds {
         if (billingHelper.shouldShowAds()) {
             SpeedMeterLoadAds.loadHoneyBeeMapNavigationAdMobBanner(adContainer, mView, context, tv);
             //loadGlobeMapBannerMax(adContainer, mView,context);
-        } else {
-            mView.setVisibility(View.GONE);
         }
 
 
@@ -212,6 +207,8 @@ public class SpeedMeterLoadAds {
                 videoCallback.onFailed();
             }
 
+        }else{
+            videoCallback.onFailed();
         }
     }
 
@@ -254,26 +251,53 @@ public class SpeedMeterLoadAds {
     }
 
 
+    public static void preLoadAdsLiveEarth(final Context context) {
+        SpeedMeterBillingHelper billingHelper = new SpeedMeterBillingHelper(context);
+        if (billingHelper.shouldShowAds()) {
+            //admobeload
+            if (admobInterstitialNav == null) {
+                canReLoadedAdMob = false;
+                InterstitialAd.load(context, nav_interstitial, new AdRequest.Builder().build(), new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        super.onAdLoaded(interstitialAd);
+                        Log.d("ConstantAdsLoadAds", "Admob loaded");
+                        canReLoadedAdMob = true;
+                        admobInterstitialNav = interstitialAd;
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                        Log.d("ConstantAdsLoadAds", "Admob Faild: " + loadAdError);
+                        canReLoadedAdMob = true;
+                        admobInterstitialNav = null;
+                    }
+                });
+            } else {
+                Log.d("ConstantAdsLoadAds", "admobe AlReady loaded");
+            }
+
+        }
+    }
     public static void preReLoadAdsLiveEarth(final Context context) {
 
 
         SpeedMeterBillingHelper billingHelper = new SpeedMeterBillingHelper(context);
         if (billingHelper.shouldShowAds()) {
-
-
             //admobeload
-            if (admobInterstitialAdHoneyBee != null) {
+            if (admobInterstitialNav != null) {
                 Log.d("ConstantAdsLoadAds", "admobe ReAlReady loaded");
             } else {
                 Log.d("ConstantAdsLoadAds", "canReLoadedAdMob " + canReLoadedAdMob);
 
-                InterstitialAd.load(context, SpeedMeterLoadAds.interstitial_admob_inApp, new AdRequest.Builder().build(), new InterstitialAdLoadCallback() {
+                InterstitialAd.load(context,nav_interstitial, new AdRequest.Builder().build(), new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                         super.onAdLoaded(interstitialAd);
                         Log.d("ConstantAdsLoadAds", "Admob Reloaded");
                         canReLoadedAdMob = true;
-                        admobInterstitialAdHoneyBee = interstitialAd;
+                        admobInterstitialNav = interstitialAd;
                     }
 
                     @Override
@@ -281,10 +305,9 @@ public class SpeedMeterLoadAds {
                         super.onAdFailedToLoad(loadAdError);
                         Log.d("ConstantAdsLoadAds", "Admob ReFaild: " + loadAdError.toString());
                         canReLoadedAdMob = true;
-                        admobInterstitialAdHoneyBee = null;
+                        admobInterstitialNav = null;
                     }
                 });
-
             }
         }
     }

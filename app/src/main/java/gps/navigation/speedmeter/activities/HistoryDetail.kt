@@ -124,7 +124,7 @@ class HistoryDetail : AppCompatActivity(), MapLoadedCallback {
     override fun onResume() {
         super.onResume()
         val sp = SharedPreferenceHelperClass(this)
-        settingColors(sp.getString("AppColor", "#FBC100"))
+        settingColors(sp.getString("AppColor", "#0DCF31"))
     }
 
     override fun onPause() {

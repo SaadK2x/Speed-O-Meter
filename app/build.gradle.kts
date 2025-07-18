@@ -20,6 +20,11 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -42,6 +47,11 @@ android {
                 "String",
                 "admob_interstitial_id",
                 "\"ca-app-pub-4016151566711692/9966176235\""
+            )
+            buildConfigField(
+                "String",
+                "nav_interstitial",
+                "\"ca-app-pub-4016151566711692/5825353309\""
             )
             buildConfigField(
                 "String",
@@ -90,6 +100,11 @@ android {
             buildConfigField(
                 "String",
                 "admob_interstitial_id",
+                "\"ca-app-pub-3940256099942544/1033173712\""
+            )
+            buildConfigField(
+                "String",
+                "nav_interstitial",
                 "\"ca-app-pub-3940256099942544/1033173712\""
             )
 
@@ -180,6 +195,7 @@ dependencies {
     implementation("androidx.multidex:multidex:2.0.1")
     implementation(platform("com.google.firebase:firebase-bom:33.16.0"))
     implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation ("com.google.firebase:firebase-config-ktx")
     implementation("io.github.farimarwat:grizzly:2.4.2")
     //Meta Bidding
     implementation("com.google.ads.mediation:facebook:6.20.0.0")

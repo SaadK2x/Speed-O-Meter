@@ -52,4 +52,13 @@
     <string name="no">No</string>
     <string name="saving">Saving</string>
     <string name="lets_start">Let\'s Start</string>
+    <string name="select_speed_units">Select Speed Units</string>
+    <string name="theme_appearance"><![CDATA[Theme & Appearance]]></string>
+    <string name="traveling_history">Traveling History</string>
+    <string name="max_speed_limit">Max Speed Limit</string>
+    <string name="app_language">App Language</string>
+    <string name="speed_units">Speed Units</string>
+    <string name="themes">Themes</string>
+    <string name="speed_limit">Speed Limit</string>
+    <string name="tap_on_digit_to_edit">Tap on Digit To Edit</string>
 </resources>

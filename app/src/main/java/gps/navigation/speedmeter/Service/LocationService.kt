@@ -73,9 +73,11 @@ class LocationService : Service(), LocationListener, GoogleApiClient.ConnectionC
     }
 
     protected fun stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(
-            mGoogleApiClient!!, this
-        )
+        if (mGoogleApiClient!=null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(
+                mGoogleApiClient!!, this
+            )
+        }
         distance = 0.0
     }
 

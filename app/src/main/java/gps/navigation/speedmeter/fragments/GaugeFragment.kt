@@ -198,7 +198,7 @@ class GaugeFragment : Fragment() {
         val sp = SharedPreferenceHelperClass(requireContext())
         Constants.setLocale(requireActivity(), sp.getString("language", "en"))
         updatingText()
-        settingColors(sp.getString("AppColor", "#FBC100"))
+        settingColors(sp.getString("AppColor", "#0DCF31"))
         changeUnit(sp.getString("Unit", "KMH"))
 
     }

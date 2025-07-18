@@ -1,5 +1,6 @@
 package gps.navigation.speedmeter.utils
 
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
@@ -17,6 +18,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
@@ -58,6 +60,7 @@ object Constants {
     var currentAddress: String = "Current Location"
     var mapLoaded: Boolean = false
     var isStart: Boolean = false
+    var IsAppOnTimer = false
     var isSATELLITE: Boolean = true
     var mediaPlayer: MediaPlayer? = null
 
@@ -79,12 +82,14 @@ object Constants {
 
 
     var listTheme = arrayListOf(
-        ThemeModel("#FBC100", true),
-        ThemeModel("#3680DC"), ThemeModel("#ADFF00"),
-        ThemeModel("#FF6E41"), ThemeModel("#F65150"),
-        ThemeModel("#FF9C00"), ThemeModel("#FF7600"),
-        ThemeModel("#FF4200"), ThemeModel("#BF7EFF"),
-        ThemeModel("#FFFFFF")
+        ThemeModel("#0DCF31", true), ThemeModel("#00C0FB"),
+        ThemeModel("#E600FB"), ThemeModel("#FB0004"),
+        ThemeModel("#43FB00"), ThemeModel("#4B00FB"),
+        ThemeModel("#FB008E"), ThemeModel("#FB7500"),
+        ThemeModel("#E0115F"), ThemeModel("#50C878"),
+        ThemeModel("#4B0082"), ThemeModel("#00FFFF"),
+        ThemeModel("#008080"), ThemeModel("#6ABD43"),
+        ThemeModel("#FAA318"), ThemeModel("#EE72FF")
     )
 
     fun getDoubleDigit(value: Int): String {
@@ -375,5 +380,44 @@ object Constants {
                 return number
             }
         }
+    }
+
+    fun countAnimKMH(
+        start: Int, end: Int, duration: Long = 1000L,
+        text: TextView
+    ) {
+        val animator = ValueAnimator.ofInt(start, end)
+        animator.duration = duration
+        animator.addUpdateListener {
+            val currentValue = it.animatedValue as Int
+            text.text = getDoubleDigit(currentValue)
+        }
+        animator.start()
+    }
+
+    fun countAnimMPH(
+        start: Float, end: Float, duration: Long = 1000L,
+        text: TextView
+    ) {
+        val animator = ValueAnimator.ofFloat(start, end)
+        animator.duration = duration
+        animator.addUpdateListener {
+            val currentValue = it.animatedValue as Float
+            text.text = getDoubleDigit(kmhToMph(currentValue).toInt())
+        }
+        animator.start()
+    }
+
+    fun countAnimKNOTS(
+        start: Float, end: Float, duration: Long = 1000L,
+        text: TextView
+    ) {
+        val animator = ValueAnimator.ofFloat(start, end)
+        animator.duration = duration
+        animator.addUpdateListener {
+            val currentValue = it.animatedValue as Float
+            text.text = getDoubleDigit(kmhToKnots(currentValue).toInt())
+        }
+        animator.start()
     }
 }

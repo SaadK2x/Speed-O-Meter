@@ -7,7 +7,8 @@
     android:background="@color/blueColor"
     tools:context=".activities.SettingsActivity">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -15,799 +16,612 @@
         app:layout_constraintBottom_toTopOf="@id/smallAd"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:layout_margin="10sp"
+            android:contentDescription="@string/todo"
+            android:padding="7sp"
+            android:src="@drawable/previous_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/titleTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/settings"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/backBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/backBtn"
+            app:layout_constraintTop_toTopOf="@id/backBtn" />
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/backBtn">
 
-            <ImageView
-                android:id="@+id/backBtn"
-                android:layout_width="40sp"
-                android:layout_height="40sp"
-                android:layout_margin="10sp"
-                android:contentDescription="@string/todo"
-                android:padding="7sp"
-                android:src="@drawable/previous_icon"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/titleTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:text="@string/settings"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@id/backBtn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/backBtn"
-                app:layout_constraintTop_toTopOf="@id/backBtn" />
-
-            <androidx.core.widget.NestedScrollView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/backBtn">
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/speedUnitLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:background="@drawable/setting_shape"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/unitIcon"
+                        android:layout_width="@dimen/_17sdp"
+                        android:layout_height="@dimen/_17sdp"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:contentDescription="@string/select_speed_units"
+                        android:src="@drawable/unit_setting" />
+
+                    <TextView
+                        android:id="@+id/titleUnits1"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginTop="3dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/select_speed_units"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/unitsInner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:background="@drawable/setting_colored_shape"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="@dimen/_3sdp">
+
+                        <TextView
+                            android:id="@+id/selectedUnits"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_22sdp"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="km/h"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_9sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_8sdp"
+                            android:layout_height="@dimen/_8sdp"
+                            android:layout_marginStart="@dimen/_3sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:src="@drawable/forward_icon" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/themesLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/setting_shape"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/speedUnitLayout">
+
+                    <ImageView
+                        android:id="@+id/themeIcon"
+                        android:layout_width="@dimen/_17sdp"
+                        android:layout_height="@dimen/_17sdp"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:contentDescription="@string/select_speed_units"
+                        android:src="@drawable/theme_settings" />
+
+                    <TextView
+                        android:id="@+id/titleThemes1"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginTop="3dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/theme_appearance"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/themeInner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:background="@drawable/setting_colored_shape"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="@dimen/_3sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_marginEnd="@dimen/_3sdp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="Customize"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_9sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_8sdp"
+                            android:layout_height="@dimen/_8sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:src="@drawable/forward_icon" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/historyLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/setting_shape"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/themesLayout">
+
+                    <ImageView
+                        android:id="@+id/historyIcon"
+                        android:layout_width="@dimen/_17sdp"
+                        android:layout_height="@dimen/_17sdp"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:contentDescription="@string/select_speed_units"
+                        android:src="@drawable/history_settings" />
+
+                    <TextView
+                        android:id="@+id/titleHistory"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginTop="3dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/traveling_history"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/historyInner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        app:cardBackgroundColor="@color/fadeBlue"
+                        app:cardCornerRadius="@dimen/_17sdp"
+                        app:strokeColor="@color/greenColor"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingVertical="@dimen/_3sdp">
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_12sdp"
+                                android:layout_marginEnd="@dimen/_6sdp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:text="Tap View"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_9sdp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:layout_width="@dimen/_8sdp"
+                                android:layout_height="@dimen/_8sdp"
+                                android:layout_marginEnd="@dimen/_5sdp"
+                                android:src="@drawable/forward_icon" />
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/speedWarningLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/setting_shape"
+                    app:layout_constraintTop_toBottomOf="@+id/historyLayout">
 
+                    <LinearLayout
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/unitsLayout"
-                        android:layout_width="match_parent"
+                        android:id="@+id/btnNotificationBar"
+                        android:layout_width="0sp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_marginTop="20sp"
-                        android:background="@drawable/setting_shape"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <TextView
-                            android:id="@+id/titleUnits"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_15sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/poppins_medium"
-                            android:text="@string/speed_in"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_12sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_marginEnd="25sp"
-                            android:layout_marginBottom="15sp"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@+id/titleUnits"
-                            app:layout_constraintTop_toBottomOf="@id/titleUnits">
-
-                            <LinearLayout
-                                android:id="@+id/btnKmh"
-                                android:layout_width="0dp"
-                                android:layout_height="@dimen/_32sdp"
-                                android:layout_marginEnd="@dimen/_5sdp"
-                                android:layout_weight="1"
-                                android:background="@drawable/selected_shape">
-
-                                <TextView
-                                    android:id="@+id/txtKmh"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:fontFamily="@font/poppins_semibold"
-                                    android:gravity="center"
-                                    android:paddingTop="3dp"
-                                    android:text="Km/h"
-                                    android:textColor="@color/blueColor"
-                                    android:textSize="@dimen/_12sdp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/btnMph"
-                                android:layout_width="0dp"
-                                android:layout_height="@dimen/_32sdp"
-                                android:layout_marginHorizontal="@dimen/_5sdp"
-                                android:layout_weight="1"
-                                android:background="@drawable/unselected_shape">
-
-                                <TextView
-                                    android:id="@+id/txtMph"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:fontFamily="@font/poppins_semibold"
-                                    android:gravity="center"
-                                    android:paddingTop="3dp"
-                                    android:text="Mph"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/_12sdp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/btnKnot"
-                                android:layout_width="0dp"
-                                android:layout_height="@dimen/_32sdp"
-                                android:layout_marginStart="@dimen/_5sdp"
-                                android:layout_weight="1"
-                                android:background="@drawable/unselected_shape">
-
-                                <TextView
-                                    android:id="@+id/txtKnot"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:fontFamily="@font/poppins_semibold"
-                                    android:gravity="center"
-                                    android:paddingTop="3dp"
-                                    android:text="Knot"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/_12sdp" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/themesLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:background="@drawable/setting_shape"
-                        app:layout_constraintTop_toBottomOf="@id/unitsLayout">
 
                         <TextView
-                            android:id="@+id/titleThemes"
+                            android:id="@+id/notifiTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_15sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/poppins_medium"
-                            android:text="@string/select_theme"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@string/notification_bar"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/_12sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:textSize="@dimen/_10sdp" />
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/colorsRv"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5sp"
-                            android:layout_marginEnd="5sp"
-                            android:layout_marginBottom="@dimen/_10sdp"
-                            android:orientation="horizontal"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@id/titleThemes"
-                            app:layout_constraintTop_toBottomOf="@id/titleThemes"
-                            tools:listitem="@layout/colors_layout" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchNotificationBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            app:trackTint="@color/grayColor" />
+                    </LinearLayout>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/speedWarningLayout"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+
+                        android:id="@+id/btnVibration"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:background="@drawable/setting_shape"
-                        app:layout_constraintTop_toBottomOf="@+id/themesLayout">
+                        android:layout_marginTop="5sp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/btnNotificationBar"
+                        app:layout_constraintTop_toBottomOf="@id/btnNotificationBar">
 
-                        <LinearLayout
-
-                            android:id="@+id/btnNotificationBar"
-                            android:layout_width="0sp"
+                        <TextView
+                            android:id="@+id/vibrationTV"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_15sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@string/vibration"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp" />
 
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchVibration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            app:trackTint="@color/grayColor" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/notifiTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/poppins_regular"
-                                android:text="@string/notification_bar"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <androidx.appcompat.widget.SwitchCompat
-                                android:id="@+id/switchNotificationBar"
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:checked="true"
-                                app:trackTint="@color/grayColor" />
-                        </LinearLayout>
-
-                        <LinearLayout
-
-                            android:id="@+id/btnVibration"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5sp"
-                            android:layout_marginEnd="@dimen/_15sdp"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@id/btnNotificationBar"
-                            app:layout_constraintTop_toBottomOf="@id/btnNotificationBar">
-
-                            <TextView
-                                android:id="@+id/vibrationTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/poppins_regular"
-                                android:text="@string/vibration"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <androidx.appcompat.widget.SwitchCompat
-                                android:id="@+id/switchVibration"
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                app:trackTint="@color/grayColor" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/btnKeepScreen"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5sp"
-                            android:layout_marginEnd="@dimen/_15sdp"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@id/btnNotificationBar"
-                            app:layout_constraintTop_toBottomOf="@id/btnVibration">
-
-
-                            <TextView
-                                android:id="@+id/keepScreenOnTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:fontFamily="@font/poppins_regular"
-                                android:gravity="center"
-                                android:text="@string/keep_screen_on"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <androidx.appcompat.widget.SwitchCompat
-                                android:id="@+id/switchKeepScreenOn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                app:trackTint="@color/grayColor" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/btnSoundEffects"
-                            android:layout_width="0sp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5sp"
-                            android:layout_marginEnd="@dimen/_15sdp"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@id/btnNotificationBar"
-                            app:layout_constraintTop_toBottomOf="@id/btnKeepScreen">
-
-                            <TextView
-                                android:id="@+id/soundEffectTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/poppins_regular"
-                                android:text="@string/sound_effects"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <androidx.appcompat.widget.SwitchCompat
-                                android:id="@+id/switchSoundEffects"
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                app:trackTint="@color/grayColor" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/btntitleGeneral"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5sp"
-                            android:layout_marginEnd="@dimen/_15sdp"
-                            android:layout_marginBottom="@dimen/_10sdp"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@id/btnVibration"
-                            app:layout_constraintTop_toBottomOf="@id/btnSoundEffects">
-
-
-                            <TextView
-                                android:id="@+id/routeTrackingTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:fontFamily="@font/poppins_regular"
-                                android:gravity="center"
-                                android:text="@string/route_tracking_on_map"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <androidx.appcompat.widget.SwitchCompat
-                                android:id="@+id/switchRouteTracking"
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:checked="true"
-                                app:trackTint="@color/grayColor" />
-                        </LinearLayout>
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/generalLayout"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:id="@+id/btnKeepScreen"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:background="@drawable/setting_shape"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/speedWarningLayout">
+                        android:layout_marginTop="5sp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/btnNotificationBar"
+                        app:layout_constraintTop_toBottomOf="@id/btnVibration">
 
-                        <LinearLayout
-                            android:id="@+id/btnSpeedWarning"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_15sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_marginEnd="@dimen/_15sdp"
+
+                        <TextView
+                            android:id="@+id/keepScreenOnTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/poppins_regular"
                             android:gravity="center"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:text="@string/keep_screen_on"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp" />
 
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchKeepScreenOn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            app:trackTint="@color/grayColor" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/speedWarningTV"
-                                android:layout_width="0sp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/poppins_medium"
-                                android:gravity="center_vertical"
-                                android:text="@string/speed_warning"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_12sdp" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@drawable/speed_selection"
-                                android:orientation="horizontal"
-                                android:paddingHorizontal="@dimen/_11sdp"
-                                android:paddingVertical="@dimen/_8sdp">
-
-                                <TextView
-                                    android:id="@+id/speedWarning"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="@dimen/_5sdp"
-                                    android:drawablePadding="5sp"
-                                    android:fontFamily="@font/poppins_regular"
-                                    android:gravity="end|center_vertical"
-                                    android:text="180 Km/h"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/_10sdp" />
-
-                                <ImageView
-                                    android:id="@+id/speedIcon"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="2dp"
-                                    android:contentDescription="@string/todo"
-                                    android:src="@drawable/down_arrow" />
-
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <View
-                            android:id="@+id/viewBar"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginHorizontal="@dimen/_15sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:background="#3E3E3E"
-                            app:layout_constraintTop_toBottomOf="@id/btnSpeedWarning" />
-
-
-                        <LinearLayout
-                            android:id="@+id/btnHistory"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@id/viewBar"
-                            app:layout_constraintTop_toBottomOf="@id/viewBar">
-
-
-                            <TextView
-                                android:id="@+id/historyTV"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/poppins_regular"
-                                android:gravity="center_vertical"
-                                android:text="@string/history"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <ImageView
-                                android:id="@+id/iconHistory"
-                                android:layout_marginEnd="@dimen/_15sdp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/forward_icon" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/btnLanguage"
-                            android:layout_width="0sp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_7sdp"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:visibility="visible"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@id/viewBar"
-                            app:layout_constraintTop_toBottomOf="@id/btnHistory">
-
-
-                            <TextView
-                                android:id="@+id/languageTV"
-                                android:layout_width="0sp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/poppins_regular"
-                                android:text="@string/language"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <TextView
-                                android:id="@+id/languageName"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/_6sdp"
-                                android:fontFamily="@font/poppins_regular"
-                                android:paddingTop="3dp"
-                                android:text="English"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_9sdp" />
-
-                            <ImageView
-                                android:id="@+id/iconLanguage"
-                                android:layout_marginEnd="@dimen/_15sdp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:contentDescription="@string/todo"
-                                android:src="@drawable/forward_icon" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/btnRateUs"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_7sdp"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@id/viewBar"
-                            app:layout_constraintTop_toBottomOf="@id/btnLanguage">
-
-                            <TextView
-                                android:id="@+id/rateUsTV"
-                                android:layout_width="0sp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/poppins_regular"
-                                android:text="@string/rate_us"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <ImageView
-                                android:id="@+id/iconRateUs"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginEnd="@dimen/_15sdp"
-                                android:src="@drawable/forward_icon" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/btnShareApp"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_7sdp"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@id/viewBar"
-                            app:layout_constraintTop_toBottomOf="@id/btnRateUs">
-
-                            <TextView
-                                android:id="@+id/shareAppTV"
-                                android:layout_width="0sp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/poppins_regular"
-                                android:gravity="center_vertical"
-                                android:text="@string/shape_app"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <ImageView
-                                android:id="@+id/iconShareApp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginEnd="@dimen/_15sdp"
-                                android:src="@drawable/forward_icon" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/btnPrivacyPolicy"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_7sdp"
-                            android:layout_marginBottom="15sp"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@id/viewBar"
-                            app:layout_constraintTop_toBottomOf="@id/btnShareApp">
-
-
-                            <TextView
-                                android:id="@+id/ppTV"
-                                android:layout_width="0sp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/poppins_regular"
-                                android:text="@string/privacy_policy"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <ImageView
-                                android:id="@+id/iconPP"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginEnd="@dimen/_15sdp"
-                                android:src="@drawable/forward_icon" />
-                        </LinearLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.core.widget.NestedScrollView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/bottomSheet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bottomsheet_shape"
-            android:elevation="5sp"
-            app:behavior_hideable="true"
-            app:behavior_peekHeight="0sp"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-            <TextView
-                android:id="@+id/titleLimit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30sp"
-                android:layout_marginTop="18sp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/warning_when_over"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/speedLimit"
-                android:layout_width="92sp"
-                android:layout_height="67sp"
-                android:layout_marginTop="16sp"
-                android:background="@drawable/units_shape"
-                android:fontFamily="@font/digital_font"
-                android:inputType="number"
-                android:textAlignment="center"
-                android:textColor="@color/greenColor"
-                android:textSize="50sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/titleLimit" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8sp"
-                android:layout_marginBottom="5sp"
-                android:fontFamily="@font/poppins_regular"
-                android:text="km/h"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@id/speedLimit"
-                app:layout_constraintStart_toEndOf="@id/speedLimit" />
-
-            <LinearLayout
-                android:id="@+id/btnDriving"
-                android:layout_width="match_parent"
-                android:layout_height="45sp"
-                android:layout_marginHorizontal="50sp"
-                android:layout_marginTop="19sp"
-                android:background="@drawable/units_shape"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/speedLimit">
-
-                <TextView
-                    android:id="@+id/titleDriving"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="28sp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins_semibold"
+                <LinearLayout
+                    android:id="@+id/maxSpeedLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/setting_shape"
                     android:gravity="center_vertical"
-                    android:text="@string/driving"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/speedWarningLayout">
 
-                <TextView
-                    android:id="@+id/limitDriving"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/poppins_medium"
+                    <ImageView
+                        android:id="@+id/maxIcon"
+                        android:layout_width="@dimen/_17sdp"
+                        android:layout_height="@dimen/_17sdp"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:contentDescription="@string/select_speed_units"
+                        android:src="@drawable/limit_settings" />
+
+                    <TextView
+                        android:id="@+id/titleMax"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginTop="3dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/max_speed_limit"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/maxInner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:background="@drawable/setting_colored_shape"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="@dimen/_3sdp">
+
+                        <TextView
+                            android:id="@+id/selectedSpeed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_13sdp"
+                            android:layout_marginEnd="@dimen/_4sdp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="60 km/h"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_9sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_8sdp"
+                            android:layout_height="@dimen/_8sdp"
+                            android:layout_marginStart="@dimen/_3sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:src="@drawable/forward_icon" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/generalLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/setting_shape"
+                    app:layout_constraintTop_toBottomOf="@+id/maxSpeedLayout">
+
+                    <View
+                        android:id="@+id/viewBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:background="@color/fadeBlue"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <LinearLayout
+                        android:id="@+id/btnSoundEffects"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/btnShareApp"
+                        app:layout_constraintTop_toBottomOf="@id/viewBar">
+
+                        <TextView
+                            android:id="@+id/soundEffectTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@string/sound_effects"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchSoundEffects"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            app:trackTint="@color/grayColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btntitleGeneral"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5sp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/btnShareApp"
+                        app:layout_constraintTop_toBottomOf="@id/btnSoundEffects">
+
+
+                        <TextView
+                            android:id="@+id/routeTrackingTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/poppins_regular"
+                            android:gravity="center"
+                            android:text="@string/route_tracking_on_map"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchRouteTracking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            app:trackTint="@color/grayColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btnShareApp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/viewBar"
+                        app:layout_constraintTop_toBottomOf="@id/btntitleGeneral">
+
+                        <TextView
+                            android:id="@+id/shareAppTV"
+                            android:layout_width="0sp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins_regular"
+                            android:gravity="center_vertical"
+                            android:text="@string/shape_app"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <ImageView
+                            android:id="@+id/iconShareApp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/_15sdp"
+                            android:src="@drawable/forward_icon" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/languageLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/setting_shape"
                     android:gravity="center_vertical"
-                    android:text="100"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/generalLayout">
 
-                <TextView
-                    android:id="@+id/drivingUnit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="28sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:gravity="center_vertical"
-                    android:text=" km/h"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/languageIcon"
+                        android:layout_width="@dimen/_17sdp"
+                        android:layout_height="@dimen/_17sdp"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:contentDescription="@string/select_speed_units"
+                        android:src="@drawable/language_settings" />
 
-            <LinearLayout
-                android:id="@+id/btnCycling"
-                android:layout_width="match_parent"
-                android:layout_height="45sp"
-                android:layout_marginHorizontal="50sp"
-                android:layout_marginTop="14sp"
-                android:background="@drawable/units_shape"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnDriving">
+                    <TextView
+                        android:id="@+id/titleLanguage"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginTop="3dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/app_language"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/titleCycling"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="28sp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:gravity="center_vertical"
-                    android:text="@string/cycling"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/languageInner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        app:cardBackgroundColor="@color/fadeBlue"
+                        app:cardCornerRadius="@dimen/_17sdp"
+                        app:strokeColor="@color/greenColor"
+                        app:strokeWidth="1dp">
 
-                <TextView
-                    android:id="@+id/limitCycling"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/poppins_medium"
-                    android:gravity="center_vertical"
-                    android:text="25"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingVertical="@dimen/_3sdp">
 
-                <TextView
-                    android:id="@+id/unitCycling"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="28sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:gravity="center_vertical"
-                    android:text=" km/h"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                            <TextView
+                                android:id="@+id/selectedLanguage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_12sdp"
+                                android:layout_marginEnd="@dimen/_6sdp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:text=""
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_9sdp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:id="@+id/btnWalking"
-                android:layout_width="match_parent"
-                android:layout_height="45sp"
-                android:layout_marginHorizontal="50sp"
-                android:layout_marginTop="14sp"
-                android:background="@drawable/units_shape"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnCycling">
+                            <ImageView
+                                android:layout_width="@dimen/_8sdp"
+                                android:layout_height="@dimen/_8sdp"
+                                android:layout_marginEnd="@dimen/_5sdp"
+                                android:src="@drawable/forward_icon" />
 
-                <TextView
-                    android:id="@+id/titleWalking"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="28sp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:gravity="center_vertical"
-                    android:text="@string/walking"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:id="@+id/limitWalking"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/poppins_medium"
-                    android:gravity="center_vertical"
-                    android:text="10"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
 
-                <TextView
-                    android:id="@+id/unitWalking"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="28sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:gravity="center_vertical"
-                    android:text=" km/h"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-            </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/btnDone"
-                android:layout_width="match_parent"
-                android:layout_height="40sp"
-                android:layout_marginHorizontal="68sp"
-                android:layout_marginVertical="42sp"
-                android:background="@drawable/done_shape"
-                android:fontFamily="@font/poppins_semibold"
-                android:gravity="center"
-                android:text="@string/done"
-                android:textColor="@color/blueColor"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnWalking" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <include
         android:id="@+id/smallAd"
         layout="@layout/bannar_small"

@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.adapters.HistoryOuterAdapter
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
+import gps.navigation.speedmeter.ads.SpeedMeterLoadAds.admobInterstitialNav
+import gps.navigation.speedmeter.ads.SpeedMeterShowAds.mediationBackPressedSimpleHoneyBeeMapNavigation
 import gps.navigation.speedmeter.database.DatabaseBuilder
 import gps.navigation.speedmeter.database.DatabaseHelperImpl
 import gps.navigation.speedmeter.database.HistoryDatabase
@@ -52,6 +54,10 @@ class HistoryActivity : AppCompatActivity(), OnItemDelete {
         binding.backBtn.setOnClickListener {
             onBackPressed()
         }
+    }
+
+    override fun onBackPressed() {
+        mediationBackPressedSimpleHoneyBeeMapNavigation(this,admobInterstitialNav)
     }
 
     private fun squareXGPSBannerAdsSmall() {

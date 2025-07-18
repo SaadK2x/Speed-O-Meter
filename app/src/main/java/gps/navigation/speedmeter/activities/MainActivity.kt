@@ -44,6 +44,7 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.Service.LocationService
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
+import gps.navigation.speedmeter.ads.SpeedMeterShowAds.directAdsSpecificModulesSquareXNavigation
 import gps.navigation.speedmeter.databinding.ActivityMainBinding
 import gps.navigation.speedmeter.fragments.DigitalFragment
 import gps.navigation.speedmeter.fragments.GaugeFragment
@@ -93,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         squareXGPSBannerAdsSmall()
         sharedPrefrences = SharedPreferenceHelperClass(this)
+        SpeedMeterLoadAds.preLoadAdsLiveEarth(this)
         tablyout = binding.tabs
         setupViewPager(binding.container)
         binding.tabs.setupWithViewPager(binding.container)
@@ -162,7 +164,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.settingsBtn.setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
+            val intent=(Intent(this, SettingsActivity::class.java))
+            directAdsSpecificModulesSquareXNavigation(this,
+                SpeedMeterLoadAds.admobInterstitialNav,intent)
         }
         binding.hudBtn.setOnClickListener {
             binding.layoutHUD.visibility = View.VISIBLE
@@ -528,7 +532,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         val sp = SharedPreferenceHelperClass(this)
-        settingColors(sp.getString("AppColor", "#FBC100"))
+        settingColors(sp.getString("AppColor", "#0DCF31"))
         Constants.setLocale(this, sp.getString("language", "en"))
         if (tablyout != null) {
             tablyout!!.getTabAt(0)?.text = getString(R.string.gauge)

@@ -71,7 +71,7 @@
         android:max="100"
         android:layout_marginBottom="@dimen/_35sdp"
         android:progressBackgroundTint="#535353"
-        android:progressTint="#FBC100"
+        android:progressTint="#0DCF31"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

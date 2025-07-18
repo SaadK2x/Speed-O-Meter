@@ -41,6 +41,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tabGravity="fill"
+                android:background="@color/blueColor"
                 app:tabMaxWidth="0sp"
                 app:tabMode="fixed"
                 app:tabTextAppearance="@style/CustomTabTextStyle" />

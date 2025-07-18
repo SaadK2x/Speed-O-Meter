@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.models.ThemeModel
+import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 
 class ThemeAdapter(private var listTheme: ArrayList<ThemeModel>, var color: ColorCallback) :
     RecyclerView.Adapter<ThemeAdapter.ThemeViewHolder>() {
@@ -35,6 +35,7 @@ class ThemeAdapter(private var listTheme: ArrayList<ThemeModel>, var color: Colo
         holder.itemView.setOnClickListener {
             val sp = SharedPreferenceHelperClass(holder.itemView.context)
             sp.putString("AppColor", listTheme[position].color)
+            sp.putInt("colorPos", position)
             changeColor(position)
             color.onColorChanger(listTheme[position].color)
         }

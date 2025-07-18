@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.adapters.LanguageAdapter
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
+import gps.navigation.speedmeter.ads.SpeedMeterLoadAds.admobInterstitialNav
+import gps.navigation.speedmeter.ads.SpeedMeterShowAds.mediationBackPressedSimpleHoneyBeeMapNavigation
 import gps.navigation.speedmeter.databinding.ActivityLanguageBinding
 import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import gps.navigation.speedmeter.utils.Constants
@@ -37,7 +39,7 @@ class LanguageActivity : AppCompatActivity(), OnLanguageClick {
         )
     }
     override fun onBackPressed() {
-        super.onBackPressed()
+        mediationBackPressedSimpleHoneyBeeMapNavigation(this,admobInterstitialNav)
     }
 
     override fun onItemClick(code: String, name: String, position: Int) {

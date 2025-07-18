@@ -23,13 +23,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import gps.navigation.speedmeter.BuildConfig
 import gps.navigation.speedmeter.R
-import gps.navigation.speedmeter.adapters.ThemeAdapter
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
+import gps.navigation.speedmeter.ads.SpeedMeterLoadAds.admobInterstitialNav
+import gps.navigation.speedmeter.ads.SpeedMeterShowAds.directAdsSpecificModulesSquareXNavigation
+import gps.navigation.speedmeter.ads.SpeedMeterShowAds.mediationBackPressedSimpleHoneyBeeMapNavigation
 import gps.navigation.speedmeter.databinding.ActivitySettingsBinding
+import gps.navigation.speedmeter.settings.MaxSpeed
+import gps.navigation.speedmeter.settings.ThemeSelection
+import gps.navigation.speedmeter.settings.UnitSelection
 import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import gps.navigation.speedmeter.utils.Constants
 
@@ -38,44 +42,43 @@ class SettingsActivity : AppCompatActivity() {
     private val binding: ActivitySettingsBinding by lazy {
         ActivitySettingsBinding.inflate(layoutInflater)
     }
-    private lateinit var bottomSheet: BottomSheetBehavior<ConstraintLayout>
 
     var modeSpeed = "Driving"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         squareXGPSBannerAdsSmall()
-        bottomSheet = BottomSheetBehavior.from(binding.bottomSheet)
-        bottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
         settingSwitches()
         onClickEvents()
-        binding.colorsRv.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val adapter = ThemeAdapter(Constants.listTheme, object : ThemeAdapter.ColorCallback {
-            override fun onColorChanger(color: String) {
-                settingTextView(color)
-            }
-        })
-        binding.colorsRv.adapter = adapter
         binding.backBtn.setOnClickListener {
             onBackPressed()
         }
-
-        binding.btnRateUs.setOnClickListener {
-            rateUs()
+        binding.speedUnitLayout.setOnClickListener {
+            val intent = Intent(this, UnitSelection::class.java)
+            directAdsSpecificModulesSquareXNavigation(this,
+                SpeedMeterLoadAds.admobInterstitialNav,intent)
+        }
+        binding.themesLayout.setOnClickListener {
+            val intent = Intent(this, ThemeSelection::class.java)
+            directAdsSpecificModulesSquareXNavigation(this,
+                SpeedMeterLoadAds.admobInterstitialNav,intent)
+        }
+        binding.maxSpeedLayout.setOnClickListener {
+            val intent = Intent(this, MaxSpeed::class.java)
+            directAdsSpecificModulesSquareXNavigation(this,
+                SpeedMeterLoadAds.admobInterstitialNav,intent)
         }
 
-        binding.btnPrivacyPolicy.setOnClickListener {
-            val myIntent: Intent = Intent.parseUri(
-                "https://speedometer69.blogspot.com/2025/05/speedometer-pp.html",
-                Intent.URI_INTENT_SCHEME
-            )
-            startActivity(myIntent)
+        binding.languageLayout.setOnClickListener {
+            val intent=(Intent(this, LanguageActivity::class.java))
+            directAdsSpecificModulesSquareXNavigation(this,
+                SpeedMeterLoadAds.admobInterstitialNav,intent)
         }
-        binding.btnLanguage.setOnClickListener {
-            startActivity(Intent(this, LanguageActivity::class.java))
+        binding.historyLayout.setOnClickListener {
+            val intent=(Intent(this, HistoryActivity::class.java))
+            directAdsSpecificModulesSquareXNavigation(this,
+                SpeedMeterLoadAds.admobInterstitialNav,intent)
         }
-
         binding.btnShareApp.setOnClickListener {
             shareApp(this)
         }
@@ -90,7 +93,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
+        mediationBackPressedSimpleHoneyBeeMapNavigation(this,admobInterstitialNav)
     }
 
     fun shareApp(mContext: Context) {
@@ -114,10 +117,19 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     fun settingTextView(color: String) {
-        binding.speedLimit.setTextColor(Color.parseColor(color))
-        binding.btnDone.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
-        binding.speedIcon.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
-        binding.speedWarning.setTextColor(Color.parseColor(color))
+
+        binding.unitIcon.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
+        binding.themeIcon.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
+        binding.historyIcon.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
+        binding.maxIcon.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
+        binding.languageIcon.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
+
+        binding.unitsInner.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+        binding.themeInner.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+        binding.historyInner.setStrokeColor(Color.parseColor(color))
+        binding.languageInner.setStrokeColor(Color.parseColor(color))
+        binding.maxInner.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+
         val sp = SharedPreferenceHelperClass(this)
         binding.switchKeepScreenOn.isChecked = sp.getBoolean("KeepScreenOn", false)
         binding.switchVibration.isChecked = sp.getBoolean("Vibration", false)
@@ -127,64 +139,73 @@ class SettingsActivity : AppCompatActivity() {
 
         when (sp.getString("Unit", "KMH")) {
             "KMH" -> {
-                binding.btnKmh.setBackgroundResource(R.drawable.selected_shape)
-                binding.btnMph.setBackgroundResource(R.drawable.unselected_shape)
-                binding.btnKnot.setBackgroundResource(R.drawable.unselected_shape)
-                binding.btnKmh.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
-
-                binding.txtKmh.setTextColor(Color.parseColor("#000000"))
-                binding.txtMph.setTextColor(Color.parseColor("#FFFFFF"))
-                binding.txtKnot.setTextColor(Color.parseColor("#FFFFFF"))
+                binding.selectedUnits.text = "Km/h"
             }
 
             "MPH" -> {
-                binding.btnMph.setBackgroundResource(R.drawable.selected_shape)
-                binding.btnKmh.setBackgroundResource(R.drawable.unselected_shape)
-                binding.btnKnot.setBackgroundResource(R.drawable.unselected_shape)
-                binding.btnMph.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
-
-                binding.txtMph.setTextColor(Color.parseColor("#000000"))
-                binding.txtKmh.setTextColor(Color.parseColor("#FFFFFF"))
-                binding.txtKnot.setTextColor(Color.parseColor("#FFFFFF"))
+                binding.selectedUnits.text = "Mph"
             }
 
             "KNOT" -> {
-                binding.btnKnot.setBackgroundResource(R.drawable.selected_shape)
-                binding.btnMph.setBackgroundResource(R.drawable.unselected_shape)
-                binding.btnKmh.setBackgroundResource(R.drawable.unselected_shape)
-                binding.btnKnot.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
-
-                binding.txtKnot.setTextColor(Color.parseColor("#000000"))
-                binding.txtMph.setTextColor(Color.parseColor("#FFFFFF"))
-                binding.txtKmh.setTextColor(Color.parseColor("#FFFFFF"))
+                binding.selectedUnits.text = "Knot"
             }
         }
         if (binding.switchKeepScreenOn.isChecked) changingSwitch(
             Color.parseColor(color),
             Color.parseColor(color),
             binding.switchKeepScreenOn
-        )
+        ) else {
+            changingSwitch(
+                Color.parseColor("#CACACA"),
+                Color.parseColor("#777982"),
+                binding.switchKeepScreenOn
+            )
+        }
         if (binding.switchVibration.isChecked) changingSwitch(
             Color.parseColor(color),
             Color.parseColor(color),
             binding.switchVibration
-        )
+        ) else {
+            changingSwitch(
+                Color.parseColor("#CACACA"),
+                Color.parseColor("#777982"),
+                binding.switchVibration
+            )
+        }
         if (binding.switchRouteTracking.isChecked) changingSwitch(
             Color.parseColor(color),
             Color.parseColor(color),
             binding.switchRouteTracking
-        )
+        ) else {
+            changingSwitch(
+                Color.parseColor("#CACACA"),
+                Color.parseColor("#777982"),
+                binding.switchRouteTracking
+            )
+        }
 
         if (binding.switchNotificationBar.isChecked) changingSwitch(
             Color.parseColor(color),
             Color.parseColor(color),
             binding.switchNotificationBar
-        )
+        ) else {
+            changingSwitch(
+                Color.parseColor("#CACACA"),
+                Color.parseColor("#777982"),
+                binding.switchNotificationBar
+            )
+        }
         if (binding.switchSoundEffects.isChecked) changingSwitch(
             Color.parseColor(color),
             Color.parseColor(color),
             binding.switchSoundEffects
-        )
+        ) else {
+            changingSwitch(
+                Color.parseColor("#CACACA"),
+                Color.parseColor("#777982"),
+                binding.switchSoundEffects
+            )
+        }
 
         val mode = sp.getString("modeSpeed", modeSpeed)
         var limit = sp.getInt("speedLimit")
@@ -192,39 +213,8 @@ class SettingsActivity : AppCompatActivity() {
             limit = 100
         }
 
-        binding.speedWarning.text = limit.toString() + "Km/h"
+        binding.selectedSpeed.text = limit.toString() + "Km/h"
         Log.d("TAG_LIMIT", "settingTextView: Mode $mode limit $limit")
-        when (mode) {
-            "Driving" -> {
-                binding.speedLimit.setText(limit.toString())
-                binding.btnDriving.backgroundTintList =
-                    ColorStateList.valueOf(Color.parseColor(color))
-                binding.titleDriving.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-                binding.drivingUnit.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-                binding.limitDriving.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-                binding.limitDriving.text = binding.speedLimit.text.toString()
-            }
-
-            "Walking" -> {
-                binding.speedLimit.setText(limit.toString())
-                binding.btnWalking.backgroundTintList =
-                    ColorStateList.valueOf(Color.parseColor(color))
-                binding.titleWalking.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-                binding.unitWalking.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-                binding.limitWalking.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-                binding.limitWalking.text = binding.speedLimit.text.toString()
-            }
-
-            "Cycling" -> {
-                binding.speedLimit.setText(limit.toString())
-                binding.btnCycling.backgroundTintList =
-                    ColorStateList.valueOf(Color.parseColor(color))
-                binding.titleCycling.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-                binding.unitCycling.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-                binding.limitCycling.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-                binding.limitCycling.text = binding.speedLimit.text.toString()
-            }
-        }
     }
 
     override fun onResume() {
@@ -232,30 +222,19 @@ class SettingsActivity : AppCompatActivity() {
         val sp = SharedPreferenceHelperClass(this)
         Constants.setLocale(this, sp.getString("language", "en"))
         changingLanguage()
-        settingTextView(sp.getString("AppColor", "#FBC100"))
-        binding.languageName.text = sp.getString("languageName", "English")
+        settingTextView(sp.getString("AppColor", "#0DCF31"))
+        binding.selectedLanguage.text = sp.getString("languageName", "English")
     }
 
     fun changingLanguage() {
         binding.titleTxt.text = getString(R.string.settings)
-        binding.titleUnits.text = getString(R.string.speed_in)
-        binding.titleThemes.text = getString(R.string.select_theme)
         binding.notifiTV.text = getString(R.string.notification_bar)
         binding.vibrationTV.text = getString(R.string.vibration)
         binding.keepScreenOnTV.text = getString(R.string.keep_screen_on)
         binding.soundEffectTV.text = getString(R.string.sound_effects)
         binding.routeTrackingTV.text = getString(R.string.route_tracking_on_map)
-        binding.speedWarningTV.text = getString(R.string.speed_warning)
-        binding.historyTV.text = getString(R.string.history)
-        binding.languageTV.text = getString(R.string.language)
-        binding.rateUsTV.text = getString(R.string.rate_us)
         binding.shareAppTV.text = getString(R.string.shape_app)
-        binding.ppTV.text = getString(R.string.privacy_policy)
-        binding.titleLimit.text = getString(R.string.warning_when_over)
-        binding.titleDriving.text = getString(R.string.driving)
-        binding.titleCycling.text = getString(R.string.cycling)
-        binding.titleWalking.text = getString(R.string.walking)
-        binding.btnDone.text = getString(R.string.done)
+
     }
 
     fun settingSwitches() {
@@ -263,8 +242,8 @@ class SettingsActivity : AppCompatActivity() {
             if (isChecked) {
                 val sp = SharedPreferenceHelperClass(this)
                 changingSwitch(
-                    Color.parseColor(sp.getString("AppColor", "#FBC100")),
-                    Color.parseColor(sp.getString("AppColor", "#FBC100")),
+                    Color.parseColor(sp.getString("AppColor", "#0DCF31")),
+                    Color.parseColor(sp.getString("AppColor", "#0DCF31")),
                     binding.switchSoundEffects
                 )
                 sp.putBoolean("SoundEffects", true)
@@ -283,8 +262,8 @@ class SettingsActivity : AppCompatActivity() {
             if (isChecked) {
                 val sp = SharedPreferenceHelperClass(this)
                 changingSwitch(
-                    Color.parseColor(sp.getString("AppColor", "#FBC100")),
-                    Color.parseColor(sp.getString("AppColor", "#FBC100")),
+                    Color.parseColor(sp.getString("AppColor", "#0DCF31")),
+                    Color.parseColor(sp.getString("AppColor", "#0DCF31")),
                     binding.switchKeepScreenOn
                 )
                 sp.putBoolean("KeepScreenOn", true)
@@ -305,8 +284,8 @@ class SettingsActivity : AppCompatActivity() {
             if (isChecked) {
                 val sp = SharedPreferenceHelperClass(this)
                 changingSwitch(
-                    Color.parseColor(sp.getString("AppColor", "#FBC100")),
-                    Color.parseColor(sp.getString("AppColor", "#FBC100")),
+                    Color.parseColor(sp.getString("AppColor", "#0DCF31")),
+                    Color.parseColor(sp.getString("AppColor", "#0DCF31")),
                     binding.switchRouteTracking
                 )
                 sp.putBoolean("RouteTracking", true)
@@ -325,8 +304,8 @@ class SettingsActivity : AppCompatActivity() {
             if (isChecked) {
                 val sp = SharedPreferenceHelperClass(this)
                 changingSwitch(
-                    Color.parseColor(sp.getString("AppColor", "#FBC100")),
-                    Color.parseColor(sp.getString("AppColor", "#FBC100")),
+                    Color.parseColor(sp.getString("AppColor", "#0DCF31")),
+                    Color.parseColor(sp.getString("AppColor", "#0DCF31")),
                     binding.switchVibration
                 )
                 sp.putBoolean("Vibration", true)
@@ -345,8 +324,8 @@ class SettingsActivity : AppCompatActivity() {
             if (isChecked) {
                 val sp = SharedPreferenceHelperClass(this)
                 changingSwitch(
-                    Color.parseColor(sp.getString("AppColor", "#FBC100")),
-                    Color.parseColor(sp.getString("AppColor", "#FBC100")),
+                    Color.parseColor(sp.getString("AppColor", "#0DCF31")),
+                    Color.parseColor(sp.getString("AppColor", "#0DCF31")),
                     binding.switchNotificationBar
                 )
                 sp.putBoolean("Notification", true)
@@ -366,125 +345,53 @@ class SettingsActivity : AppCompatActivity() {
     fun onClickEvents() {
 
 
-        binding.btnDone.setOnClickListener {
-            bottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
-            val sp = SharedPreferenceHelperClass(this)
-            sp.putString("modeSpeed", modeSpeed)
-            sp.putInt("speedLimit", binding.speedLimit.text.toString().toInt())
-            binding.speedWarning.text = binding.speedLimit.text.toString() + "Km/h"
-        }
+        /*  binding.btnDone.setOnClickListener {
+              bottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
+              val sp = SharedPreferenceHelperClass(this)
+              sp.putString("modeSpeed", modeSpeed)
+              sp.putInt("speedLimit", binding.speedLimit.text.toString().toInt())
+              binding.speedWarning.text = binding.speedLimit.text.toString() + "Km/h"
+          }
 
-        binding.btnKmh.setOnClickListener {
-            val sp = SharedPreferenceHelperClass(this)
-            val color = sp.getString("AppColor", "#FBC100")
+          binding.btnKmh.setOnClickListener {
+              val sp = SharedPreferenceHelperClass(this)
+              val color = sp.getString("AppColor", "#0DCF31")
 
-            binding.btnKmh.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
-            binding.btnMph.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#303030"))
-            binding.btnKnot.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#303030"))
+              binding.btnKmh.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+              binding.btnMph.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#303030"))
+              binding.btnKnot.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#303030"))
 
-            binding.txtKmh.setTextColor(Color.parseColor("#000000"))
-            binding.txtMph.setTextColor(Color.parseColor("#FFFFFF"))
-            binding.txtKnot.setTextColor(Color.parseColor("#FFFFFF"))
-            sp.putString("Unit", "KMH")
-        }
-        binding.btnMph.setOnClickListener {
-            val sp = SharedPreferenceHelperClass(this)
-            val color = sp.getString("AppColor", "#FBC100")
-            binding.btnMph.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
-            binding.btnKmh.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#303030"))
-            binding.btnKnot.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#303030"))
+              binding.txtKmh.setTextColor(Color.parseColor("#000000"))
+              binding.txtMph.setTextColor(Color.parseColor("#FFFFFF"))
+              binding.txtKnot.setTextColor(Color.parseColor("#FFFFFF"))
+              sp.putString("Unit", "KMH")
+          }
+          binding.btnMph.setOnClickListener {
+              val sp = SharedPreferenceHelperClass(this)
+              val color = sp.getString("AppColor", "#0DCF31")
+              binding.btnMph.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+              binding.btnKmh.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#303030"))
+              binding.btnKnot.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#303030"))
 
-            binding.txtMph.setTextColor(Color.parseColor("#000000"))
-            binding.txtKmh.setTextColor(Color.parseColor("#FFFFFF"))
-            binding.txtKnot.setTextColor(Color.parseColor("#FFFFFF"))
-            sp.putString("Unit", "MPH")
-        }
-        binding.btnKnot.setOnClickListener {
-            val sp = SharedPreferenceHelperClass(this)
-            val color = sp.getString("AppColor", "#FBC100")
-            binding.btnKnot.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
-            binding.btnMph.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#303030"))
-            binding.btnKmh.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#303030"))
+              binding.txtMph.setTextColor(Color.parseColor("#000000"))
+              binding.txtKmh.setTextColor(Color.parseColor("#FFFFFF"))
+              binding.txtKnot.setTextColor(Color.parseColor("#FFFFFF"))
+              sp.putString("Unit", "MPH")
+          }
+          binding.btnKnot.setOnClickListener {
+              val sp = SharedPreferenceHelperClass(this)
+              val color = sp.getString("AppColor", "#0DCF31")
+              binding.btnKnot.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+              binding.btnMph.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#303030"))
+              binding.btnKmh.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#303030"))
 
-            binding.txtKnot.setTextColor(Color.parseColor("#000000"))
-            binding.txtMph.setTextColor(Color.parseColor("#FFFFFF"))
-            binding.txtKmh.setTextColor(Color.parseColor("#FFFFFF"))
-            sp.putString("Unit", "KNOT")
-        }
-        binding.btnHistory.setOnClickListener {
-            startActivity(Intent(this, HistoryActivity::class.java))
-        }
-        binding.btnSpeedWarning.setOnClickListener {
-            bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
-        }
+              binding.txtKnot.setTextColor(Color.parseColor("#000000"))
+              binding.txtMph.setTextColor(Color.parseColor("#FFFFFF"))
+              binding.txtKmh.setTextColor(Color.parseColor("#FFFFFF"))
+              sp.putString("Unit", "KNOT")
+          }*/
 
-        binding.btnDriving.setOnClickListener {
-            val sp = SharedPreferenceHelperClass(this)
-            val color = sp.getString("AppColor", "#FBC100")
-            modeSpeed = "Driving"
 
-            binding.speedLimit.setText(binding.limitDriving.text.toString())
-            binding.btnDriving.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
-            binding.titleDriving.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-            binding.drivingUnit.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-            binding.limitDriving.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-
-            binding.btnWalking.backgroundTintList = ColorStateList.valueOf(0)
-            binding.titleWalking.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.unitWalking.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.limitWalking.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.limitWalking.text = "10"
-
-            binding.btnCycling.backgroundTintList = ColorStateList.valueOf(0)
-            binding.titleCycling.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.unitCycling.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.limitCycling.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.limitCycling.text = "25"
-        }
-        binding.btnWalking.setOnClickListener {
-            val sp = SharedPreferenceHelperClass(this)
-            val color = sp.getString("AppColor", "#FBC100")
-            modeSpeed = "Walking"
-            binding.speedLimit.setText(binding.limitWalking.text.toString())
-            binding.btnWalking.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
-            binding.titleWalking.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-            binding.unitWalking.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-            binding.limitWalking.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-
-            binding.btnDriving.backgroundTintList = ColorStateList.valueOf(0)
-            binding.titleDriving.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.drivingUnit.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.limitDriving.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.limitDriving.text = "100"
-
-            binding.btnCycling.backgroundTintList = ColorStateList.valueOf(0)
-            binding.titleCycling.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.unitCycling.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.limitCycling.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.limitCycling.text = "25"
-        }
-        binding.btnCycling.setOnClickListener {
-            val sp = SharedPreferenceHelperClass(this)
-            val color = sp.getString("AppColor", "#FBC100")
-            modeSpeed = "Cycling"
-            binding.speedLimit.setText(binding.limitCycling.text.toString())
-            binding.btnCycling.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
-            binding.titleCycling.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-            binding.unitCycling.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-            binding.limitCycling.setTextColor(ColorStateList.valueOf(Color.parseColor("#111424")))
-
-            binding.btnDriving.backgroundTintList = ColorStateList.valueOf(0)
-            binding.titleDriving.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.drivingUnit.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.limitDriving.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.limitDriving.text = "100"
-
-            binding.btnWalking.backgroundTintList = ColorStateList.valueOf(0)
-            binding.titleWalking.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.unitWalking.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.limitWalking.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")))
-            binding.limitWalking.text = "10"
-        }
     }
 
     fun rateUs() {

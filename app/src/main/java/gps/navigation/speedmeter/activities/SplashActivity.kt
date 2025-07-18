@@ -10,12 +10,17 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.MobileAds
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import gps.navigation.speedmeter.ads.SpeedMeterBillingHelper
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
+import gps.navigation.speedmeter.ads.SpeedMeterLoadAds.adShowAfter
+import gps.navigation.speedmeter.ads.SpeedMeterLoadAds.next_ads_time
 import gps.navigation.speedmeter.ads.SpeedMeterShowAds
 import gps.navigation.speedmeter.databinding.ActivitySplashBinding
 import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import gps.navigation.speedmeter.utils.Constants
+import gps.navigation.speedmeter.utils.Constants.IsAppOnTimer
 
 class SplashActivity : AppCompatActivity() {
     private val binding: ActivitySplashBinding by lazy {
@@ -28,6 +33,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         purchaseHelper1 = SpeedMeterBillingHelper(this)
+        remoteConfigValues()
         loadSplash()
 
         val scaleAnimator = ValueAnimator.ofFloat(1.0f, 1.03f).apply {
@@ -110,5 +116,29 @@ class SplashActivity : AppCompatActivity() {
     private fun moveForward() {
         val intent = Intent(this@SplashActivity, MainActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun remoteConfigValues() {
+
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
+
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
+            .setMinimumFetchIntervalInSeconds(30)
+            .build()
+
+        remoteConfig.setConfigSettingsAsync(configSettings)
+
+        remoteConfig.fetchAndActivate()
+            .addOnCompleteListener(this@SplashActivity) { task ->
+                if (task.isSuccessful) {
+                    adShowAfter = remoteConfig.getString("intertitialCounter").toInt()
+                    Log.d("TAG_LL", "remoteConfigValues: ${remoteConfig.getString("premium")}")
+                    IsAppOnTimer = remoteConfig.getBoolean("IsAppOnTimer")
+                    next_ads_time = remoteConfig.getString("next_ads_time").toLong()
+
+                } else {
+                    Log.d("remoteConfig", "Failed to fetch values")
+                }
+            }
     }
 }
