@@ -62,11 +62,14 @@ object Constants {
     var isStart: Boolean = false
     var IsAppOnTimer = false
     var isSATELLITE: Boolean = true
+    var willIntersShow = false
+    var backpressadcontrol = true
     var mediaPlayer: MediaPlayer? = null
 
     var observerLAT = MutableLiveData<Double>(0.0)
     var observerLNG = MutableLiveData<Double>(0.0)
     var moveForward = MutableLiveData<String>("No")
+    var startStop = MutableLiveData<String>("isStart")
     val arrayLang = arrayListOf(
         LanguageModel(R.drawable.english, "English", "en", true),
         LanguageModel(R.drawable.spanish, "Spanish", "es", false),

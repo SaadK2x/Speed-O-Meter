@@ -57,6 +57,9 @@ class GaugeFragment : Fragment() {
             activity?.registerReceiver(pauseUpdateReceiver, IntentFilter("ACTION_PAUSE_UPDATE"))
             activity?.registerReceiver(resetUpdateReceiver, IntentFilter("ACTION_RESET_UPDATE"))
         }
+        Constants.startStop.observe(requireActivity()){
+            valuesStart_Stop(it)
+        }
 
         Constants.moveForward.observe(requireActivity()) {
             if (it != "No") {
@@ -132,41 +135,11 @@ class GaugeFragment : Fragment() {
     private val startUpdateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val start = intent?.getStringExtra("isStart")
-            if (start == "Start") {
-                isStop = false
-                binding.playTV.text = context?.getString(R.string.stop) ?: "Stop"
-                Constants.viewScaling(0f, 1f, true, binding.pauseBtn)
-                Constants.viewScaling(0f, 1f, true, binding.resetBtn)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    activity?.registerReceiver(
-                        speedUpdateReceiver,
-                        IntentFilter("ACTION_SPEED_UPDATE"),
-                        Context.RECEIVER_EXPORTED
-                    )
-                } else {
-                    activity?.registerReceiver(
-                        speedUpdateReceiver,
-                        IntentFilter("ACTION_SPEED_UPDATE")
-                    )
-                }
 
-            } else if (start == "Stop") {
-                isStop = true
-
-                activity?.unregisterReceiver(speedUpdateReceiver)
-                binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
-                binding.playProgress.visibility = View.VISIBLE
-                Constants.viewScaling(1f, 0f, false, binding.pauseBtn)
-                Constants.viewScaling(1f, 0f, false, binding.resetBtn)
-                binding.time.text = "00:00:00"
-                binding.speedView.speedTo(0f)
-                binding.speedTV.text = "0"
-                binding.distance.text = "0"
-                binding.maxSpeed.text = "0"
-                binding.avgSpeed.text = "0"
-            }
         }
     }
+
+
     private val pauseUpdateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val start = intent?.getBooleanExtra("isPause", false) ?: false
@@ -193,6 +166,43 @@ class GaugeFragment : Fragment() {
         }
     }
 
+
+    fun valuesStart_Stop(start:String){
+        if (start == "Start") {
+            isStop = false
+            binding.playTV.text = context?.getString(R.string.stop) ?: "Stop"
+            Constants.viewScaling(0f, 1f, true, binding.pauseBtn)
+            Constants.viewScaling(0f, 1f, true, binding.resetBtn)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                activity?.registerReceiver(
+                    speedUpdateReceiver,
+                    IntentFilter("ACTION_SPEED_UPDATE"),
+                    Context.RECEIVER_EXPORTED
+                )
+            } else {
+                activity?.registerReceiver(
+                    speedUpdateReceiver,
+                    IntentFilter("ACTION_SPEED_UPDATE")
+                )
+            }
+
+        }
+        else if (start == "Stop") {
+            isStop = true
+
+            activity?.unregisterReceiver(speedUpdateReceiver)
+            binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
+            binding.playProgress.visibility = View.VISIBLE
+            Constants.viewScaling(1f, 0f, false, binding.pauseBtn)
+            Constants.viewScaling(1f, 0f, false, binding.resetBtn)
+            binding.time.text = "00:00:00"
+            binding.speedView.speedTo(0f)
+            binding.speedTV.text = "0"
+            binding.distance.text = "0"
+            binding.maxSpeed.text = "0"
+            binding.avgSpeed.text = "0"
+        }
+    }
     override fun onResume() {
         super.onResume()
         val sp = SharedPreferenceHelperClass(requireContext())

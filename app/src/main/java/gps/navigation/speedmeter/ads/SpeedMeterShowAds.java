@@ -8,10 +8,17 @@ import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.splashInterstitial
 import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.videoInterstitial;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
 
@@ -20,6 +27,7 @@ import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import gps.navigation.speedmeter.R;
 import gps.navigation.speedmeter.utils.Constants;
 
 public class SpeedMeterShowAds {
@@ -34,29 +42,44 @@ public class SpeedMeterShowAds {
     }
 
     public static void backPressForClick(final Activity context, final InterstitialAd mInterstitialAd) {
-        if (adShowCounter()) {
+        if (Constants.INSTANCE.getWillIntersShow() && !Constants.INSTANCE.getBackpressadcontrol() && adShowCounter()) {
 
+            Dialog dialog = new Dialog(context);
             if (mInterstitialAd != null) {
-                mInterstitialAd.show(context);
-                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.loading_dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getWindow().setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                );
+                dialog.show();
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
-                    public void onAdDismissedFullScreenContent() {
-                        super.onAdDismissedFullScreenContent();
-                        SpeedMeterLoadAds.canShowAppOpen = true;
-                        SpeedMeterLoadAds.admobInterstitialNav = null;
-                        SpeedMeterLoadAds.adClickCounter = 0;
-                        preReLoadAdsLiveEarth(context);
-                        context.finish();
+                    public void run() {
+                        dialog.dismiss();
+                        mInterstitialAd.show(context);
+                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                SpeedMeterLoadAds.canShowAppOpen = true;
+                                SpeedMeterLoadAds.admobInterstitialNav = null;
+                                SpeedMeterLoadAds.adClickCounter = 0;
+                                preReLoadAdsLiveEarth(context);
+                                context.finish();
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+                                SpeedMeterLoadAds.canShowAppOpen = false;
+                            }
+
+                        });
                     }
-
-                    @Override
-                    public void onAdShowedFullScreenContent() {
-                        super.onAdShowedFullScreenContent();
-                        SpeedMeterLoadAds.canShowAppOpen = false;
-                    }
-
-                });
-
+                }, 1000);
             } else {
                 preReLoadAdsLiveEarth(context);
                 context.finish();
@@ -68,29 +91,43 @@ public class SpeedMeterShowAds {
     }
 
     public static void backPressForTimer(final Activity context, final InterstitialAd mInterstitialAd) {
-        if (shouldGoForAds) {
-
+        if (Constants.INSTANCE.getWillIntersShow() && !Constants.INSTANCE.getBackpressadcontrol() && shouldGoForAds) {
+            Dialog dialog = new Dialog(context);
             if (mInterstitialAd != null) {
-                mInterstitialAd.show(context);
-                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.loading_dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getWindow().setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                );
+                dialog.show();
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
-                    public void onAdDismissedFullScreenContent() {
-                        super.onAdDismissedFullScreenContent();
-                        SpeedMeterLoadAds.canShowAppOpen = true;
-                        SpeedMeterLoadAds.admobInterstitialNav = null;
-                        preReLoadAdsLiveEarth(context);
-                        setHandlerForAd();
-                        context.finish();
+                    public void run() {
+                        dialog.dismiss();
+                        mInterstitialAd.show(context);
+                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                SpeedMeterLoadAds.canShowAppOpen = true;
+                                SpeedMeterLoadAds.admobInterstitialNav = null;
+                                preReLoadAdsLiveEarth(context);
+                                setHandlerForAd();
+                                context.finish();
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+                                SpeedMeterLoadAds.canShowAppOpen = false;
+                            }
+
+                        });
                     }
-
-                    @Override
-                    public void onAdShowedFullScreenContent() {
-                        super.onAdShowedFullScreenContent();
-                        SpeedMeterLoadAds.canShowAppOpen = false;
-                    }
-
-                });
-
+                }, 1000);
             } else {
                 preReLoadAdsLiveEarth(context);
                 context.finish();
@@ -110,28 +147,44 @@ public class SpeedMeterShowAds {
     }
 
     public static void forClickAds(final Context context, final InterstitialAd mInterstitialAd, final Intent intent) {
-        if (adShowCounter()) {
+        if (Constants.INSTANCE.getWillIntersShow() && adShowCounter()) {
+            Dialog dialog = new Dialog(context);
             if (mInterstitialAd != null) {
-                mInterstitialAd.show((Activity) context);
-                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.loading_dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getWindow().setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                );
+                dialog.show();
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
-                    public void onAdDismissedFullScreenContent() {
-                        super.onAdDismissedFullScreenContent();
-                        SpeedMeterLoadAds.canShowAppOpen = true;
-                        SpeedMeterLoadAds.admobInterstitialNav = null;
-                        SpeedMeterLoadAds.adClickCounter = 0;
-                        preReLoadAdsLiveEarth(context);
-                        //  HoneyBeeMapNavigationLoadAds.setHandlerForAd();
-                        Log.d("ConstantAdsLoadAds", "onAdDismissedFullScreenContent: " + SpeedMeterLoadAds.next_ads_time);
-                        context.startActivity(intent);
-                    }
+                    public void run() {
+                        dialog.dismiss();
+                        mInterstitialAd.show((Activity) context);
+                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                SpeedMeterLoadAds.canShowAppOpen = true;
+                                SpeedMeterLoadAds.admobInterstitialNav = null;
+                                SpeedMeterLoadAds.adClickCounter = 0;
+                                preReLoadAdsLiveEarth(context);
+                                //  HoneyBeeMapNavigationLoadAds.setHandlerForAd();
+                                Log.d("ConstantAdsLoadAds", "onAdDismissedFullScreenContent: " + SpeedMeterLoadAds.next_ads_time);
+                                context.startActivity(intent);
+                            }
 
-                    @Override
-                    public void onAdShowedFullScreenContent() {
-                        super.onAdShowedFullScreenContent();
-                        SpeedMeterLoadAds.canShowAppOpen = false;
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+                                SpeedMeterLoadAds.canShowAppOpen = false;
+                            }
+                        });
                     }
-                });
+                }, 1000);
             } else {
                 preReLoadAdsLiveEarth(context);
                 context.startActivity(intent);
@@ -143,28 +196,44 @@ public class SpeedMeterShowAds {
     }
 
     public static void forTimerAds(final Context context, final InterstitialAd mInterstitialAd, final Intent intent) {
-        if (shouldGoForAds) {
+        if (Constants.INSTANCE.getWillIntersShow() && shouldGoForAds) {
+            Dialog dialog = new Dialog(context);
             if (mInterstitialAd != null) {
-                mInterstitialAd.show((Activity) context);
-                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.loading_dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getWindow().setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                );
+                dialog.show();
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
-                    public void onAdDismissedFullScreenContent() {
-                        super.onAdDismissedFullScreenContent();
-                        SpeedMeterLoadAds.canShowAppOpen = true;
-                        SpeedMeterLoadAds.admobInterstitialNav = null;
+                    public void run() {
+                        dialog.dismiss();
+                        mInterstitialAd.show((Activity) context);
+                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                SpeedMeterLoadAds.canShowAppOpen = true;
+                                SpeedMeterLoadAds.admobInterstitialNav = null;
 
-                        preReLoadAdsLiveEarth(context);
-                        setHandlerForAd();
-                        Log.d("ConstantAdsLoadAds", "onAdDismissedFullScreenContent: " + SpeedMeterLoadAds.next_ads_time);
-                        context.startActivity(intent);
-                    }
+                                preReLoadAdsLiveEarth(context);
+                                setHandlerForAd();
+                                Log.d("ConstantAdsLoadAds", "onAdDismissedFullScreenContent: " + SpeedMeterLoadAds.next_ads_time);
+                                context.startActivity(intent);
+                            }
 
-                    @Override
-                    public void onAdShowedFullScreenContent() {
-                        super.onAdShowedFullScreenContent();
-                        SpeedMeterLoadAds.canShowAppOpen = false;
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+                                SpeedMeterLoadAds.canShowAppOpen = false;
+                            }
+                        });
                     }
-                });
+                }, 1000);
             } else {
                 preReLoadAdsLiveEarth(context);
                 context.startActivity(intent);
@@ -246,32 +315,48 @@ public class SpeedMeterShowAds {
     }
 
     public static void showingSplashAd(final Activity context, OnAdShowed callback) {
+        Dialog dialog = new Dialog(context);
         if (splashInterstitial != null) {
-            splashInterstitial.show(context);
-            splashInterstitial.setFullScreenContentCallback(new FullScreenContentCallback() {
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.loading_dialog);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+            );
+            dialog.show();
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
-                public void onAdDismissedFullScreenContent() {
-                    super.onAdDismissedFullScreenContent();
-                    SpeedMeterLoadAds.canShowAppOpen = true;
-                    SpeedMeterLoadAds.canReLoadedAdMob = true;
-                    splashInterstitial = null;
-                    callback.onDismiss();
-                }
+                public void run() {
+                    dialog.dismiss();
+                    splashInterstitial.show(context);
+                    splashInterstitial.setFullScreenContentCallback(new FullScreenContentCallback() {
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            super.onAdDismissedFullScreenContent();
+                            SpeedMeterLoadAds.canShowAppOpen = true;
+                            SpeedMeterLoadAds.canReLoadedAdMob = true;
+                            splashInterstitial = null;
+                            callback.onDismiss();
+                        }
 
-                @Override
-                public void onAdShowedFullScreenContent() {
-                    super.onAdShowedFullScreenContent();
-                    SpeedMeterLoadAds.canShowAppOpen = false;
-                }
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            super.onAdShowedFullScreenContent();
+                            SpeedMeterLoadAds.canShowAppOpen = false;
+                        }
 
-                @Override
-                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                    super.onAdFailedToShowFullScreenContent(adError);
-                    SpeedMeterLoadAds.canShowAppOpen = true;
-                    callback.onDismiss();
+                        @Override
+                        public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                            super.onAdFailedToShowFullScreenContent(adError);
+                            SpeedMeterLoadAds.canShowAppOpen = true;
+                            callback.onDismiss();
 
+                        }
+                    });
                 }
-            });
+            }, 1000);
         } else {
             SpeedMeterLoadAds.canShowAppOpen = true;
             callback.onDismiss();

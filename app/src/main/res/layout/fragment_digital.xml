@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:indeterminateTint="@color/black" />
+            android:indeterminateTint="@color/white" />
 
         <TextView
             android:id="@+id/playTV"
@@ -97,7 +97,7 @@
             android:fontFamily="@font/poppins_semibold"
             android:gravity="center"
             android:text="@string/start"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/_18sdp" />
     </LinearLayout>
 

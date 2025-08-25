@@ -133,7 +133,6 @@ public class SpeedMeterLoadAds {
                     super.onAdFailedToLoad(loadAdError);
                     Log.d("ConstantAdsLoadAds", "Bannen onAdFailedToLoad: " + loadAdError.toString());
                     mAdView.destroy();
-                    mView.setVisibility(View.GONE);
                 }
 
             });
@@ -143,7 +142,6 @@ public class SpeedMeterLoadAds {
                 e.printStackTrace();
             }
         } else {
-            mView.setVisibility(View.GONE);
         }
 
 

@@ -73,6 +73,9 @@ class DigitalFragment : Fragment() {
                 binding.playProgress.visibility = View.GONE
             }
         }
+        Constants.startStop.observe(requireActivity()){
+            valuesStart_Stop(it)
+        }
         return binding.root
     }
 
@@ -143,39 +146,44 @@ class DigitalFragment : Fragment() {
             val isDestroying = intent?.getBooleanExtra("isDestroying", false) ?: false
             Log.d("TAG__", "Digital Fragment: isStart $start")
             if (!isDestroying) {
-                if (start == "Start") {
-                    isStop = false
-                    binding.playTV.text = context?.getString(R.string.stop) ?: "Stop"
-                    viewScaling(0f, 1f, true, binding.pauseBtn)
-                    viewScaling(0f, 1f, true, binding.resetBtn)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        activity?.registerReceiver(
-                            speedUpdateReceiver,
-                            IntentFilter("ACTION_SPEED_UPDATE"),
-                            Context.RECEIVER_EXPORTED
-                        )
-                    } else {
-                        activity?.registerReceiver(
-                            speedUpdateReceiver,
-                            IntentFilter("ACTION_SPEED_UPDATE")
-                        )
-                    }
-                } else if (start == "Stop") {
-                    isStop = true
-                    activity?.unregisterReceiver(speedUpdateReceiver)
-                    binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
-                    binding.playProgress.visibility = View.VISIBLE
-                    viewScaling(1f, 0f, false, binding.pauseBtn)
-                    viewScaling(1f, 0f, false, binding.resetBtn)
-                    binding.time.text = "00:00:00"
-                    binding.distance.text = "0"
-                    binding.maxSpeed.text = "0"
-                    binding.avgSpeed.text = "0"
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        binding.speedTV.text = "00"
-                    }, 1500)
-                }
+
             }
+        }
+    }
+
+    fun valuesStart_Stop(start:String){
+        if (start == "Start") {
+            isStop = false
+            binding.playTV.text = context?.getString(R.string.stop) ?: "Stop"
+            viewScaling(0f, 1f, true, binding.pauseBtn)
+            viewScaling(0f, 1f, true, binding.resetBtn)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                activity?.registerReceiver(
+                    speedUpdateReceiver,
+                    IntentFilter("ACTION_SPEED_UPDATE"),
+                    Context.RECEIVER_EXPORTED
+                )
+            } else {
+                activity?.registerReceiver(
+                    speedUpdateReceiver,
+                    IntentFilter("ACTION_SPEED_UPDATE")
+                )
+            }
+        }
+        else if (start == "Stop") {
+            isStop = true
+            activity?.unregisterReceiver(speedUpdateReceiver)
+            binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
+            binding.playProgress.visibility = View.VISIBLE
+            viewScaling(1f, 0f, false, binding.pauseBtn)
+            viewScaling(1f, 0f, false, binding.resetBtn)
+            binding.time.text = "00:00:00"
+            binding.distance.text = "0"
+            binding.maxSpeed.text = "0"
+            binding.avgSpeed.text = "0"
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.speedTV.text = "00"
+            }, 1500)
         }
     }
 

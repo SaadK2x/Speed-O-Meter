@@ -21,6 +21,8 @@ import gps.navigation.speedmeter.databinding.ActivitySplashBinding
 import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import gps.navigation.speedmeter.utils.Constants
 import gps.navigation.speedmeter.utils.Constants.IsAppOnTimer
+import gps.navigation.speedmeter.utils.Constants.backpressadcontrol
+import gps.navigation.speedmeter.utils.Constants.willIntersShow
 
 class SplashActivity : AppCompatActivity() {
     private val binding: ActivitySplashBinding by lazy {
@@ -36,24 +38,7 @@ class SplashActivity : AppCompatActivity() {
         remoteConfigValues()
         loadSplash()
 
-        val scaleAnimator = ValueAnimator.ofFloat(1.0f, 1.03f).apply {
-            duration = 1000 // Duration of the animation
-            repeatCount = ValueAnimator.INFINITE // Repeat infinitely
-            repeatMode = ValueAnimator.REVERSE // Reverse direction on repeat
-            interpolator = AccelerateDecelerateInterpolator() // Smooth transition
-            addUpdateListener { animation ->
-                val animatedValue = animation.animatedValue as Float
-                binding.startBtn.scaleX = animatedValue
-                binding.startBtn.scaleY = animatedValue
-            }
-        }
-        scaleAnimator.start()
 
-        binding.startBtn.setOnClickListener {
-            SpeedMeterShowAds.showingSplashAd(this@SplashActivity) {
-                moveForward()
-            }
-        }
     }
 
     override fun onResume() {
@@ -74,7 +59,6 @@ class SplashActivity : AppCompatActivity() {
             override fun onFinish() {
                 binding.progressBar.visibility = View.INVISIBLE
                 binding.textView1.visibility = View.INVISIBLE
-                binding.startBtn.visibility = View.INVISIBLE
                 moveForward()
             }
         }
@@ -93,7 +77,9 @@ class SplashActivity : AppCompatActivity() {
                     timer = null
                     binding.progressBar.visibility = View.INVISIBLE
                     binding.textView1.visibility = View.INVISIBLE
-                    binding.startBtn.visibility = View.VISIBLE
+                    SpeedMeterShowAds.showingSplashAd(this@SplashActivity) {
+                        moveForward()
+                    }
 
                 }
 
@@ -102,7 +88,7 @@ class SplashActivity : AppCompatActivity() {
                     timer = null
                     binding.progressBar.visibility = View.INVISIBLE
                     binding.textView1.visibility = View.INVISIBLE
-                    binding.startBtn.visibility = View.VISIBLE
+                    moveForward()
                 }
 
             })
@@ -143,6 +129,8 @@ class SplashActivity : AppCompatActivity() {
                     adShowAfter = remoteConfig.getString("intertitialCounter").toInt()
                     Log.d("TAG_LL", "remoteConfigValues: ${remoteConfig.getString("premium")}")
                     IsAppOnTimer = remoteConfig.getBoolean("IsAppOnTimer")
+                    willIntersShow = remoteConfig.getBoolean("willIntersShow")
+                    backpressadcontrol = remoteConfig.getBoolean("backpressadcontrol")
                     next_ads_time = remoteConfig.getString("next_ads_time").toLong()
 
                 } else {

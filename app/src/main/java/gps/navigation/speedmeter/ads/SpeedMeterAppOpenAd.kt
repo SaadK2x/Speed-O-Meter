@@ -2,8 +2,15 @@ package gps.navigation.speedmeter.ads
 
 import android.app.Activity
 import android.app.Application
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.ViewGroup
+import android.view.Window
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -13,6 +20,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
+import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.activities.SplashActivity
 import gps.navigation.speedmeter.utils.MyApp
 import java.util.Date
@@ -37,10 +45,21 @@ class SpeedMeterAppOpenAd(private val myApplication: MyApp) : LifecycleObserver,
     }
 
     fun showHoneyBeeMapNavigationStartAppOpenAd() {
+        val dialog = Dialog(runningActivity!!)
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.loading_dialog)
+        dialog.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.getWindow()!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
         if (!isDisplayingAd && isStartAdAvailable) {
             val fullScreenContentCallback: FullScreenContentCallback =
                 object : FullScreenContentCallback() {
                     override fun onAdDismissedFullScreenContent() {
+                        dialog.dismiss()
                         startOpenAd = null
                         isDisplayingAd = false
                         loadHoneyBeeMapNavigationStartAppOpenAd()
@@ -54,9 +73,13 @@ class SpeedMeterAppOpenAd(private val myApplication: MyApp) : LifecycleObserver,
                         isDisplayingAd = true
                     }
                 }
-            startOpenAd!!.show(runningActivity!!)
-            Log.d(TAG, "showStartAppOpenAd: Showing App open ad")
-            startOpenAd!!.fullScreenContentCallback = fullScreenContentCallback
+            dialog.show()
+            Handler(Looper.getMainLooper()).postDelayed({
+
+                startOpenAd!!.show(runningActivity!!)
+                Log.d(TAG, "showStartAppOpenAd: Showing App open ad")
+                startOpenAd!!.fullScreenContentCallback = fullScreenContentCallback
+            }, 1000)
         } else {
             Log.d(TAG, "Can not show ad.")
             loadHoneyBeeMapNavigationStartAppOpenAd()

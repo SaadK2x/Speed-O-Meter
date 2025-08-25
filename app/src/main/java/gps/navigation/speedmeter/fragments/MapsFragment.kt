@@ -126,7 +126,9 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
 
         sharedPrefrences = SharedPreferenceHelperClass(requireContext())
         markerManger = MarkerManager(binding.mapView)
-
+        Constants.startStop.observe(requireActivity()) {
+            valuesStart_Stop(it)
+        }
 
         binding.mapView.apply {
             mapboxMap.loadStyle(style(Style.SATELLITE) {
@@ -364,331 +366,7 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
             val isDestroying = intent?.getBooleanExtra("isDestroying", false) ?: false
             Log.d("TAG__", "bindService Value : $start , $isDestroying")
             if (!isDestroying) {
-                if (start == "Start") {
-                    isStop = false
-                    binding.playTV.text = context?.getString(R.string.stop) ?: "Stop"
-                    Constants.viewScaling(0f, 1f, true, binding.pauseBtn)
-                    Constants.viewScaling(0f, 1f, true, binding.resetBtn)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        activity?.registerReceiver(
-                            speedUpdateReceiver,
-                            IntentFilter("ACTION_SPEED_UPDATE"),
-                            Context.RECEIVER_EXPORTED
-                        )
-                        activity?.registerReceiver(
-                            latlngUpdateReceiver,
-                            IntentFilter("ACTION_CONSTRAINTS_UPDATE"),
-                            Context.RECEIVER_EXPORTED
-                        )
-                    } else {
-                        activity?.registerReceiver(
-                            speedUpdateReceiver,
-                            IntentFilter("ACTION_SPEED_UPDATE")
-                        )
-                        activity?.registerReceiver(
-                            latlngUpdateReceiver,
-                            IntentFilter("ACTION_CONSTRAINTS_UPDATE")
-                        )
-                    }
-                }
-                else if (start == "Stop") {
-                    isStop = true
-                    activity?.unregisterReceiver(speedUpdateReceiver)
-                    activity?.unregisterReceiver(latlngUpdateReceiver)
 
-                    sharedPrefrences!!.putPoints("mapPoints", ArrayList())
-                    binding.playBtn.isEnabled = false
-                    moveForward.value = "No"
-                    binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
-                    binding.playProgress.visibility = View.VISIBLE
-                    Constants.viewScaling(1f, 0f, false, binding.pauseBtn)
-                    Constants.viewScaling(1f, 0f, false, binding.resetBtn)
-
-                    Log.d("TAG_DB", "onSAving: $dbID")
-                    when (sharedPrefrences?.getString("Unit", "KMH")) {
-                        "KMH" -> {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                val source = Constants.getCompleteAddress(
-                                    Constants.initialLat,
-                                    Constants.initialLng,
-                                    requireActivity()
-                                )
-                                val start = source?.completeAddress ?: "Start Point"
-                                val destination = Constants.getCompleteAddress(
-                                    Constants.endLat,
-                                    Constants.endLng,
-                                    requireContext()
-                                )
-                                val end = destination?.completeAddress ?: "End Point"
-                                val history = History(
-                                    dbID,
-                                    start,
-                                    end,
-                                    binding.distance.text.toString().toFloat(),
-                                    binding.speedTV.text.toString().toFloat(),
-                                    binding.avgSpeed.text.toString().toFloat(),
-                                    binding.maxSpeed.text.toString().toFloat(),
-                                    binding.time.text.toString(),
-                                    Constants.getDate()
-                                )
-
-                                var hist: Long = 0
-                                val route = try {
-                                    hist = databaseHelper!!.insertHistory(history)
-                                    databaseHelper!!.insertRoutePoints(Constants.routePoints)
-                                } catch (e: Exception) {
-                                    Log.d("TAG_DATA", "onReceive: ${e.localizedMessage} ")
-                                    null
-                                }
-                                Log.d(
-                                    "TAG_DATA",
-                                    "onReceive: KMH history $hist and Route ${Constants.routePoints}"
-                                )
-                                if (route.isNullOrEmpty()) {
-
-                                    Log.d("TAG_DATA", "onReceive: KMH Comes Empty")
-                                    dbID += 1
-                                    withContext(Dispatchers.Main) {
-                                        binding.time.text = "00:00:00"
-                                        binding.speedTV.text = "0"
-                                        binding.distance.text = "0"
-                                        binding.maxSpeed.text = "0"
-                                        binding.avgSpeed.text = "0"
-                                        moveToNext(history)
-                                    }
-                                } else {
-                                    withContext(Dispatchers.Main) {
-                                        Log.d("TAG_DATA", "onReceive: KMH Comes Not Empty")
-                                        clearPolygon()
-                                        previousMarker?.let { markerManger?.removeMarker(it) }
-
-                                        //  markerManger?.removeMarker(previousMarker!!)
-                                        startMarker?.let { markerManger?.removeMarker(it) }
-
-                                        //    markerManger?.removeMarker(startMarker!!)
-                                        val sydney =
-                                            Point.fromLngLat(
-                                                Constants.currentLongitude,
-                                                Constants.currentLatitude
-                                            )
-                                        previousMarker = Marker(
-                                            title = Constants.currentAddress,
-                                            snippet = "",
-                                            position = sydney,
-                                            icon = requireContext().bitmapFromDrawableRes(R.drawable.source_icon),
-                                        )
-                                        if (previousMarker != null) {
-                                            markerManger!!.addMarker(previousMarker!!)
-                                        }
-                                        Constants.zoomInAnimation(
-                                            Constants.currentLatitude,
-                                            Constants.currentLongitude,
-                                            binding.mapView.mapboxMap,
-                                            true
-                                        )
-                                        dbID += 1
-                                        binding.time.text = "00:00:00"
-                                        binding.speedTV.text = "0"
-                                        binding.distance.text = "0"
-                                        binding.maxSpeed.text = "0"
-                                        binding.avgSpeed.text = "0"
-                                        Constants.routePoints = ArrayList()
-                                        Constants.initialLat = 0.0
-                                        Constants.initialLng = 0.0
-                                        //  previousLatLng = null
-                                        //  polylineOptions = PolylineOptions()
-                                        moveToNext(history)
-                                    }
-
-                                }
-                            }
-                        }
-
-                        "MPH" -> {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                val source = Constants.getCompleteAddress(
-                                    Constants.initialLat,
-                                    Constants.initialLng,
-                                    requireContext()
-                                )
-                                val start = source?.completeAddress ?: "Start Point"
-                                val destination = Constants.getCompleteAddress(
-                                    Constants.endLat,
-                                    Constants.endLng,
-                                    requireContext()
-                                )
-                                val end = destination?.completeAddress ?: "End Point"
-                                val history = History(
-                                    dbID,
-                                    start,
-                                    end,
-                                    Constants.miTokm(binding.distance.text.toString().toFloat()),
-                                    Constants.mphToKmh(binding.speedTV.text.toString().toFloat()),
-                                    Constants.mphToKmh(binding.avgSpeed.text.toString().toFloat()),
-                                    Constants.mphToKmh(binding.maxSpeed.text.toString().toFloat()),
-                                    binding.time.text.toString(),
-                                    Constants.getDate()
-                                )
-
-                                var hist: Long = 0
-                                val route = try {
-                                    hist = databaseHelper!!.insertHistory(history)
-                                    databaseHelper!!.insertRoutePoints(Constants.routePoints)
-                                } catch (e: Exception) {
-                                    null
-                                }
-                                Log.d("TAG_DATA", "onReceive:MPH history $hist and Route $route")
-                                if (route.isNullOrEmpty()) {
-
-                                    Log.d("TAG_DATA", "onReceive: MPH Comes Empty")
-
-                                    dbID += 1
-                                    withContext(Dispatchers.Main) {
-                                        binding.time.text = "00:00:00"
-                                        binding.speedTV.text = "0"
-                                        binding.distance.text = "0"
-                                        binding.maxSpeed.text = "0"
-                                        binding.avgSpeed.text = "0"
-                                        moveToNext(history)
-                                    }
-                                } else {
-                                    withContext(Dispatchers.Main) {
-
-                                        Log.d("TAG_DATA", "onReceive: MPH Comes  not Empty")
-                                        clearPolygon()
-                                        markerManger?.removeMarker(previousMarker!!)
-                                        markerManger?.removeMarker(startMarker!!)
-                                        val sydney =
-                                            Point.fromLngLat(
-                                                Constants.currentLongitude,
-                                                Constants.currentLatitude
-                                            )
-                                        previousMarker = Marker(
-                                            title = Constants.currentAddress,
-                                            snippet = "",
-                                            position = sydney,
-                                            icon = requireContext().bitmapFromDrawableRes(R.drawable.source_icon),
-                                        )
-                                        markerManger!!.addMarker(previousMarker!!)
-                                        Constants.zoomInAnimation(
-                                            Constants.currentLatitude,
-                                            Constants.currentLongitude,
-                                            binding.mapView.mapboxMap,
-                                            true
-                                        )
-                                        dbID += 1
-                                        binding.time.text = "00:00:00"
-                                        binding.speedTV.text = "0"
-                                        binding.distance.text = "0"
-                                        binding.maxSpeed.text = "0"
-                                        binding.avgSpeed.text = "0"
-                                        Constants.routePoints = ArrayList()
-                                        Constants.initialLat = 0.0
-                                        Constants.initialLng = 0.0
-                                        //   previousLatLng = null
-                                        //  polylineOptions = PolylineOptions()
-                                        moveToNext(history)
-                                    }
-                                }
-                            }
-                        }
-
-                        "KNOT" -> {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                val source = Constants.getCompleteAddress(
-                                    Constants.initialLat,
-                                    Constants.initialLng,
-                                    requireContext()
-                                )
-                                val start = source?.completeAddress ?: "Start Point"
-                                val destination = Constants.getCompleteAddress(
-                                    Constants.endLat,
-                                    Constants.endLng,
-                                    requireContext()
-                                )
-                                val end = destination?.completeAddress ?: "End Point"
-                                val history = History(
-                                    dbID,
-                                    start,
-                                    end,
-                                    Constants.nmTokm(binding.distance.text.toString().toFloat()),
-                                    Constants.knotsToKmh(binding.speedTV.text.toString().toFloat()),
-                                    Constants.knotsToKmh(
-                                        binding.avgSpeed.text.toString().toFloat()
-                                    ),
-                                    Constants.knotsToKmh(
-                                        binding.maxSpeed.text.toString().toFloat()
-                                    ),
-                                    binding.time.text.toString(),
-                                    Constants.getDate()
-                                )
-
-                                var hist: Long = 0
-                                val route = try {
-                                    hist = databaseHelper!!.insertHistory(history)
-                                    databaseHelper!!.insertRoutePoints(Constants.routePoints)
-                                } catch (e: Exception) {
-                                    null
-                                }
-                                Log.d("TAG_DATA", "onReceive: KNOT history $hist and Route $route")
-                                if (route.isNullOrEmpty()) {
-
-                                    Log.d("TAG_DATA", "onReceive: KNOT Comes Empty")
-
-                                    dbID += 1
-                                    withContext(Dispatchers.Main) {
-                                        binding.time.text = "00:00:00"
-                                        binding.speedTV.text = "0"
-                                        binding.distance.text = "0"
-                                        binding.maxSpeed.text = "0"
-                                        binding.avgSpeed.text = "0"
-                                        moveToNext(history)
-                                    }
-                                } else {
-
-                                    Log.d("TAG_DATA", "onReceive: KNOT Comes NOT Empty")
-                                    withContext(Dispatchers.Main) {
-                                        polygonPoints.clear()
-                                        markerManger?.removeMarker(previousMarker!!)
-                                        markerManger?.removeMarker(startMarker!!)
-                                        val sydney =
-                                            Point.fromLngLat(
-                                                Constants.currentLongitude,
-                                                Constants.currentLatitude
-                                            )
-                                        previousMarker = Marker(
-                                            title = Constants.currentAddress,
-                                            snippet = "",
-                                            position = sydney,
-                                            icon = requireContext().bitmapFromDrawableRes(R.drawable.source_icon),
-                                        )
-                                        markerManger!!.addMarker(previousMarker!!)
-                                        Constants.zoomInAnimation(
-                                            Constants.currentLatitude,
-                                            Constants.currentLongitude,
-                                            binding.mapView.mapboxMap,
-                                            true
-                                        )
-                                        dbID += 1
-                                        binding.time.text = "00:00:00"
-                                        binding.speedTV.text = "0"
-                                        binding.distance.text = "0"
-                                        binding.maxSpeed.text = "0"
-                                        binding.avgSpeed.text = "0"
-                                        Constants.routePoints = ArrayList()
-                                        Constants.initialLat = 0.0
-                                        Constants.initialLng = 0.0
-                                        //  previousLatLng = null
-                                        //  polylineOptions = PolylineOptions()
-                                        moveToNext(history)
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-
-                }
             }
         }
     }
@@ -1078,4 +756,333 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
             })
     }
 
+
+    fun valuesStart_Stop(start: String) {
+
+        if (start == "Start") {
+            isStop = false
+            binding.playTV.text = context?.getString(R.string.stop) ?: "Stop"
+            Constants.viewScaling(0f, 1f, true, binding.pauseBtn)
+            Constants.viewScaling(0f, 1f, true, binding.resetBtn)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                activity?.registerReceiver(
+                    speedUpdateReceiver,
+                    IntentFilter("ACTION_SPEED_UPDATE"),
+                    Context.RECEIVER_EXPORTED
+                )
+                activity?.registerReceiver(
+                    latlngUpdateReceiver,
+                    IntentFilter("ACTION_CONSTRAINTS_UPDATE"),
+                    Context.RECEIVER_EXPORTED
+                )
+            } else {
+                activity?.registerReceiver(
+                    speedUpdateReceiver,
+                    IntentFilter("ACTION_SPEED_UPDATE")
+                )
+                activity?.registerReceiver(
+                    latlngUpdateReceiver,
+                    IntentFilter("ACTION_CONSTRAINTS_UPDATE")
+                )
+            }
+        }
+        else if (start == "Stop") {
+            isStop = true
+            activity?.unregisterReceiver(speedUpdateReceiver)
+            activity?.unregisterReceiver(latlngUpdateReceiver)
+
+            sharedPrefrences!!.putPoints("mapPoints", ArrayList())
+            binding.playBtn.isEnabled = false
+            moveForward.value = "No"
+            binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
+            binding.playProgress.visibility = View.VISIBLE
+            Constants.viewScaling(1f, 0f, false, binding.pauseBtn)
+            Constants.viewScaling(1f, 0f, false, binding.resetBtn)
+
+            Log.d("TAG_DB", "onSAving: $dbID")
+            when (sharedPrefrences?.getString("Unit", "KMH")) {
+                "KMH" -> {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val source = Constants.getCompleteAddress(
+                            Constants.initialLat,
+                            Constants.initialLng,
+                            requireActivity()
+                        )
+                        val start = source?.completeAddress ?: "Start Point"
+                        val destination = Constants.getCompleteAddress(
+                            Constants.endLat,
+                            Constants.endLng,
+                            requireContext()
+                        )
+                        val end = destination?.completeAddress ?: "End Point"
+                        val history = History(
+                            dbID,
+                            start,
+                            end,
+                            binding.distance.text.toString().toFloat(),
+                            binding.speedTV.text.toString().toFloat(),
+                            binding.avgSpeed.text.toString().toFloat(),
+                            binding.maxSpeed.text.toString().toFloat(),
+                            binding.time.text.toString(),
+                            Constants.getDate()
+                        )
+
+                        var hist: Long = 0
+                        val route = try {
+                            hist = databaseHelper!!.insertHistory(history)
+                            databaseHelper!!.insertRoutePoints(Constants.routePoints)
+                        } catch (e: Exception) {
+                            Log.d("TAG_DATA", "onReceive: ${e.localizedMessage} ")
+                            null
+                        }
+                        Log.d(
+                            "TAG_DATA",
+                            "onReceive: KMH history $hist and Route ${Constants.routePoints}"
+                        )
+                        if (route.isNullOrEmpty()) {
+
+                            Log.d("TAG_DATA", "onReceive: KMH Comes Empty")
+                            dbID += 1
+                            withContext(Dispatchers.Main) {
+                                binding.time.text = "00:00:00"
+                                binding.speedTV.text = "0"
+                                binding.distance.text = "0"
+                                binding.maxSpeed.text = "0"
+                                binding.avgSpeed.text = "0"
+                                moveToNext(history)
+                            }
+                        } else {
+                            withContext(Dispatchers.Main) {
+                                Log.d("TAG_DATA", "onReceive: KMH Comes Not Empty")
+                                clearPolygon()
+                                previousMarker?.let { markerManger?.removeMarker(it) }
+
+                                //  markerManger?.removeMarker(previousMarker!!)
+                                startMarker?.let { markerManger?.removeMarker(it) }
+
+                                //    markerManger?.removeMarker(startMarker!!)
+                                val sydney =
+                                    Point.fromLngLat(
+                                        Constants.currentLongitude,
+                                        Constants.currentLatitude
+                                    )
+                                previousMarker = Marker(
+                                    title = Constants.currentAddress,
+                                    snippet = "",
+                                    position = sydney,
+                                    icon = requireContext().bitmapFromDrawableRes(R.drawable.source_icon),
+                                )
+                                if (previousMarker != null) {
+                                    markerManger!!.addMarker(previousMarker!!)
+                                }
+                                Constants.zoomInAnimation(
+                                    Constants.currentLatitude,
+                                    Constants.currentLongitude,
+                                    binding.mapView.mapboxMap,
+                                    true
+                                )
+                                dbID += 1
+                                binding.time.text = "00:00:00"
+                                binding.speedTV.text = "0"
+                                binding.distance.text = "0"
+                                binding.maxSpeed.text = "0"
+                                binding.avgSpeed.text = "0"
+                                Constants.routePoints = ArrayList()
+                                Constants.initialLat = 0.0
+                                Constants.initialLng = 0.0
+                                //  previousLatLng = null
+                                //  polylineOptions = PolylineOptions()
+                                moveToNext(history)
+                            }
+
+                        }
+                    }
+                }
+
+                "MPH" -> {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val source = Constants.getCompleteAddress(
+                            Constants.initialLat,
+                            Constants.initialLng,
+                            requireContext()
+                        )
+                        val start = source?.completeAddress ?: "Start Point"
+                        val destination = Constants.getCompleteAddress(
+                            Constants.endLat,
+                            Constants.endLng,
+                            requireContext()
+                        )
+                        val end = destination?.completeAddress ?: "End Point"
+                        val history = History(
+                            dbID,
+                            start,
+                            end,
+                            Constants.miTokm(binding.distance.text.toString().toFloat()),
+                            Constants.mphToKmh(binding.speedTV.text.toString().toFloat()),
+                            Constants.mphToKmh(binding.avgSpeed.text.toString().toFloat()),
+                            Constants.mphToKmh(binding.maxSpeed.text.toString().toFloat()),
+                            binding.time.text.toString(),
+                            Constants.getDate()
+                        )
+
+                        var hist: Long = 0
+                        val route = try {
+                            hist = databaseHelper!!.insertHistory(history)
+                            databaseHelper!!.insertRoutePoints(Constants.routePoints)
+                        } catch (e: Exception) {
+                            null
+                        }
+                        Log.d("TAG_DATA", "onReceive:MPH history $hist and Route $route")
+                        if (route.isNullOrEmpty()) {
+
+                            Log.d("TAG_DATA", "onReceive: MPH Comes Empty")
+
+                            dbID += 1
+                            withContext(Dispatchers.Main) {
+                                binding.time.text = "00:00:00"
+                                binding.speedTV.text = "0"
+                                binding.distance.text = "0"
+                                binding.maxSpeed.text = "0"
+                                binding.avgSpeed.text = "0"
+                                moveToNext(history)
+                            }
+                        } else {
+                            withContext(Dispatchers.Main) {
+
+                                Log.d("TAG_DATA", "onReceive: MPH Comes  not Empty")
+                                clearPolygon()
+                                markerManger?.removeMarker(previousMarker!!)
+                                markerManger?.removeMarker(startMarker!!)
+                                val sydney =
+                                    Point.fromLngLat(
+                                        Constants.currentLongitude,
+                                        Constants.currentLatitude
+                                    )
+                                previousMarker = Marker(
+                                    title = Constants.currentAddress,
+                                    snippet = "",
+                                    position = sydney,
+                                    icon = requireContext().bitmapFromDrawableRes(R.drawable.source_icon),
+                                )
+                                markerManger!!.addMarker(previousMarker!!)
+                                Constants.zoomInAnimation(
+                                    Constants.currentLatitude,
+                                    Constants.currentLongitude,
+                                    binding.mapView.mapboxMap,
+                                    true
+                                )
+                                dbID += 1
+                                binding.time.text = "00:00:00"
+                                binding.speedTV.text = "0"
+                                binding.distance.text = "0"
+                                binding.maxSpeed.text = "0"
+                                binding.avgSpeed.text = "0"
+                                Constants.routePoints = ArrayList()
+                                Constants.initialLat = 0.0
+                                Constants.initialLng = 0.0
+                                //   previousLatLng = null
+                                //  polylineOptions = PolylineOptions()
+                                moveToNext(history)
+                            }
+                        }
+                    }
+                }
+
+                "KNOT" -> {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val source = Constants.getCompleteAddress(
+                            Constants.initialLat,
+                            Constants.initialLng,
+                            requireContext()
+                        )
+                        val start = source?.completeAddress ?: "Start Point"
+                        val destination = Constants.getCompleteAddress(
+                            Constants.endLat,
+                            Constants.endLng,
+                            requireContext()
+                        )
+                        val end = destination?.completeAddress ?: "End Point"
+                        val history = History(
+                            dbID,
+                            start,
+                            end,
+                            Constants.nmTokm(binding.distance.text.toString().toFloat()),
+                            Constants.knotsToKmh(binding.speedTV.text.toString().toFloat()),
+                            Constants.knotsToKmh(
+                                binding.avgSpeed.text.toString().toFloat()
+                            ),
+                            Constants.knotsToKmh(
+                                binding.maxSpeed.text.toString().toFloat()
+                            ),
+                            binding.time.text.toString(),
+                            Constants.getDate()
+                        )
+
+                        var hist: Long = 0
+                        val route = try {
+                            hist = databaseHelper!!.insertHistory(history)
+                            databaseHelper!!.insertRoutePoints(Constants.routePoints)
+                        } catch (e: Exception) {
+                            null
+                        }
+                        Log.d("TAG_DATA", "onReceive: KNOT history $hist and Route $route")
+                        if (route.isNullOrEmpty()) {
+
+                            Log.d("TAG_DATA", "onReceive: KNOT Comes Empty")
+
+                            dbID += 1
+                            withContext(Dispatchers.Main) {
+                                binding.time.text = "00:00:00"
+                                binding.speedTV.text = "0"
+                                binding.distance.text = "0"
+                                binding.maxSpeed.text = "0"
+                                binding.avgSpeed.text = "0"
+                                moveToNext(history)
+                            }
+                        } else {
+
+                            Log.d("TAG_DATA", "onReceive: KNOT Comes NOT Empty")
+                            withContext(Dispatchers.Main) {
+                                polygonPoints.clear()
+                                markerManger?.removeMarker(previousMarker!!)
+                                markerManger?.removeMarker(startMarker!!)
+                                val sydney =
+                                    Point.fromLngLat(
+                                        Constants.currentLongitude,
+                                        Constants.currentLatitude
+                                    )
+                                previousMarker = Marker(
+                                    title = Constants.currentAddress,
+                                    snippet = "",
+                                    position = sydney,
+                                    icon = requireContext().bitmapFromDrawableRes(R.drawable.source_icon),
+                                )
+                                markerManger!!.addMarker(previousMarker!!)
+                                Constants.zoomInAnimation(
+                                    Constants.currentLatitude,
+                                    Constants.currentLongitude,
+                                    binding.mapView.mapboxMap,
+                                    true
+                                )
+                                dbID += 1
+                                binding.time.text = "00:00:00"
+                                binding.speedTV.text = "0"
+                                binding.distance.text = "0"
+                                binding.maxSpeed.text = "0"
+                                binding.avgSpeed.text = "0"
+                                Constants.routePoints = ArrayList()
+                                Constants.initialLat = 0.0
+                                Constants.initialLng = 0.0
+                                //  previousLatLng = null
+                                //  polylineOptions = PolylineOptions()
+                                moveToNext(history)
+                            }
+                        }
+                    }
+                }
+            }
+
+
+        }
+    }
 }

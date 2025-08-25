@@ -62,9 +62,9 @@
     <string name="speed_limit">Speed Limit</string>
     <string name="tap_on_digit_to_edit">Tap on Digit To Edit</string>
     <string name="welcome_drive_smarter_nwith_speedometer">Welcome! Drive smarter\nwith Speedometer</string>
-    <string name="get_real_time_accurate_speed_readings_your_speed_live_and_accurate">Get Real-Time, Accurate Speed Readings Your Speed, Live and Accurate</string>
+    <string name="get_real_time_accurate_speed_readings_your_speed_live_and_accurate">Get Real-Time, Accurate Speed Readings\nYour Speed, Live and Accurate</string>
     <string name="track_review_past_trips"><![CDATA[Track & Review Past Trips]]></string>
-    <string name="see_where_you_ve_been_detailed_trip_review_with_map_route">See Where You’ve Been – Detailed Trip Review with Map Route</string>
+    <string name="see_where_you_ve_been_detailed_trip_review_with_map_route">See Where You’ve Been – Detailed Trip\nReview with Map Route</string>
     <string name="smart_overspeed_alerts">Smart Overspeed Alerts</string>
-    <string name="set_speed_limits_amp_get_real_time_alertsdrive_safe_with_speed_warnings"><![CDATA[Set Speed Limits & Get Real-Time AlertsDrive Safe with Speed Warnings]]></string>
+    <string name="set_speed_limits_amp_get_real_time_alertsdrive_safe_with_speed_warnings"><![CDATA[Set Speed Limits & Get Real-Time Alerts\nDrive Safe with Speed Warnings]]></string>
 </resources>

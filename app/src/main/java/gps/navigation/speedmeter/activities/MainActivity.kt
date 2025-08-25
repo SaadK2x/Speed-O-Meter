@@ -27,7 +27,6 @@ import android.view.View
 import android.view.Window
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RemoteViews
@@ -59,6 +58,7 @@ import gps.navigation.speedmeter.utils.Constants.currentLatitude
 import gps.navigation.speedmeter.utils.Constants.currentLongitude
 import gps.navigation.speedmeter.utils.Constants.getCompleteAddress
 import gps.navigation.speedmeter.utils.Constants.mediaPlayer
+import gps.navigation.speedmeter.utils.Constants.startStop
 import gps.navigation.speedmeter.utils.Constants.vibratePhone
 import gps.navigation.speedmeter.utils.LocationManager
 import gps.navigation.speedmeter.utils.SectionPageAdapter
@@ -83,6 +83,7 @@ class MainActivity : AppCompatActivity() {
     var maxSpeed: String = "0"
     var tablyout: TabLayout? = null
     private lateinit var appUpdateManager: AppUpdateManager
+    var notificationManager : NotificationManagerCompat?=null
 
     companion object {
         var status = false
@@ -167,9 +168,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.settingsBtn.setOnClickListener {
-            val intent=(Intent(this, SettingsActivity::class.java))
-            directAdsSpecificModulesSquareXNavigation(this,
-                SpeedMeterLoadAds.admobInterstitialNav,intent)
+            val intent = (Intent(this, SettingsActivity::class.java))
+            directAdsSpecificModulesSquareXNavigation(
+                this,
+                SpeedMeterLoadAds.admobInterstitialNav, intent
+            )
         }
         binding.hudBtn.setOnClickListener {
             binding.layoutHUD.visibility = View.VISIBLE
@@ -285,7 +288,8 @@ class MainActivity : AppCompatActivity() {
 
     fun bindService() {
         if (status) return
-        sendBroadCast("Start", false)
+        startStop.postValue("Start")
+        //  sendBroadCast("Start", false)
         val i = Intent(this, gps.navigation.speedmeter.Service.LocationService::class.java)
         bindService(i, digitalSC, BIND_AUTO_CREATE)
         status = true
@@ -293,17 +297,20 @@ class MainActivity : AppCompatActivity() {
         sharedPrefrences!!.putBoolean("isStart", true)
     }
 
-    fun sendBroadCast(value: String, isDestroying: Boolean) {
-        val speedIntent = Intent("ACTION_START_UPDATE")
-        speedIntent.putExtra("isStart", value)
-        speedIntent.putExtra("isDestroying", isDestroying)
-        sendBroadcast(speedIntent)
-    }
+    /* fun sendBroadCast(value: String, isDestroying: Boolean) {
+         val speedIntent = Intent("ACTION_START_UPDATE")
+         speedIntent.putExtra("isStart", value)
+         speedIntent.putExtra("isDestroying", isDestroying)
+         sendBroadcast(speedIntent)
+     }*/
 
     fun unbindService(value: String, isDestroying: Boolean) {
         if (!status) return
         try {
-            sendBroadCast(value, isDestroying)
+            // sendBroadCast(value, isDestroying)
+
+            startStop.postValue(value)
+            notificationManager!!.cancel(NOTIFICATION_ID)
             unbindService(digitalSC)
         } catch (e: IllegalArgumentException) {
             e.printStackTrace() // Or log it
@@ -521,8 +528,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
             }
-        }
-        else {
+        } else {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 window.setDecorFitsSystemWindows(false)
@@ -574,8 +580,9 @@ class MainActivity : AppCompatActivity() {
             .setCustomBigContentView(customView)
 
         // Show the notification
-        val notificationManager = NotificationManagerCompat.from(context)
-        notificationManager.notify(NOTIFICATION_ID, builder!!.build())
+        notificationManager = NotificationManagerCompat.from(context)
+        notificationManager!!.notify(NOTIFICATION_ID, builder!!.build())
+
     }
 
     fun notificationTextView(
@@ -662,8 +669,8 @@ class MainActivity : AppCompatActivity() {
         dialog.requestWindowFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         dialog.setContentView(R.layout.exit_dialouge)
         dialog.setCancelable(true)
-        val sp= SharedPreferenceHelperClass(this)
-        val color=sp.getString("AppColor", "#0DCF31")
+        val sp = SharedPreferenceHelperClass(this)
+        val color = sp.getString("AppColor", "#0DCF31")
         val emojiIcon = dialog.findViewById<ImageView>(R.id.emojiIcon)
         val titletxt = dialog.findViewById<TextView>(R.id.titletxt)
         val detailTV = dialog.findViewById<TextView>(R.id.detailTV)

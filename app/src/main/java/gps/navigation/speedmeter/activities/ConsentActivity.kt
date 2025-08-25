@@ -24,6 +24,17 @@ class ConsentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+
+    }
+
+    private fun moveToNext() {
+        val intent = Intent(this, SplashActivity::class.java)
+        startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
         //.setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
 
         /*   val debugSettings = ConsentDebugSettings.Builder(this)
@@ -63,11 +74,5 @@ class ConsentActivity : AppCompatActivity() {
                 moveToNext()
             }
         )
-
-    }
-
-    private fun moveToNext() {
-        val intent = Intent(this, SplashActivity::class.java)
-        startActivity(intent)
     }
 }
