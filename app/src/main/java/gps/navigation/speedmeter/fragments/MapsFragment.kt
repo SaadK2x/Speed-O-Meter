@@ -59,6 +59,7 @@ import gps.navigation.speedmeter.utils.Constants.directZoom
 import gps.navigation.speedmeter.utils.Constants.isSATELLITE
 import gps.navigation.speedmeter.utils.Constants.mapLoaded
 import gps.navigation.speedmeter.utils.Constants.moveForward
+import gps.navigation.speedmeter.utils.Constants.startStop
 import gps.navigation.speedmeter.utils.LocationManager
 import gps.navigation.speedmeter.utils.Marker
 import gps.navigation.speedmeter.utils.MarkerManager
@@ -95,6 +96,12 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
     var currentPolyline: PolylineAnnotation? = null
     var isResume = true
     var isStop = true
+    private var isSpeedReceiverRegistered = false
+    private var isLatLngReceiverRegistered = false
+    private var isStartReceiverRegistered = false
+    private var isPauseReceiverRegistered = false
+    private var isResetReceiverRegistered = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -123,10 +130,14 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
             activity?.registerReceiver(pauseUpdateReceiver, IntentFilter("ACTION_PAUSE_UPDATE"))
             activity?.registerReceiver(resetUpdateReceiver, IntentFilter("ACTION_RESET_UPDATE"))
         }
+        isStartReceiverRegistered = true
+        isPauseReceiverRegistered = true
+        isResetReceiverRegistered = true
 
         sharedPrefrences = SharedPreferenceHelperClass(requireContext())
         markerManger = MarkerManager(binding.mapView)
         Constants.startStop.observe(requireActivity()) {
+            Log.d("TAG_DB", "startStop: $it")
             valuesStart_Stop(it)
         }
 
@@ -487,7 +498,8 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
             markerManger?.addMarker(previousMarker!!)
 
             setAddPolyline()
-        } else if (previousMarker == null && Constants.currentLongitude != 0.0 && Constants.currentLatitude != 0.0) {
+        }
+        else if (previousMarker == null && Constants.currentLongitude != 0.0 && Constants.currentLatitude != 0.0) {
             Log.d("LAT_TAGG", "Resume: latitude ${Constants.currentLongitude}")
             val sydney = Point.fromLngLat(Constants.currentLongitude, Constants.currentLatitude)
             previousMarker = Marker(
@@ -564,21 +576,22 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
     fun fetchingLocation() {
         if (checkLocationPermission() && checkCourseLocationPermission() && !mapLoaded) {
             val locationManager = LocationManager(requireContext())
-            GlobalScope.launch(Dispatchers.Main) {
+            CoroutineScope(Dispatchers.IO).launch {
                 try {
                     setupPolylineManager(binding.mapView)
                     val location = locationManager.getCurrentLocation()
                     Constants.currentLatitude = location.latitude
                     Constants.currentLongitude = location.longitude
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val addressData = Constants.getCompleteAddress(
-                            Constants.currentLatitude,
-                            Constants.currentLongitude,
-                            requireContext()
-                        )
-                        Constants.currentAddress =
-                            addressData?.completeAddress ?: "Current Location"
-                        withContext(Dispatchers.Main) {
+
+                    val addressData = Constants.getCompleteAddress(
+                        Constants.currentLatitude,
+                        Constants.currentLongitude,
+                        requireContext()
+                    )
+                    Constants.currentAddress = addressData?.completeAddress ?: "Current Location"
+
+                    withContext(Dispatchers.Main) {
+                        if (isAdded && activity != null) {
                             val sydney = Point.fromLngLat(
                                 Constants.currentLongitude,
                                 Constants.currentLatitude
@@ -592,18 +605,22 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                             )
                             markerManger?.addMarker(previousMarker!!)
                             Handler(Looper.getMainLooper()).postDelayed({
-                                Constants.zoomInAnimation(
-                                    Constants.currentLatitude,
-                                    Constants.currentLongitude,
-                                    binding.mapView.mapboxMap,
-                                    true
-                                )
-                                mapLoaded = true
+                                if (isAdded && activity != null) {
+                                    Constants.zoomInAnimation(
+                                        Constants.currentLatitude,
+                                        Constants.currentLongitude,
+                                        binding.mapView.mapboxMap,
+                                        true
+                                    )
+                                    mapLoaded = true
+                                }
                             }, 2000)
                         }
                     }
                 } catch (e: SecurityException) {
                     Log.d("LAT_TAG", "Exception: ${e.localizedMessage}")
+                } catch (e: Exception) {
+                    Log.e("MapsFragment", "Error in fetchingLocation: ${e.message}")
                 }
             }
         } else {
@@ -613,29 +630,64 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
 
     override fun onPause() {
         super.onPause()
-        /*if (mMapView != null) {
-            mMapView!!.onPause()
-        }*/
+        // MapView v10+ handles its own lifecycle automatically
     }
 
     override fun onDestroy() {
         super.onDestroy()
         mapLoaded = false
+
+        // Clean up Mapbox resources to prevent memory leaks
         try {
-            activity?.unregisterReceiver(startUpdateReceiver)
-            activity?.unregisterReceiver(pauseUpdateReceiver)
-            activity?.unregisterReceiver(speedUpdateReceiver)
+            polylineAnnotationManager?.deleteAll()
+            polylineAnnotationManager = null
+            markerManger?.destroy()
+            markerManger = null
+
+            // Unregister receivers with proper checks
+            if (isStartReceiverRegistered) {
+                activity?.unregisterReceiver(startUpdateReceiver)
+            }
+            if (isPauseReceiverRegistered) {
+                activity?.unregisterReceiver(pauseUpdateReceiver)
+            }
+            if (isResetReceiverRegistered) {
+                activity?.unregisterReceiver(resetUpdateReceiver)
+            }
+            if (isSpeedReceiverRegistered) {
+                activity?.unregisterReceiver(speedUpdateReceiver)
+            }
+            if (isLatLngReceiverRegistered) {
+                activity?.unregisterReceiver(latlngUpdateReceiver)
+            }
             Log.w("MapsFragment", "Unregistered Receiver")
         } catch (e: Exception) {
-            Log.w("MapsFragment", "Receiver already unregistered or activity is null")
+            Log.w("MapsFragment", "Receiver already unregistered or activity is null: ${e.message}")
         }
+
+        // MapView v10+ handles onDestroy automatically through lifecycle plugin
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        /* if (mMapView != null) {
-             mMapView!!.onLowMemory()
-         }*/
+        try {
+            binding.mapView.onLowMemory()
+        } catch (e: Exception) {
+            Log.w("MapsFragment", "Error calling mapView.onLowMemory(): ${e.message}")
+        }
+
+        polygonPoints.clear()
+        if (points.size > 100) {
+            points = ArrayList(points.takeLast(50))
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                polylineAnnotationManager?.deleteAll()
+            } catch (e: Exception) {
+                Log.w("MapsFragment", "Error clearing polylines: ${e.message}")
+            }
+        }
     }
 
     fun changeUnit(unit: String) {
@@ -722,6 +774,8 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
     }
 
     fun moveToNext(history: History) {
+
+        startStop.postValue("isStart")
         SpeedMeterLoadAds.loadVideoAdForPrompt(
             requireActivity(),
             object : SpeedMeterLoadAds.OnVideoLoad {
@@ -785,11 +839,20 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
                     IntentFilter("ACTION_CONSTRAINTS_UPDATE")
                 )
             }
+            isSpeedReceiverRegistered = true
+            isLatLngReceiverRegistered = true
         }
         else if (start == "Stop") {
             isStop = true
-            activity?.unregisterReceiver(speedUpdateReceiver)
-            activity?.unregisterReceiver(latlngUpdateReceiver)
+            if (isSpeedReceiverRegistered) {
+                activity?.unregisterReceiver(speedUpdateReceiver)
+            }
+            if (isLatLngReceiverRegistered) {
+                activity?.unregisterReceiver(latlngUpdateReceiver)
+            }
+
+            isSpeedReceiverRegistered = false
+            isLatLngReceiverRegistered = false
 
             sharedPrefrences!!.putPoints("mapPoints", ArrayList())
             binding.playBtn.isEnabled = false

@@ -30,6 +30,12 @@ class GaugeFragment : Fragment() {
 
     var isResume = true
     var isStop = true
+    
+    // Track receiver registration state
+    private var isSpeedUpdateReceiverRegistered = false
+    private var isStartUpdateReceiverRegistered = false
+    private var isPauseUpdateReceiverRegistered = false
+    private var isResetUpdateReceiverRegistered = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,11 +58,33 @@ class GaugeFragment : Fragment() {
                 IntentFilter("ACTION_RESET_UPDATE"),
                 Context.RECEIVER_EXPORTED
             )
+        }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            activity?.registerReceiver(
+                startUpdateReceiver,
+                IntentFilter("ACTION_START_UPDATE"),
+                Context.RECEIVER_NOT_EXPORTED
+            )
+            activity?.registerReceiver(
+                pauseUpdateReceiver,
+                IntentFilter("ACTION_PAUSE_UPDATE"),
+                Context.RECEIVER_NOT_EXPORTED
+            )
+            activity?.registerReceiver(
+                resetUpdateReceiver,
+                IntentFilter("ACTION_RESET_UPDATE"),
+                Context.RECEIVER_NOT_EXPORTED
+            )
         } else {
             activity?.registerReceiver(startUpdateReceiver, IntentFilter("ACTION_START_UPDATE"))
             activity?.registerReceiver(pauseUpdateReceiver, IntentFilter("ACTION_PAUSE_UPDATE"))
             activity?.registerReceiver(resetUpdateReceiver, IntentFilter("ACTION_RESET_UPDATE"))
         }
+        
+        // Mark receivers as registered
+        isStartUpdateReceiverRegistered = true
+        isPauseUpdateReceiverRegistered = true
+        isResetUpdateReceiverRegistered = true
         Constants.startStop.observe(requireActivity()){
             valuesStart_Stop(it)
         }
@@ -179,18 +207,34 @@ class GaugeFragment : Fragment() {
                     IntentFilter("ACTION_SPEED_UPDATE"),
                     Context.RECEIVER_EXPORTED
                 )
-            } else {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                activity?.registerReceiver(
+                    speedUpdateReceiver,
+                    IntentFilter("ACTION_SPEED_UPDATE"),
+                    Context.RECEIVER_NOT_EXPORTED
+                )
+
+            }else {
                 activity?.registerReceiver(
                     speedUpdateReceiver,
                     IntentFilter("ACTION_SPEED_UPDATE")
                 )
             }
+            isSpeedUpdateReceiverRegistered = true
 
         }
         else if (start == "Stop") {
             isStop = true
 
-            activity?.unregisterReceiver(speedUpdateReceiver)
+            if (isSpeedUpdateReceiverRegistered) {
+                try {
+                    activity?.unregisterReceiver(speedUpdateReceiver)
+                    isSpeedUpdateReceiverRegistered = false
+                } catch (e: IllegalArgumentException) {
+                    // Receiver was already unregistered
+                    isSpeedUpdateReceiverRegistered = false
+                }
+            }
             binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
             binding.playProgress.visibility = View.VISIBLE
             Constants.viewScaling(1f, 0f, false, binding.pauseBtn)
@@ -264,11 +308,46 @@ class GaugeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        try {
-            requireActivity().unregisterReceiver(speedUpdateReceiver)
-            requireActivity().unregisterReceiver(startUpdateReceiver)
-        } catch (e: IllegalArgumentException) {
-            // Already unregistered
+        
+        // Safely unregister all receivers
+        if (isSpeedUpdateReceiverRegistered) {
+            try {
+                requireActivity().unregisterReceiver(speedUpdateReceiver)
+                isSpeedUpdateReceiverRegistered = false
+            } catch (e: IllegalArgumentException) {
+                // Already unregistered
+                isSpeedUpdateReceiverRegistered = false
+            }
+        }
+        
+        if (isStartUpdateReceiverRegistered) {
+            try {
+                requireActivity().unregisterReceiver(startUpdateReceiver)
+                isStartUpdateReceiverRegistered = false
+            } catch (e: IllegalArgumentException) {
+                // Already unregistered
+                isStartUpdateReceiverRegistered = false
+            }
+        }
+        
+        if (isPauseUpdateReceiverRegistered) {
+            try {
+                requireActivity().unregisterReceiver(pauseUpdateReceiver)
+                isPauseUpdateReceiverRegistered = false
+            } catch (e: IllegalArgumentException) {
+                // Already unregistered
+                isPauseUpdateReceiverRegistered = false
+            }
+        }
+        
+        if (isResetUpdateReceiverRegistered) {
+            try {
+                requireActivity().unregisterReceiver(resetUpdateReceiver)
+                isResetUpdateReceiverRegistered = false
+            } catch (e: IllegalArgumentException) {
+                // Already unregistered
+                isResetUpdateReceiverRegistered = false
+            }
         }
     }
 }

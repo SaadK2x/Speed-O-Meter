@@ -46,13 +46,13 @@ class MyApp : Application() {
         val firebaseCrashlytics = FirebaseCrashlytics.getInstance()
 
         // Initialize and start GrizzlyMonitor with default settings
-          GrizzlyMonitorBuilder(this)
+        /*  GrizzlyMonitorBuilder(this)
               .withThreshold(4500L) // Set ANR threshold (1000-4500ms)
               .withTitle("App Error") // Set custom crash dialog title
               .withMessage("An error occurred. Please restart.") // Set custom crash dialog message
               .withFirebaseCrashLytics(firebaseCrashlytics) // Integrate with Firebase Crashlytics
               .build()
-              .start()
+              .start()*/
 
 
 

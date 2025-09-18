@@ -39,6 +39,10 @@ class DigitalFragment : Fragment() {
     var startKMH = 0
     var startMPH = 0f
     var startKNOTS = 0f
+    private var isSpeedReceiverRegistered = false
+    private var isStartReceiverRegistered = false
+    private var isPauseReceiverRegistered = false
+    private var isResetReceiverRegistered = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,11 +66,30 @@ class DigitalFragment : Fragment() {
                 IntentFilter("ACTION_RESET_UPDATE"),
                 Context.RECEIVER_EXPORTED
             )
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            activity?.registerReceiver(
+                startUpdateReceiver,
+                IntentFilter("ACTION_START_UPDATE"),
+                Context.RECEIVER_NOT_EXPORTED
+            )
+            activity?.registerReceiver(
+                pauseUpdateReceiver,
+                IntentFilter("ACTION_PAUSE_UPDATE"),
+                Context.RECEIVER_NOT_EXPORTED
+            )
+            activity?.registerReceiver(
+                resetUpdateReceiver,
+                IntentFilter("ACTION_RESET_UPDATE"),
+                Context.RECEIVER_NOT_EXPORTED
+            )
         } else {
             activity?.registerReceiver(startUpdateReceiver, IntentFilter("ACTION_START_UPDATE"))
             activity?.registerReceiver(pauseUpdateReceiver, IntentFilter("ACTION_PAUSE_UPDATE"))
             activity?.registerReceiver(resetUpdateReceiver, IntentFilter("ACTION_RESET_UPDATE"))
         }
+        isStartReceiverRegistered = true
+        isPauseReceiverRegistered = true
+        isResetReceiverRegistered = true
         Constants.moveForward.observe(requireActivity()) {
             if (it != "No") {
                 binding.playTV.text = context?.getString(R.string.start) ?: "Start"
@@ -163,16 +186,26 @@ class DigitalFragment : Fragment() {
                     IntentFilter("ACTION_SPEED_UPDATE"),
                     Context.RECEIVER_EXPORTED
                 )
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                activity?.registerReceiver(
+                    speedUpdateReceiver,
+                    IntentFilter("ACTION_SPEED_UPDATE"),
+                    Context.RECEIVER_NOT_EXPORTED
+                )
             } else {
                 activity?.registerReceiver(
                     speedUpdateReceiver,
                     IntentFilter("ACTION_SPEED_UPDATE")
                 )
             }
+            isSpeedReceiverRegistered = true
         }
         else if (start == "Stop") {
             isStop = true
-            activity?.unregisterReceiver(speedUpdateReceiver)
+            if (isSpeedReceiverRegistered) {
+                activity?.unregisterReceiver(speedUpdateReceiver)
+                isSpeedReceiverRegistered = false
+            }
             binding.playTV.text = context?.getString(R.string.saving) ?: "Saving"
             binding.playProgress.visibility = View.VISIBLE
             viewScaling(1f, 0f, false, binding.pauseBtn)
@@ -275,9 +308,18 @@ class DigitalFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         try {
-            activity?.unregisterReceiver(pauseUpdateReceiver)
-            activity?.unregisterReceiver(speedUpdateReceiver)
-            activity?.unregisterReceiver(startUpdateReceiver)
+            if (isPauseReceiverRegistered) {
+                activity?.unregisterReceiver(pauseUpdateReceiver)
+            }
+            if (isSpeedReceiverRegistered) {
+                activity?.unregisterReceiver(speedUpdateReceiver)
+            }
+            if (isStartReceiverRegistered) {
+                activity?.unregisterReceiver(startUpdateReceiver)
+            }
+            if (isResetReceiverRegistered) {
+                activity?.unregisterReceiver(resetUpdateReceiver)
+            }
         } catch (e: IllegalArgumentException) {
             // Already unregistered
         }

@@ -75,10 +75,14 @@ class SpeedMeterAppOpenAd(private val myApplication: MyApp) : LifecycleObserver,
                 }
             dialog.show()
             Handler(Looper.getMainLooper()).postDelayed({
-
-                startOpenAd!!.show(runningActivity!!)
-                Log.d(TAG, "showStartAppOpenAd: Showing App open ad")
-                startOpenAd!!.fullScreenContentCallback = fullScreenContentCallback
+                if (startOpenAd != null && runningActivity != null && !runningActivity!!.isFinishing && !runningActivity!!.isDestroyed) {
+                    startOpenAd!!.show(runningActivity!!)
+                    Log.d(TAG, "showStartAppOpenAd: Showing App open ad")
+                    startOpenAd!!.fullScreenContentCallback = fullScreenContentCallback
+                } else {
+                    Log.d(TAG, "Cannot show ad - activity or ad is null/invalid")
+                    dialog.dismiss()
+                }
             }, 1000)
         } else {
             Log.d(TAG, "Can not show ad.")
