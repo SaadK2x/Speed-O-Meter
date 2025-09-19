@@ -3,6 +3,8 @@
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="analog_meter" translatable="false">GPS Speedometer</string>
     <string name="todo" translatable="false">TODO</string>
+    <string name="subscription_auto_" translatable="false">Subscription Auto Renews, You Can Cancel any time. Your Subscriptions can be managed or cancelled under your google PlayStore account profile > Payments and Subscriptions > Limited usage without subscriptions></string>
+    <string name="subscription_yearly_" translatable="false">You will be automatically charged at the end of free trial, subscription auto renews, cancel any time. Your subscription can be managed or cancelled under your google play store account profile > Payment and Subscriptions > subscriptions Limited usage without subscriptions</string>
     <string name="share_app_link" translatable="false">https://play.google.com/store/apps/details?id=gps.speedometer.digihud.odometer.speedometer</string>
     <string name="str_download_complete" translatable="false">Download Complete</string>
     <string name="str_restart" translatable="false">Restart</string>
@@ -67,4 +69,5 @@
     <string name="see_where_you_ve_been_detailed_trip_review_with_map_route">See Where You’ve Been – Detailed Trip\nReview with Map Route</string>
     <string name="smart_overspeed_alerts">Smart Overspeed Alerts</string>
     <string name="set_speed_limits_amp_get_real_time_alertsdrive_safe_with_speed_warnings"><![CDATA[Set Speed Limits & Get Real-Time Alerts\nDrive Safe with Speed Warnings]]></string>
+    <string name="cancel_anytime">Cancel Anytime</string>
 </resources>

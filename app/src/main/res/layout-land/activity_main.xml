@@ -66,6 +66,18 @@
                 app:layout_constraintTop_toTopOf="@id/titleTxt" />
 
             <ImageView
+                android:id="@+id/btnPremium"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginEnd="10sp"
+                android:contentDescription="@string/todo"
+                android:padding="4sp"
+                android:src="@drawable/btnpremium"
+                app:layout_constraintBottom_toBottomOf="@id/titleTxt"
+                app:layout_constraintEnd_toStartOf="@id/settingsBtn"
+                app:layout_constraintTop_toTopOf="@id/titleTxt" />
+
+            <ImageView
                 android:id="@+id/hudBtn"
                 android:layout_width="30sp"
                 android:layout_height="30sp"
@@ -74,7 +86,7 @@
                 android:padding="5sp"
                 android:src="@drawable/hud_icon"
                 app:layout_constraintBottom_toBottomOf="@id/titleTxt"
-                app:layout_constraintEnd_toStartOf="@id/settingsBtn"
+                app:layout_constraintEnd_toStartOf="@id/btnPremium"
                 app:layout_constraintTop_toTopOf="@id/titleTxt" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

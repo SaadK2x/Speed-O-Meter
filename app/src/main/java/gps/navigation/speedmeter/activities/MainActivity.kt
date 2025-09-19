@@ -174,6 +174,13 @@ class MainActivity : AppCompatActivity() {
                 SpeedMeterLoadAds.admobInterstitialNav, intent
             )
         }
+        binding.btnPremium.setOnClickListener {
+            val intent = (Intent(this, PremiumActivity::class.java))
+            directAdsSpecificModulesSquareXNavigation(
+                this,
+                SpeedMeterLoadAds.admobInterstitialNav, intent
+            )
+        }
         binding.hudBtn.setOnClickListener {
             binding.layoutHUD.visibility = View.VISIBLE
         }

@@ -74,7 +74,7 @@ class SpeedMeterPurchaseSubs(private val activityContext: Context) :
         if (listAvailEarthLiveSubsMapPurchases.size > 0) {
             try {
                 val flowParams = BillingFlowParams.newBuilder()
-                    .setSkuDetails(listAvailEarthLiveSubsMapPurchases[1])
+                    .setSkuDetails(listAvailEarthLiveSubsMapPurchases[0])
                     .build()
                 val responseCode =
                     googleBillingHoneyBeeMapNavigationClient.launchBillingFlow(
@@ -94,7 +94,7 @@ class SpeedMeterPurchaseSubs(private val activityContext: Context) :
         if (listAvailEarthLiveSubsMapPurchases.size > 0) {
             try {
                 val flowParams = BillingFlowParams.newBuilder()
-                    .setSkuDetails(listAvailEarthLiveSubsMapPurchases[0])
+                    .setSkuDetails(listAvailEarthLiveSubsMapPurchases[2])
                     .build()
                 val responseCode =
                     googleBillingHoneyBeeMapNavigationClient.launchBillingFlow(
@@ -114,7 +114,7 @@ class SpeedMeterPurchaseSubs(private val activityContext: Context) :
         if (listAvailEarthLiveSubsMapPurchases.size > 0) {
             try {
                 val flowParams = BillingFlowParams.newBuilder()
-                    .setSkuDetails(listAvailEarthLiveSubsMapPurchases[2])
+                    .setSkuDetails(listAvailEarthLiveSubsMapPurchases[1])
                     .build()
                 val responseCode =
                     googleBillingHoneyBeeMapNavigationClient.launchBillingFlow(
@@ -151,9 +151,9 @@ class SpeedMeterPurchaseSubs(private val activityContext: Context) :
 
     private fun fetchGlobeMapAllSubFromConsole() {
         val skuListToQuery = ArrayList<String>()
+        skuListToQuery.add("weekly_1")
         skuListToQuery.add("monthly_1")
-        skuListToQuery.add("weekly_7")
-        skuListToQuery.add("yearly_01")
+        skuListToQuery.add("yearly_1")
 
 
         val params = SkuDetailsParams.newBuilder()

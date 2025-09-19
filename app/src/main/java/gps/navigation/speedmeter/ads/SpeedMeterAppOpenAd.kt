@@ -21,6 +21,7 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import gps.navigation.speedmeter.R
+import gps.navigation.speedmeter.activities.ConsentActivity
 import gps.navigation.speedmeter.activities.SplashActivity
 import gps.navigation.speedmeter.utils.MyApp
 import java.util.Date
@@ -169,7 +170,7 @@ class SpeedMeterAppOpenAd(private val myApplication: MyApp) : LifecycleObserver,
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
         Log.d(TAG, "OnLifecycleEvent onStart")
-        if (SpeedMeterLoadAds.canShowAppOpen && runningActivity !is SplashActivity) {
+        if (SpeedMeterLoadAds.canShowAppOpen && runningActivity !is SplashActivity && runningActivity !is ConsentActivity) {
             Log.d(TAG, "onStart: Showing App open Resume AD")
             showHoneyBeeMapNavigationStartAppOpenAd()
         } else {

@@ -16,6 +16,7 @@ import gps.navigation.speedmeter.ads.SpeedMeterBillingHelper
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds.adShowAfter
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds.next_ads_time
+import gps.navigation.speedmeter.ads.SpeedMeterPurchaseSubs
 import gps.navigation.speedmeter.ads.SpeedMeterShowAds
 import gps.navigation.speedmeter.databinding.ActivitySplashBinding
 import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
@@ -34,6 +35,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        SpeedMeterPurchaseSubs(this)
         purchaseHelper1 = SpeedMeterBillingHelper(this)
         remoteConfigValues()
         loadSplash()
@@ -48,10 +50,10 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun doWork(seconds: Long) {
-        timer = object : CountDownTimer(seconds, 100) {
+        timer = object : CountDownTimer(seconds, 80) {
             override fun onTick(millisUntilFinished: Long) {
-                val sec = (millisUntilFinished / 100).toString().toInt()
-                val finalsec = -(sec - 97)
+                val sec = (millisUntilFinished / 80).toString().toInt()
+                val finalsec = -(sec - 100)
                 Log.i(ContentValues.TAG, "secs left$finalsec")
                 binding.progressBar.progress = finalsec
             }
@@ -107,7 +109,7 @@ class SplashActivity : AppCompatActivity() {
             val intent = Intent(this@SplashActivity, IntroActivity::class.java)
             startActivity(intent)
         } else {
-            val intent = Intent(this@SplashActivity, MainActivity::class.java)
+            val intent = Intent(this@SplashActivity, PremiumActivity::class.java)
             startActivity(intent)
         }
 

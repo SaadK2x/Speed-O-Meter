@@ -45,6 +45,7 @@ import java.util.Locale
 
 object Constants {
     val APP_UPDATE_REQUEST_CODE = 1111
+
     var keyMapbox =
         "pk.eyJ1Ijoicm9sZXgyMzEiLCJhIjoiY2x5OGxlMnZ3MGc2azJpcXBteHM4czVsMyJ9.Ge3lVmhKer_ghlwYQpwzQg"
     var currentLatitude: Double = 0.0
@@ -53,7 +54,7 @@ object Constants {
     var initialLng: Double = 0.0
     var endLat: Double = 0.0
     var endLng: Double = 0.0
-    var billingWeekly = "error"
+    var billingWeekly = "Rs 450.00"
     var billingMonthly = "Rs 1,650.00"
     var billingYearly = "Rs 9,800.00"
     var routePoints: ArrayList<RoutePoints> = ArrayList()

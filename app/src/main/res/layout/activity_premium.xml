@@ -5,6 +5,426 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".activities.PremiumActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_premium"
+        app:layout_constraintBottom_toBottomOf="@id/textView21"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/black_gradient" />
+
+    <TextView
+        android:id="@+id/tvSubsText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30sp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/subscription_auto_"
+        android:textAlignment="center"
+        android:textColor="#929292"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvFreeTrial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center"
+        android:text="Then RS 5,500.00/Year"
+        android:textColor="#929292"
+        android:textSize="@dimen/_13sdp"
+        app:layout_constraintBottom_toTopOf="@id/tvSubsText" />
+
+    <TextView
+        android:id="@+id/tvCancelAnyTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:gravity="center"
+        android:text="@string/cancel_anytime"
+        android:textColor="#929292"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvFreeTrial" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/btnLifeTime"
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:layout_marginHorizontal="30sp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        app:cardBackgroundColor="#00000000"
+        app:cardCornerRadius="8sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvCancelAnyTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeWidth="0sp">
+
+        <TextView
+            android:id="@+id/tvTextChnage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/premium_btn"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:text="Continue"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sdp" />
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mcWeekly"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:layout_marginHorizontal="30sp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/unselected_bg"
+        app:layout_constraintBottom_toTopOf="@+id/mcMonthly"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:src="@drawable/unslected_icn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="-10dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Weekly"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.575" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-9dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Pay Once a Week"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/tv1"
+            app:layout_constraintTop_toBottomOf="@+id/tv1" />
+
+        <TextView
+            android:id="@+id/tvWeekly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Rs:1000:00"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-7dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Weekly"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/tvWeekly"
+            app:layout_constraintStart_toStartOf="@+id/tvWeekly"
+            app:layout_constraintTop_toBottomOf="@+id/tvWeekly" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mcMonthly"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:layout_marginHorizontal="30sp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/selected_bg"
+        app:layout_constraintBottom_toTopOf="@+id/mcYearly"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:src="@drawable/selected_icn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="-10dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Monthly"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView10"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-9dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Pay Once a week"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/tv3"
+            app:layout_constraintTop_toBottomOf="@+id/tv3" />
+
+        <TextView
+            android:id="@+id/tvMonthly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Rs:1000:00"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-7dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Monthly"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/tvMonthly"
+            app:layout_constraintStart_toStartOf="@+id/tvMonthly"
+            app:layout_constraintTop_toBottomOf="@+id/tvMonthly" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mcYearly"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:layout_marginHorizontal="30sp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:background="@drawable/unselected_bg"
+        app:layout_constraintBottom_toTopOf="@+id/btnLifeTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:src="@drawable/unslected_icn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="-10dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Yearly"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView9"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-9dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="3 Days Free Trial"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/tv2"
+            app:layout_constraintTop_toBottomOf="@+id/tv2" />
+
+        <TextView
+            android:id="@+id/tvYearly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Rs:1000:00"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-7dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Yearly"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/tvYearly"
+            app:layout_constraintStart_toStartOf="@+id/tvYearly"
+            app:layout_constraintTop_toBottomOf="@+id/tvYearly" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:drawablePadding="@dimen/_8sdp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="100% Ads Free"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_11sdp"
+        app:drawableStartCompat="@drawable/fourth_prem"
+        app:layout_constraintBottom_toTopOf="@+id/textView20"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:drawablePadding="@dimen/_8sdp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Unlimited Themes Speedometer"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_11sdp"
+        app:drawableStartCompat="@drawable/third_prem"
+        app:layout_constraintBottom_toTopOf="@+id/textView21"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:drawablePadding="@dimen/_8sdp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Use Pro Features"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp"
+        app:drawableStartCompat="@drawable/fourth_prem"
+        app:layout_constraintBottom_toTopOf="@+id/mcWeekly"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:drawablePadding="@dimen/_8sdp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Experience Real time HUD mode"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_11sdp"
+        app:drawableStartCompat="@drawable/second_prem"
+        app:layout_constraintBottom_toTopOf="@+id/textView22"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Progress indicator container -->
+    <FrameLayout
+        android:id="@+id/progressContainer"
+        android:layout_width="@dimen/_27sdp"
+        android:layout_height="@dimen/_27sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.32"
+            android:background="@drawable/circle_shape"
+            android:backgroundTint="@color/black" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminate="false"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            android:background="@drawable/circle_shape_new"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:max="100"
+            android:progress="65" />
+
+        <TextView
+            android:id="@+id/countdownText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="5"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:fontFamily="@font/poppins_semibold" />
+    </FrameLayout>
+
+    <!-- Cross button (initially hidden) -->
+    <View
+        android:layout_width="0sp"
+        android:layout_height="0sp"
+        android:alpha="0.32"
+        android:background="@drawable/circle_shape"
+        android:backgroundTint="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/crossBtn"
+        app:layout_constraintEnd_toEndOf="@id/crossBtn"
+        app:layout_constraintStart_toStartOf="@id/crossBtn"
+        app:layout_constraintTop_toTopOf="@id/crossBtn" />
+
+    <ImageView
+        android:id="@+id/crossBtn"
+        android:layout_width="@dimen/_27sdp"
+        android:layout_height="@dimen/_27sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:padding="@dimen/_8sdp"
+        android:src="@drawable/cross_icon"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
