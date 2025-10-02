@@ -1,6 +1,7 @@
 package gps.navigation.speedmeter.ads;
 
 
+import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.admobInterstitialNav;
 import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.preReLoadAdsLiveEarth;
 import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.setHandlerForAd;
 import static gps.navigation.speedmeter.ads.SpeedMeterLoadAds.shouldGoForAds;
@@ -42,7 +43,8 @@ public class SpeedMeterShowAds {
     }
 
     public static void backPressForClick(final Activity context, final InterstitialAd mInterstitialAd) {
-        if (Constants.INSTANCE.getWillIntersShow() && !Constants.INSTANCE.getBackpressadcontrol() && adShowCounter()) {
+        SpeedMeterBillingHelper billingHelper = new SpeedMeterBillingHelper(context);
+        if (billingHelper.shouldShowAds() && Constants.INSTANCE.getWillIntersShow() && !Constants.INSTANCE.getBackpressadcontrol() && adShowCounter()) {
 
             Dialog dialog = new Dialog(context);
             if (mInterstitialAd != null) {
@@ -65,7 +67,7 @@ public class SpeedMeterShowAds {
                             public void onAdDismissedFullScreenContent() {
                                 super.onAdDismissedFullScreenContent();
                                 SpeedMeterLoadAds.canShowAppOpen = true;
-                                SpeedMeterLoadAds.admobInterstitialNav = null;
+                                admobInterstitialNav = null;
                                 SpeedMeterLoadAds.adClickCounter = 0;
                                 preReLoadAdsLiveEarth(context);
                                 context.finish();
@@ -91,7 +93,8 @@ public class SpeedMeterShowAds {
     }
 
     public static void backPressForTimer(final Activity context, final InterstitialAd mInterstitialAd) {
-        if (Constants.INSTANCE.getWillIntersShow() && !Constants.INSTANCE.getBackpressadcontrol() && shouldGoForAds) {
+        SpeedMeterBillingHelper billingHelper = new SpeedMeterBillingHelper(context);
+        if (billingHelper.shouldShowAds() && Constants.INSTANCE.getWillIntersShow() && !Constants.INSTANCE.getBackpressadcontrol() && shouldGoForAds) {
             Dialog dialog = new Dialog(context);
             if (mInterstitialAd != null) {
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -113,7 +116,7 @@ public class SpeedMeterShowAds {
                             public void onAdDismissedFullScreenContent() {
                                 super.onAdDismissedFullScreenContent();
                                 SpeedMeterLoadAds.canShowAppOpen = true;
-                                SpeedMeterLoadAds.admobInterstitialNav = null;
+                                admobInterstitialNav = null;
                                 preReLoadAdsLiveEarth(context);
                                 setHandlerForAd();
                                 context.finish();
@@ -147,7 +150,8 @@ public class SpeedMeterShowAds {
     }
 
     public static void forClickAds(final Context context, final InterstitialAd mInterstitialAd, final Intent intent) {
-        if (Constants.INSTANCE.getWillIntersShow() && adShowCounter()) {
+        SpeedMeterBillingHelper billingHelper = new SpeedMeterBillingHelper(context);
+        if (billingHelper.shouldShowAds() && Constants.INSTANCE.getWillIntersShow() && adShowCounter()) {
             Dialog dialog = new Dialog(context);
             if (mInterstitialAd != null) {
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -169,7 +173,7 @@ public class SpeedMeterShowAds {
                             public void onAdDismissedFullScreenContent() {
                                 super.onAdDismissedFullScreenContent();
                                 SpeedMeterLoadAds.canShowAppOpen = true;
-                                SpeedMeterLoadAds.admobInterstitialNav = null;
+                                admobInterstitialNav = null;
                                 SpeedMeterLoadAds.adClickCounter = 0;
                                 preReLoadAdsLiveEarth(context);
                                 //  HoneyBeeMapNavigationLoadAds.setHandlerForAd();
@@ -196,7 +200,8 @@ public class SpeedMeterShowAds {
     }
 
     public static void forTimerAds(final Context context, final InterstitialAd mInterstitialAd, final Intent intent) {
-        if (Constants.INSTANCE.getWillIntersShow() && shouldGoForAds) {
+        SpeedMeterBillingHelper billingHelper = new SpeedMeterBillingHelper(context);
+        if (billingHelper.shouldShowAds() && Constants.INSTANCE.getWillIntersShow() && shouldGoForAds) {
             Dialog dialog = new Dialog(context);
             if (mInterstitialAd != null) {
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -218,7 +223,7 @@ public class SpeedMeterShowAds {
                             public void onAdDismissedFullScreenContent() {
                                 super.onAdDismissedFullScreenContent();
                                 SpeedMeterLoadAds.canShowAppOpen = true;
-                                SpeedMeterLoadAds.admobInterstitialNav = null;
+                                admobInterstitialNav = null;
 
                                 preReLoadAdsLiveEarth(context);
                                 setHandlerForAd();
@@ -281,15 +286,16 @@ public class SpeedMeterShowAds {
     }
 
     public static void showingVideoAd(final Activity context, OnAdShowed callback) {
-        if (videoInterstitial != null) {
-            videoInterstitial.show(context);
-            videoInterstitial.setFullScreenContentCallback(new FullScreenContentCallback() {
+        if (admobInterstitialNav != null) {
+            admobInterstitialNav.show(context);
+            admobInterstitialNav.setFullScreenContentCallback(new FullScreenContentCallback() {
                 @Override
                 public void onAdDismissedFullScreenContent() {
                     super.onAdDismissedFullScreenContent();
                     SpeedMeterLoadAds.canShowAppOpen = true;
                     SpeedMeterLoadAds.canReLoadedAdMob = true;
-                    videoInterstitial = null;
+                    admobInterstitialNav = null;
+                    preReLoadAdsLiveEarth(context);
                     callback.onDismiss();
                 }
 
@@ -308,6 +314,8 @@ public class SpeedMeterShowAds {
                 }
             });
         } else {
+
+            preReLoadAdsLiveEarth(context);
             SpeedMeterLoadAds.canShowAppOpen = true;
             callback.onDismiss();
         }

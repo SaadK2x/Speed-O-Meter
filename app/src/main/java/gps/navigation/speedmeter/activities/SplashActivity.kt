@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import gps.navigation.speedmeter.BuildConfig
 import gps.navigation.speedmeter.ads.SpeedMeterBillingHelper
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
 import gps.navigation.speedmeter.ads.SpeedMeterLoadAds.adShowAfter
@@ -24,6 +25,7 @@ import gps.navigation.speedmeter.utils.Constants
 import gps.navigation.speedmeter.utils.Constants.IsAppOnTimer
 import gps.navigation.speedmeter.utils.Constants.backpressadcontrol
 import gps.navigation.speedmeter.utils.Constants.willIntersShow
+import kotlin.random.Random
 
 class SplashActivity : AppCompatActivity() {
     private val binding: ActivitySplashBinding by lazy {
@@ -37,10 +39,48 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
         SpeedMeterPurchaseSubs(this)
         purchaseHelper1 = SpeedMeterBillingHelper(this)
+
+        val userKey = settingKeys(generateRandomNumber())
+        Log.d("SplashKey", "onCreate: $userKey")
+        Constants.keyMapbox = userKey
         remoteConfigValues()
         loadSplash()
 
 
+    }
+
+    fun generateRandomNumber(): Int {
+        return Random.nextInt(1, 6) // Generates a random number from 1 to 5 (inclusive)
+    }
+
+    fun settingKeys(pos: Int): String {
+        return when (pos) {
+            1 -> {
+                BuildConfig.mapbox_key_1
+            }
+
+            2 -> {
+                BuildConfig.mapbox_key_2
+            }
+
+            3 -> {
+                BuildConfig.mapbox_key_3
+            }
+
+            4 -> {
+                BuildConfig.mapbox_key_4
+            }
+
+            5 -> {
+                BuildConfig.mapbox_key_5
+            }
+
+
+
+            else -> {
+                BuildConfig.mapbox_key_3
+            }
+        }
     }
 
     override fun onResume() {

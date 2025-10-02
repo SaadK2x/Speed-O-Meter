@@ -87,7 +87,6 @@ class MyApp : Application() {
                     SpeedMeterLoadAds.haveGotSnapshot = true
                     SpeedMeterLoadAds.appid_admob_inApp = model.appid_admob_inApp
                     SpeedMeterLoadAds.banner_admob_inApp = model.banner_admob_inApp
-                    SpeedMeterLoadAds.interstitial_admob_inApp = model.interstitial_admob_inApp
                   //  SpeedMeterLoadAds.native_admob_inApp = model.native_admob_inApp
                     SpeedMeterLoadAds.app_open_ad_id_admob = model.app_open_admob_inApp
                     SpeedMeterLoadAds.app_open_splash_ad_id_admob = model.app_open_splash_ad_id_admob

@@ -44,7 +44,6 @@ import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.delegates.listeners.OnMapLoadedListener
 import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.activities.HistoryDetail
-import gps.navigation.speedmeter.ads.SpeedMeterLoadAds
 import gps.navigation.speedmeter.ads.SpeedMeterShowAds
 import gps.navigation.speedmeter.database.DatabaseBuilder
 import gps.navigation.speedmeter.database.DatabaseHelperImpl
@@ -65,7 +64,6 @@ import gps.navigation.speedmeter.utils.Marker
 import gps.navigation.speedmeter.utils.MarkerManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -498,8 +496,7 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
             markerManger?.addMarker(previousMarker!!)
 
             setAddPolyline()
-        }
-        else if (previousMarker == null && Constants.currentLongitude != 0.0 && Constants.currentLatitude != 0.0) {
+        } else if (previousMarker == null && Constants.currentLongitude != 0.0 && Constants.currentLatitude != 0.0) {
             Log.d("LAT_TAGG", "Resume: latitude ${Constants.currentLongitude}")
             val sydney = Point.fromLngLat(Constants.currentLongitude, Constants.currentLatitude)
             previousMarker = Marker(
@@ -551,6 +548,15 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
         binding.pauseIcon.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
         binding.mapStyle.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
         binding.currentLoc.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
+
+        binding.time.setTextColor(Color.parseColor(color))
+        binding.distance.setTextColor(Color.parseColor(color))
+        binding.distanceUnit.setTextColor(Color.parseColor(color))
+        binding.avgSpeed.setTextColor(Color.parseColor(color))
+        binding.avgSpeedUnit.setTextColor(Color.parseColor(color))
+        binding.maxSpeed.setTextColor(Color.parseColor(color))
+        binding.maxSpeedUnit.setTextColor(Color.parseColor(color))
+        binding.speedTV.setTextColor(Color.parseColor(color))
     }
 
     /* private val callback = OnMapReadyCallback { googleMap ->
@@ -776,38 +782,21 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
     fun moveToNext(history: History) {
 
         startStop.postValue("isStart")
-        SpeedMeterLoadAds.loadVideoAdForPrompt(
-            requireActivity(),
-            object : SpeedMeterLoadAds.OnVideoLoad {
-                override fun onLoaded() {
-                    moveForward.value = "Yes"
-                    binding.playBtn.isEnabled = true
-                    binding.playTV.text = context?.getString(R.string.start) ?: "Start"
-                    binding.playProgress.visibility = View.GONE
-                    SpeedMeterShowAds.showingVideoAd(requireActivity()) {
-                        val bundle = Bundle()
-                        bundle.putInt("pointID", history.pointsID)
-                        val intent1 =
-                            Intent(requireContext(), HistoryDetail::class.java)
-                        intent1.putExtras(bundle)
-                        startActivity(intent1)
-                    }
-                }
 
-                override fun onFailed() {
-                    moveForward.value = "Yes"
-                    binding.playBtn.isEnabled = true
-                    binding.playTV.text = context?.getString(R.string.start) ?: "Start"
-                    binding.playProgress.visibility = View.GONE
-                    val bundle = Bundle()
-                    bundle.putInt("pointID", history.pointsID)
-                    val intent1 =
-                        Intent(requireContext(), HistoryDetail::class.java)
-                    intent1.putExtras(bundle)
-                    startActivity(intent1)
-                }
+        moveForward.value = "Yes"
+        binding.playBtn.isEnabled = true
+        binding.playTV.text = context?.getString(R.string.start) ?: "Start"
+        binding.playProgress.visibility = View.GONE
+        SpeedMeterShowAds.showingVideoAd(requireActivity()) {
+            val bundle = Bundle()
+            bundle.putInt("pointID", history.pointsID)
+            val intent1 =
+                Intent(requireContext(), HistoryDetail::class.java)
+            intent1.putExtras(bundle)
+            startActivity(intent1)
+        }
 
-            })
+
     }
 
 
@@ -841,8 +830,7 @@ class MapsFragment : Fragment(), OnMapLoadedListener {
             }
             isSpeedReceiverRegistered = true
             isLatLngReceiverRegistered = true
-        }
-        else if (start == "Stop") {
+        } else if (start == "Stop") {
             isStop = true
             if (isSpeedReceiverRegistered) {
                 activity?.unregisterReceiver(speedUpdateReceiver)

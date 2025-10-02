@@ -12,7 +12,7 @@
         android:id="@+id/topConstraint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="32dp"
         android:background="@color/black"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -190,11 +190,7 @@
         app:layout_constraintStart_toStartOf="@id/shapeBG"
         app:layout_constraintTop_toTopOf="@id/shapeBG" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvImages"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutHUD"

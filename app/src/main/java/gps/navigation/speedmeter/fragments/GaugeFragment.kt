@@ -20,6 +20,8 @@ import gps.navigation.speedmeter.R
 import gps.navigation.speedmeter.databinding.FragmentGaugeBinding
 import gps.navigation.speedmeter.sharedprefrences.SharedPreferenceHelperClass
 import gps.navigation.speedmeter.utils.Constants
+import gps.navigation.speedmeter.views.CustomSpeedometerView
+import androidx.core.content.ContextCompat
 
 
 class GaugeFragment : Fragment() {
@@ -96,9 +98,29 @@ class GaugeFragment : Fragment() {
             }
         }
 
+        // Initialize custom speedometer view
+      //  initializeCustomSpeedometer()
+
         return binding.root
     }
 
+    /**
+     * Initialize the custom speedometer view with meter and needle drawables
+     */
+    private fun initializeCustomSpeedometer() {
+        val customSpeedometer = binding.speedView as CustomSpeedometerView
+        
+        // Set meter background drawable
+        customSpeedometer.setMeterDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.meter_5))
+        // Set needle drawable (using test needle for debugging)
+        customSpeedometer.setNeedleDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.needle_latest))
+        // Set maximum speed (adjust based on your meter design)
+        customSpeedometer.setMaxSpeed(160f)
+        customSpeedometer.setMinSpeed(0f)
+        
+        // Set meter scale to fit properly on screen (optional - defaults to 0.9f)
+        customSpeedometer.setMeterScale(0.85f)
+    }
 
     private val speedUpdateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -133,6 +155,8 @@ class GaugeFragment : Fragment() {
             if (time != "") {
                 binding.time.text = time
             }
+           // (binding.speedView as CustomSpeedometerView).setSpeed(speed!!)
+
             binding.speedView.speedTo(speed!!)
             val maxSpeed = binding.maxSpeed.text.toString().toFloat().toInt()
             if (maxSpeed < speed.toInt()) {
@@ -240,6 +264,8 @@ class GaugeFragment : Fragment() {
             Constants.viewScaling(1f, 0f, false, binding.pauseBtn)
             Constants.viewScaling(1f, 0f, false, binding.resetBtn)
             binding.time.text = "00:00:00"
+         //   (binding.speedView as CustomSpeedometerView).setSpeed(0f, false)
+
             binding.speedView.speedTo(0f)
             binding.speedTV.text = "0"
             binding.distance.text = "0"
@@ -279,6 +305,15 @@ class GaugeFragment : Fragment() {
         binding.resetIcon.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
         binding.playBtn.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
         binding.pauseIcon.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
+
+        binding.time.setTextColor(Color.parseColor(color))
+        binding.distance.setTextColor(Color.parseColor(color))
+        binding.distanceUnit.setTextColor(Color.parseColor(color))
+        binding.avgSpeed.setTextColor(Color.parseColor(color))
+        binding.avgSpeedUnit.setTextColor(Color.parseColor(color))
+        binding.maxSpeed.setTextColor(Color.parseColor(color))
+        binding.maxSpeedUnit.setTextColor(Color.parseColor(color))
+        binding.speedTV.setTextColor(Color.parseColor(color))
     }
 
     fun changeUnit(unit: String) {

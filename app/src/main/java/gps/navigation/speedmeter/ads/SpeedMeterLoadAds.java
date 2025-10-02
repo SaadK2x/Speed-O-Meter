@@ -29,7 +29,6 @@ import gps.navigation.speedmeter.utils.MyApp;
 
 public class SpeedMeterLoadAds {
     public static String appid_admob_inApp = MyApp.Companion.getStr(R.string.admob_ad_id);
-    public static String interstitial_admob_inApp = BuildConfig.admob_interstitial_id;
     public static String nav_interstitial = BuildConfig.nav_interstitial;
     public static String banner_admob_inApp = BuildConfig.admob_banner_id;
     public static String medium_banner = BuildConfig.medium_banner;
@@ -213,7 +212,7 @@ public class SpeedMeterLoadAds {
 
     }
 
-    //1
+ /*   //1
     public static void loadVideoAdForPrompt(final Context context, OnVideoLoad videoCallback) {
         SpeedMeterBillingHelper billingHelper = new SpeedMeterBillingHelper(context);
         if (billingHelper.shouldShowAds()) {
@@ -250,7 +249,7 @@ public class SpeedMeterLoadAds {
             videoCallback.onFailed();
         }
     }
-
+*/
     public interface OnVideoLoad {
         void onLoaded();
 

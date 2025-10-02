@@ -278,6 +278,15 @@ class DigitalFragment : Fragment() {
         binding.resetIcon.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
         binding.playBtn.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
         binding.pauseIcon.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
+
+        binding.time.setTextColor(Color.parseColor(color))
+        binding.distance.setTextColor(Color.parseColor(color))
+        binding.distanceUnit.setTextColor(Color.parseColor(color))
+        binding.avgSpeed.setTextColor(Color.parseColor(color))
+        binding.avgSpeedUnit.setTextColor(Color.parseColor(color))
+        binding.maxSpeed.setTextColor(Color.parseColor(color))
+        binding.maxSpeedUnit.setTextColor(Color.parseColor(color))
+        binding.speedTV.setTextColor(Color.parseColor(color))
     }
 
     fun changeUnit(unit: String) {

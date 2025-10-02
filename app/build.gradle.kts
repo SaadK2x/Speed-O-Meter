@@ -14,8 +14,8 @@ android {
         applicationId = "gps.speedometer.gpsspeedometer.odometer.speedtracker"
         minSdk = 24
         targetSdk = 35
-        versionCode = 9
-        versionName = "1.0.9"
+        versionCode = 10
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,6 +33,12 @@ android {
                 "proguard-rules.pro"
             )
 
+            buildConfigField ("String", "mapbox_key_1", "\"pk.eyJ1IjoiaWZrYW5sYXZhMjAiLCJhIjoiY202dWV4ZGF5MGRobzJrcjNodDFzNnhrNSJ9.Q7pGrBcbcM0q_clC9RDlHw\"")
+            buildConfigField ("String", "mapbox_key_2", "\"pk.eyJ1IjoiaWZrYW5sYXZhMjEiLCJhIjoiY202dWYyazBnMGF5MjJpcXBpbXk1bnVpZSJ9.JmwqX7HYFHoEMkTQQc6r5A\"")
+            buildConfigField ("String", "mapbox_key_3", "\"pk.eyJ1IjoiaWZrYW5sYXZhMjIiLCJhIjoiY202dWY4NWdwMGFvcDJrc2FrZDE1cjA2eSJ9.XndaLX2EoAIMt7CcxttkGw\"")
+            buildConfigField ("String", "mapbox_key_4", "\"pk.eyJ1IjoiaWZrYW5sYXZhMjMiLCJhIjoiY202dWZjbHkzMGQwdTJqc2g3d3l1aTAxeiJ9.DoOrOy0G20vMcYgExA5aOQ\"")
+            buildConfigField ("String", "mapbox_key_5", "\"pk.eyJ1IjoiaWZrYW5sYXZhMjQiLCJhIjoiY202dWZndmQ5MDlvczJpcjMzaWthMHQxdCJ9.DasJTtlWIDQV5xAu9p4BDg\"")
+
             buildConfigField(
                 "String",
                 "admob_ad_id",
@@ -47,11 +53,6 @@ android {
                 "String",
                 "medium_banner",
                 "\"ca-app-pub-4016151566711692/6905752253\""
-            )
-            buildConfigField(
-                "String",
-                "admob_interstitial_id",
-                "\"ca-app-pub-4016151566711692/9966176235\""
             )
             buildConfigField(
                 "String",
@@ -91,6 +92,13 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            buildConfigField ("String", "mapbox_key_1", "\"pk.eyJ1IjoiaWZrYW5sYXZhMjAiLCJhIjoiY202dWV4ZGF5MGRobzJrcjNodDFzNnhrNSJ9.Q7pGrBcbcM0q_clC9RDlHw\"")
+            buildConfigField ("String", "mapbox_key_2", "\"pk.eyJ1IjoiaWZrYW5sYXZhMjEiLCJhIjoiY202dWYyazBnMGF5MjJpcXBpbXk1bnVpZSJ9.JmwqX7HYFHoEMkTQQc6r5A\"")
+            buildConfigField ("String", "mapbox_key_3", "\"pk.eyJ1IjoiaWZrYW5sYXZhMjIiLCJhIjoiY202dWY4NWdwMGFvcDJrc2FrZDE1cjA2eSJ9.XndaLX2EoAIMt7CcxttkGw\"")
+            buildConfigField ("String", "mapbox_key_4", "\"pk.eyJ1IjoiaWZrYW5sYXZhMjMiLCJhIjoiY202dWZjbHkzMGQwdTJqc2g3d3l1aTAxeiJ9.DoOrOy0G20vMcYgExA5aOQ\"")
+            buildConfigField ("String", "mapbox_key_5", "\"pk.eyJ1IjoiaWZrYW5sYXZhMjQiLCJhIjoiY202dWZndmQ5MDlvczJpcjMzaWthMHQxdCJ9.DasJTtlWIDQV5xAu9p4BDg\"")
+
             buildConfigField(
                 "String",
                 "admob_ad_id",
@@ -106,11 +114,6 @@ android {
                 "String",
                 "medium_banner",
                 "\"ca-app-pub-3940256099942544/6300978111\""
-            )
-            buildConfigField(
-                "String",
-                "admob_interstitial_id",
-                "\"ca-app-pub-3940256099942544/1033173712\""
             )
             buildConfigField(
                 "String",
